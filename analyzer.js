@@ -268,6 +268,7 @@ class MahjongAnalyzer {
     }
 
     // 检查不靠牌型的序数牌模式
+    // 规则：三种花色分别从147/258/369中各选一组，不能重复选同一组
     checkBuKaoPattern(numberTiles, honorTiles) {
         // 定义三种合法的数字组合
         const patterns = [
@@ -284,41 +285,36 @@ class MahjongAnalyzer {
             suitValues[suit].push(value);
         }
         
+        // 记录每个花色使用的pattern索引
+        const suitPatternMap = {};
+        
         // 检查每种花色的牌是否都属于同一个pattern
         for (const suit of ['w', 't', 'b']) {
             const values = suitValues[suit];
             if (values.length === 0) continue;
             
             // 找到这个花色的牌属于哪个pattern
-            let matchedPattern = null;
-            for (const pattern of patterns) {
-                if (values.every(v => pattern.includes(v))) {
-                    matchedPattern = pattern;
+            let matchedPatternIdx = -1;
+            for (let i = 0; i < patterns.length; i++) {
+                if (values.every(v => patterns[i].includes(v))) {
+                    matchedPatternIdx = i;
                     break;
                 }
             }
             
             // 如果没有匹配的pattern，不是全不靠
-            if (!matchedPattern) return false;
+            if (matchedPatternIdx === -1) return false;
+            
+            suitPatternMap[suit] = matchedPatternIdx;
         }
         
         // 检查三种花色不能选同一个pattern（必须各选不同的）
-        const usedPatterns = [];
-        for (const suit of ['w', 't', 'b']) {
-            const values = suitValues[suit];
-            if (values.length === 0) continue;
-            
-            for (let i = 0; i < patterns.length; i++) {
-                if (values.every(v => patterns[i].includes(v))) {
-                    if (usedPatterns.includes(i)) {
-                        // 两种花色选了同一个pattern，检查是否有重复的数字
-                        // 实际上全不靠允许不同花色选同一组pattern，只要不相邻即可
-                        // 但正统规则是每种花色选不同的pattern
-                    }
-                    usedPatterns.push(i);
-                    break;
-                }
-            }
+        const usedPatterns = new Set(Object.values(suitPatternMap));
+        const suitsWithTiles = Object.keys(suitPatternMap).length;
+        
+        // 如果有多个花色选了同一个pattern，usedPatterns.size < suitsWithTiles
+        if (usedPatterns.size < suitsWithTiles) {
+            return false; // 有重复的pattern，不符合规则
         }
         
         return true;
@@ -344,7 +340,8 @@ class MahjongAnalyzer {
         return this.checkQiXingPattern(numberTiles);
     }
 
-    // 检查七星不靠的序数牌模式（更严格：三种花色必须各选不同的pattern）
+    // 检查七星不靠的序数牌模式
+    // 规则：三种花色必须各选不同的pattern（147/258/369各一组）
     checkQiXingPattern(numberTiles) {
         const patterns = [
             [1, 4, 7],
@@ -360,7 +357,7 @@ class MahjongAnalyzer {
             suitValues[suit].push(value);
         }
         
-        // 每种花色必须恰好有部分牌，且属于不同的pattern
+        // 记录每个花色使用的pattern索引
         const usedPatterns = new Set();
         
         for (const suit of ['w', 't', 'b']) {

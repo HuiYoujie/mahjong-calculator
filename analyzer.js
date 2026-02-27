@@ -135,17 +135,28 @@ class MahjongAnalyzer {
             return;
         }
 
-        // 找第一张剩余的牌
-        let firstTile = null;
-        for (const tileId of Object.keys(tileCount)) {
-            if (tileCount[tileId] > 0) {
-                firstTile = tileId;
-                break;
-            }
-        }
+        // 按固定顺序获取所有有牌的tileId（排序确保一致性）
+        const sortedTiles = Object.keys(tileCount)
+            .filter(t => tileCount[t] > 0)
+            .sort((a, b) => {
+                // 按花色和数值排序：w1 < w2 < ... < t1 < ... < b1 < ... < east < ...
+                const typeOrder = { wan: 0, tiao: 1, bing: 2, wind: 3, dragon: 4 };
+                const tileA = TILES[a];
+                const tileB = TILES[b];
+                if (!tileA || !tileB) return 0;
+                if (tileA.type !== tileB.type) {
+                    return typeOrder[tileA.type] - typeOrder[tileB.type];
+                }
+                // 同花色按数值排序
+                if (typeof tileA.value === 'number' && typeof tileB.value === 'number') {
+                    return tileA.value - tileB.value;
+                }
+                return 0;
+            });
 
-        if (!firstTile) return;
+        if (sortedTiles.length === 0) return;
 
+        const firstTile = sortedTiles[0];
         const tile = TILES[firstTile];
         
         // 尝试作为将牌
@@ -497,10 +508,22 @@ class MahjongAnalyzer {
         const { sets } = decomp;
         const tile = TILES[winTile];
 
-        // 单钓将：和牌就是将牌
-        // 在这个有效拆解中，如果和牌是pair，那就是单钓将
+        // 单钓将：钓单张牌作将成和
+        // 定义：听牌时只听一张牌做将，和牌后组成将牌
+        // 检测方法：和牌是将牌，且在这个拆解中和牌只用于组成将牌（不在任何面子中）
         if (pair === winTile) {
-            return 'dandiao';
+            // 计算和牌在面子中出现的次数
+            let countInSets = 0;
+            for (const set of sets) {
+                countInSets += set.tiles.filter(t => t === winTile).length;
+            }
+            
+            // 如果和牌没有出现在面子中，说明只用于将牌，是单钓将
+            // 或者，如果手牌中该牌只有2张，也是单钓将
+            const countInHand = this.hand.filter(t => t === winTile).length;
+            if (countInSets === 0 || countInHand === 2) {
+                return 'dandiao';
+            }
         }
 
         // 边张和坎张只有序数牌才能
@@ -508,7 +531,7 @@ class MahjongAnalyzer {
 
         const winValue = tile.value;
 
-        // 找到包含和牌的顺子
+        // 找到包含和牌的顺子（只检查手牌中的顺子，不包括副露）
         for (const set of sets) {
             if (set.type !== 'chi') continue;
             if (!set.tiles.includes(winTile)) continue;

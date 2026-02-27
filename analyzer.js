@@ -6,8 +6,8 @@ const EXCLUSION_RULES = {
     '大三元': ['箭刻'],
     '绿一色': ['混一色'],
     '九莲宝灯': ['清一色'],
-    '连七对': ['清一色', '不求人', '单钓将'],
-    '十三幺': ['五门齐', '不求人', '单钓将'],
+    '连七对': ['清一色', '不求人', '单钓将', '门前清'],
+    '十三幺': ['五门齐', '不求人', '单钓将', '门前清'],
     '清幺九': ['碰碰和', '双同刻', '无字', '幺九刻'],
     '小四喜': ['三风刻'],
     '小三元': ['箭刻', '双箭刻'],
@@ -18,7 +18,7 @@ const EXCLUSION_RULES = {
     '一色四节高': ['一色三同顺', '碰碰和', '一色三节高'],
     '混幺九': ['碰碰和', '幺九刻', '全带幺'],
     '七对': ['不求人', '单钓将', '门前清'],
-    '七星不靠': ['五门齐', '不求人', '单钓将'],
+    '七星不靠': ['五门齐', '不求人', '单钓将', '门前清'],
     '全双刻': ['碰碰和', '断幺'],
     '清一色': ['无字'],
     '一色三同顺': ['一色三节高', '一般高'],
@@ -28,7 +28,7 @@ const EXCLUSION_RULES = {
     '全小': ['无字', '小于五'],
     '三色双龙会': ['喜相逢', '老少副', '无字', '平和'],
     '全带五': ['断幺'],
-    '全不靠': ['五门齐', '不求人', '单钓将'],
+    '全不靠': ['五门齐', '不求人', '单钓将', '门前清'],
     '大于五': ['无字'],
     '小于五': ['无字'],
     '妙手回春': ['自摸'],
@@ -865,11 +865,6 @@ class MahjongAnalyzer {
             fans.push({ name: '全带幺', score: 4 });
         }
 
-        // 不求人
-        if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
-            fans.push({ name: '不求人', score: 4 });
-        }
-
         // 双明杠
         const mingGangs = gangs.filter(s => s.type === 'minggang');
         if (mingGangs.length === 2) {
@@ -892,11 +887,6 @@ class MahjongAnalyzer {
         const menFengKe = pongs.find(s => s.tiles[0] === this.conditions.seatWind);
         if (menFengKe && menFengKe !== quanFengKe) {
             fans.push({ name: '门风刻', score: 2 });
-        }
-
-        // 门前清
-        if (this.melds.length === 0 && !this.conditions.isSelfDrawn) {
-            fans.push({ name: '门前清', score: 2 });
         }
 
         // 平和
@@ -974,11 +964,6 @@ class MahjongAnalyzer {
         if (!allTiles.some(t => isHonorTile(t)) && allTiles.length > 0) {
             fans.push({ name: '无字', score: 1 });
         }
-
-        // 自摸
-        if (this.conditions.isSelfDrawn && !fans.some(f => f.name === '不求人')) {
-            fans.push({ name: '自摸', score: 1 });
-        }
     }
 
     // 添加条件相关番种
@@ -1009,6 +994,19 @@ class MahjongAnalyzer {
         // 绝张
         if (this.conditions.isJuezhang) {
             fans.push({ name: '和绝张', score: 4 });
+        }
+
+        // 不求人（4番）：门清自摸
+        if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
+            fans.push({ name: '不求人', score: 4 });
+        }
+        // 门前清（2番）：门清点和
+        else if (this.melds.length === 0 && !this.conditions.isSelfDrawn) {
+            fans.push({ name: '门前清', score: 2 });
+        }
+        // 自摸（1番）：有副露时自摸
+        else if (this.conditions.isSelfDrawn) {
+            fans.push({ name: '自摸', score: 1 });
         }
     }
 

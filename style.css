@@ -765,18 +765,7 @@ footer {
     display: flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
     transition: var(--transition);
-}
-
-.win-tile-display:hover {
-    border-color: var(--primary-color);
-}
-
-.win-tile-display.selecting {
-    border-color: #ffc107;
-    background: #fffde7;
-    animation: pulse 1s infinite;
 }
 
 .win-tile-display .placeholder {
@@ -793,15 +782,32 @@ footer {
     color: var(--text-primary);
 }
 
+.action-btn.select-win {
+    padding: 8px 16px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.action-btn.select-win:hover {
+    background: var(--primary-light);
+}
+
+.action-btn.select-win.active {
+    background: #f39c12;
+    animation: pulse 1s infinite;
+}
+
 .action-btn.clear-win {
     padding: 6px 12px;
-    background: #f39c12;
+    background: #95a5a6;
     color: white;
     font-size: 0.8rem;
 }
 
 .action-btn.clear-win:hover {
-    background: #e67e22;
+    background: #7f8c8d;
 }
 
 /* Hand tile in selection mode */

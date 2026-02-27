@@ -123,9 +123,9 @@ class MahjongApp {
             }
         });
 
-        // 和牌选择区域点击 - 进入选择模式
-        document.getElementById('winTileDisplay')?.addEventListener('click', () => {
-            this.toggleWinTileSelection();
+        // 选择和牌按钮 - 进入选择模式
+        document.getElementById('selectWinTile')?.addEventListener('click', () => {
+            this.startWinTileSelection();
         });
 
         // 清除和牌
@@ -134,20 +134,27 @@ class MahjongApp {
         });
     }
 
-    // 切换和牌选择模式
-    toggleWinTileSelection() {
-        this.selectingWinTile = !this.selectingWinTile;
-        const handDisplay = document.getElementById('handDisplay');
-        const winTileDisplay = document.getElementById('winTileDisplay');
-        
-        if (this.selectingWinTile) {
-            handDisplay?.classList.add('selecting-win-tile');
-            winTileDisplay?.classList.add('selecting');
-            this.showMessage('请点击手牌中的一张作为和牌');
-        } else {
-            handDisplay?.classList.remove('selecting-win-tile');
-            winTileDisplay?.classList.remove('selecting');
+    // 开始选择和牌模式
+    startWinTileSelection() {
+        if (this.hand.length === 0) {
+            this.showMessage('请先添加手牌');
+            return;
         }
+        
+        this.selectingWinTile = true;
+        const handDisplay = document.getElementById('handDisplay');
+        const selectBtn = document.getElementById('selectWinTile');
+        
+        handDisplay?.classList.add('selecting-win-tile');
+        selectBtn?.classList.add('active');
+        this.showMessage('👆 请点击手牌中的一张作为和牌');
+    }
+
+    // 取消选择模式
+    cancelWinTileSelection() {
+        this.selectingWinTile = false;
+        document.getElementById('handDisplay')?.classList.remove('selecting-win-tile');
+        document.getElementById('selectWinTile')?.classList.remove('active');
     }
 
     // 设置和牌
@@ -155,11 +162,9 @@ class MahjongApp {
         if (index >= 0 && index < this.hand.length) {
             this.winTile = this.hand[index];
             this.winTileIndex = index;
-            this.selectingWinTile = false;
+            this.cancelWinTileSelection();
             
-            document.getElementById('handDisplay')?.classList.remove('selecting-win-tile');
-            document.getElementById('winTileDisplay')?.classList.remove('selecting');
-            
+            this.showMessage(`已选择 ${TILES[this.winTile].name} 作为和牌`);
             this.updateWinTileDisplay();
             this.updateHandDisplay();
         }
@@ -169,10 +174,7 @@ class MahjongApp {
     clearWinTile() {
         this.winTile = null;
         this.winTileIndex = -1;
-        this.selectingWinTile = false;
-        
-        document.getElementById('handDisplay')?.classList.remove('selecting-win-tile');
-        document.getElementById('winTileDisplay')?.classList.remove('selecting');
+        this.cancelWinTileSelection();
         
         this.updateWinTileDisplay();
         this.updateHandDisplay();

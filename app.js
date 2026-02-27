@@ -4,6 +4,9 @@ class MahjongApp {
     constructor() {
         this.hand = [];
         this.melds = [];
+        this.winTile = null;  // 和牌（最后和的那张牌）
+        this.winTileIndex = -1; // 和牌在手牌中的索引
+        this.selectingWinTile = false; // 是否正在选择和牌
         this.tileUsage = {};  // 记录每张牌使用次数
         this.maxTileCount = 4; // 每种牌最多4张
         
@@ -107,14 +110,85 @@ class MahjongApp {
             el.addEventListener('change', () => this.updateConditions());
         });
 
-        // 手牌区域点击移除
+        // 手牌区域点击 - 选择和牌或移除
         document.getElementById('handDisplay')?.addEventListener('click', (e) => {
             const tileEl = e.target.closest('.hand-tile');
             if (tileEl) {
                 const index = parseInt(tileEl.dataset.index);
-                this.removeTileFromHand(index);
+                if (this.selectingWinTile) {
+                    this.setWinTile(index);
+                } else {
+                    this.removeTileFromHand(index);
+                }
             }
         });
+
+        // 和牌选择区域点击 - 进入选择模式
+        document.getElementById('winTileDisplay')?.addEventListener('click', () => {
+            this.toggleWinTileSelection();
+        });
+
+        // 清除和牌
+        document.getElementById('clearWinTile')?.addEventListener('click', () => {
+            this.clearWinTile();
+        });
+    }
+
+    // 切换和牌选择模式
+    toggleWinTileSelection() {
+        this.selectingWinTile = !this.selectingWinTile;
+        const handDisplay = document.getElementById('handDisplay');
+        const winTileDisplay = document.getElementById('winTileDisplay');
+        
+        if (this.selectingWinTile) {
+            handDisplay?.classList.add('selecting-win-tile');
+            winTileDisplay?.classList.add('selecting');
+            this.showMessage('请点击手牌中的一张作为和牌');
+        } else {
+            handDisplay?.classList.remove('selecting-win-tile');
+            winTileDisplay?.classList.remove('selecting');
+        }
+    }
+
+    // 设置和牌
+    setWinTile(index) {
+        if (index >= 0 && index < this.hand.length) {
+            this.winTile = this.hand[index];
+            this.winTileIndex = index;
+            this.selectingWinTile = false;
+            
+            document.getElementById('handDisplay')?.classList.remove('selecting-win-tile');
+            document.getElementById('winTileDisplay')?.classList.remove('selecting');
+            
+            this.updateWinTileDisplay();
+            this.updateHandDisplay();
+        }
+    }
+
+    // 清除和牌选择
+    clearWinTile() {
+        this.winTile = null;
+        this.winTileIndex = -1;
+        this.selectingWinTile = false;
+        
+        document.getElementById('handDisplay')?.classList.remove('selecting-win-tile');
+        document.getElementById('winTileDisplay')?.classList.remove('selecting');
+        
+        this.updateWinTileDisplay();
+        this.updateHandDisplay();
+    }
+
+    // 更新和牌显示
+    updateWinTileDisplay() {
+        const container = document.getElementById('winTileDisplay');
+        if (!container) return;
+
+        if (this.winTile) {
+            const tile = TILES[this.winTile];
+            container.innerHTML = `<span class="win-tile-char">${tile.unicode}</span><span class="win-tile-name">${tile.name}</span>`;
+        } else {
+            container.innerHTML = '<span class="placeholder">点击此处选择和牌</span>';
+        }
     }
 
     addTileToHand(tileId) {
@@ -139,6 +213,16 @@ class MahjongApp {
             const tileId = this.hand[index];
             this.hand.splice(index, 1);
             this.tileUsage[tileId]--;
+            
+            // 如果移除的是和牌，清除和牌选择
+            if (index === this.winTileIndex) {
+                this.winTile = null;
+                this.winTileIndex = -1;
+            } else if (index < this.winTileIndex) {
+                // 如果移除的是和牌前面的牌，更新和牌索引
+                this.winTileIndex--;
+            }
+            
             this.updateDisplay();
         }
     }
@@ -156,6 +240,8 @@ class MahjongApp {
             this.tileUsage[tileId]--;
         }
         this.hand = [];
+        this.winTile = null;
+        this.winTileIndex = -1;
         this.updateDisplay();
     }
 
@@ -328,6 +414,7 @@ class MahjongApp {
         this.updateMeldsDisplay();
         this.updateTileSelector();
         this.updateHandCount();
+        this.updateWinTileDisplay();
     }
 
     updateHandDisplay() {
@@ -339,10 +426,13 @@ class MahjongApp {
             return;
         }
 
+        // 创建索引映射用于排序后追踪原始索引
+        const indexedHand = this.hand.map((tileId, index) => ({ tileId, originalIndex: index }));
+        
         // 按花色和数字排序
-        const sortedHand = [...this.hand].sort((a, b) => {
-            const tileA = TILES[a];
-            const tileB = TILES[b];
+        indexedHand.sort((a, b) => {
+            const tileA = TILES[a.tileId];
+            const tileB = TILES[b.tileId];
             const typeOrder = { wan: 0, tiao: 1, bing: 2, wind: 3, dragon: 4 };
             if (tileA.type !== tileB.type) {
                 return typeOrder[tileA.type] - typeOrder[tileB.type];
@@ -353,23 +443,18 @@ class MahjongApp {
             return 0;
         });
 
-        container.innerHTML = sortedHand.map((tileId, index) => {
+        const selectingClass = this.selectingWinTile ? 'selecting-win-tile' : '';
+        container.innerHTML = indexedHand.map(({ tileId, originalIndex }) => {
             const tile = TILES[tileId];
-            const originalIndex = this.hand.indexOf(tileId);
+            const isWinTile = originalIndex === this.winTileIndex;
+            const title = this.selectingWinTile ? '点击选为和牌' : '点击移除';
             return `
-                <div class="hand-tile" data-index="${this.hand.findIndex((t, i) => t === tileId && i >= index)}" title="点击移除">
+                <div class="hand-tile ${isWinTile ? 'win-tile-highlight' : ''}" data-index="${originalIndex}" title="${title}">
                     <span class="tile-char">${tile.unicode}</span>
+                    ${isWinTile ? '<span class="win-marker">和</span>' : ''}
                 </div>
             `;
         }).join('');
-
-        // 重新设置正确的索引
-        const tiles = container.querySelectorAll('.hand-tile');
-        this.hand.forEach((tileId, index) => {
-            if (tiles[index]) {
-                tiles[index].dataset.index = index;
-            }
-        });
     }
 
     updateMeldsDisplay() {
@@ -462,10 +547,19 @@ class MahjongApp {
             return;
         }
 
+        // 检查是否选择了和牌
+        if (!this.winTile) {
+            this.showResult({
+                valid: false,
+                message: '请先选择和牌（点击"和牌"区域，然后点击手牌中的一张）'
+            });
+            return;
+        }
+
         const conditions = this.getConditions();
         
-        // 设置分析器数据
-        analyzer.setHand(this.hand, this.melds, null, conditions);
+        // 设置分析器数据，传入和牌
+        analyzer.setHand(this.hand, this.melds, this.winTile, conditions);
         
         // 分析
         const result = analyzer.analyze();

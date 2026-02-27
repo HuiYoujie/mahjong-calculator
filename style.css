@@ -736,6 +736,114 @@ footer {
     }
 }
 
+/* Win Tile Selection */
+.win-tile-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.win-tile-section label {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.win-tile-display {
+    flex: 1;
+    padding: 8px 16px;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.win-tile-display:hover {
+    border-color: var(--primary-color);
+}
+
+.win-tile-display.selecting {
+    border-color: #ffc107;
+    background: #fffde7;
+    animation: pulse 1s infinite;
+}
+
+.win-tile-display .placeholder {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.win-tile-display .win-tile-char {
+    font-size: 1.8rem;
+}
+
+.win-tile-display .win-tile-name {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.action-btn.clear-win {
+    padding: 6px 12px;
+    background: #f39c12;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.action-btn.clear-win:hover {
+    background: #e67e22;
+}
+
+/* Hand tile in selection mode */
+.hand-display.selecting-win-tile .hand-tile {
+    cursor: pointer;
+    animation: pulse 1s infinite;
+}
+
+.hand-display.selecting-win-tile .hand-tile:hover {
+    background: #fffde7;
+    border-color: #ffc107;
+    transform: translateY(-6px) scale(1.05);
+}
+
+/* Win tile highlight */
+.hand-tile.win-tile-highlight {
+    background: linear-gradient(180deg, #fff8e1 0%, #ffecb3 100%) !important;
+    border: 2px solid #ffc107 !important;
+    position: relative;
+}
+
+.hand-tile .win-marker {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #f44336;
+    color: white;
+    font-size: 0.6rem;
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(255, 193, 7, 0);
+    }
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {
@@ -791,5 +899,14 @@ footer {
     .meld-btn {
         padding: 6px 10px;
         font-size: 0.8rem;
+    }
+
+    .win-tile-section {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .win-tile-section label {
+        width: 100%;
     }
 }

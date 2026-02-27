@@ -492,27 +492,21 @@ class MahjongAnalyzer {
         }
     }
 
-    // 检测和牌类型
+    // 检测和牌类型：边张、坎张、单钓将
     detectWinType(decomp, allSets, pair, winTile) {
         const { sets } = decomp;
         const tile = TILES[winTile];
 
-        // 检查是否单钓将
+        // 单钓将：和牌就是将牌
+        // 在这个有效拆解中，如果和牌是pair，那就是单钓将
         if (pair === winTile) {
-            // 需要验证：去掉和牌后，其他牌能否组成完整的4面子
-            const handWithoutWin = this.hand.filter((t, idx) => {
-                const firstIdx = this.hand.indexOf(winTile);
-                return idx !== firstIdx;
-            });
-            const tileCount = this.countTiles(handWithoutWin);
-            const canFormSets = this.canFormCompleteSets(tileCount, 4);
-            if (canFormSets) {
-                return 'dandiao';
-            }
+            return 'dandiao';
         }
 
-        // 检查边张和坎张（只有序数牌才能）
+        // 边张和坎张只有序数牌才能
         if (!isNumberTile(winTile)) return null;
+
+        const winValue = tile.value;
 
         // 找到包含和牌的顺子
         for (const set of sets) {
@@ -520,9 +514,9 @@ class MahjongAnalyzer {
             if (!set.tiles.includes(winTile)) continue;
 
             const values = set.tiles.map(t => TILES[t].value).sort((a, b) => a - b);
-            const winValue = tile.value;
 
-            // 边张：12和3，或者78和7
+            // 边张：单和12的3，或89的7
+            // 即：顺子123和3，或顺子789和7
             if (values[0] === 1 && values[2] === 3 && winValue === 3) {
                 return 'bian';
             }
@@ -530,62 +524,13 @@ class MahjongAnalyzer {
                 return 'bian';
             }
 
-            // 坎张：和中间的牌
+            // 坎张：和顺子中间的牌
             if (winValue === values[1]) {
                 return 'kan';
             }
         }
 
         return null;
-    }
-
-    // 检查能否组成指定数量的面子
-    canFormCompleteSets(tileCount, numSets) {
-        const remaining = Object.values(tileCount).reduce((a, b) => a + b, 0);
-        if (remaining !== numSets * 3) return false;
-
-        return this._canFormSets(tileCount, numSets);
-    }
-
-    _canFormSets(tileCount, numSets) {
-        if (numSets === 0) {
-            return Object.values(tileCount).every(c => c === 0);
-        }
-
-        // 找第一张非零牌
-        let firstTile = null;
-        for (const tileId of Object.keys(tileCount)) {
-            if (tileCount[tileId] > 0) {
-                firstTile = tileId;
-                break;
-            }
-        }
-        if (!firstTile) return numSets === 0;
-
-        const tile = TILES[firstTile];
-
-        // 尝试刻子
-        if (tileCount[firstTile] >= 3) {
-            const newCount = { ...tileCount };
-            newCount[firstTile] -= 3;
-            if (this._canFormSets(newCount, numSets - 1)) return true;
-        }
-
-        // 尝试顺子
-        if (tile && isNumberTile(firstTile) && tile.value <= 7) {
-            const next1 = firstTile.charAt(0) + (tile.value + 1);
-            const next2 = firstTile.charAt(0) + (tile.value + 2);
-            
-            if (tileCount[next1] > 0 && tileCount[next2] > 0) {
-                const newCount = { ...tileCount };
-                newCount[firstTile] -= 1;
-                newCount[next1] -= 1;
-                newCount[next2] -= 1;
-                if (this._canFormSets(newCount, numSets - 1)) return true;
-            }
-        }
-
-        return false;
     }
 
     // 应用"不计"规则

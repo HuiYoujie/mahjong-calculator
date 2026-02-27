@@ -361,8 +361,11 @@ class MahjongApp {
                 this.showMessage('请选择3张牌');
                 return;
             }
+            // 先按数值排序
+            selectedTiles.sort((a, b) => TILES[a].value - TILES[b].value);
+            
             // 检查是否连续
-            const values = selectedTiles.map(t => TILES[t].value).sort((a, b) => a - b);
+            const values = selectedTiles.map(t => TILES[t].value);
             if (values[1] !== values[0] + 1 || values[2] !== values[1] + 1) {
                 this.showMessage('顺子必须是连续的3张牌');
                 return;
@@ -374,7 +377,7 @@ class MahjongApp {
                     return;
                 }
             }
-            // 添加副露
+            // 添加副露（已排序）
             const meld = { type: 'chi', tiles: [...selectedTiles] };
             this.melds.push(meld);
             for (const tileId of selectedTiles) {

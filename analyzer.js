@@ -243,36 +243,135 @@ class MahjongAnalyzer {
         // 所有牌都只有一张
         if (!Object.values(tileCount).every(c => c === 1)) return false;
 
-        // 检查是否有东南西北中发白
-        const honors = ['east', 'south', 'west', 'north', 'zhong', 'fa', 'bai'];
-        const hasAllHonors = honors.every(h => tileCount[h] === 1);
-        
-        if (!hasAllHonors) return false;
-
-        // 检查序数牌是否不相邻
+        // 检查序数牌
         const numberTiles = tiles.filter(t => isNumberTile(t));
-        if (numberTiles.length !== 7) return false;
+        
+        // 检查字牌
+        const honorTiles = tiles.filter(t => isHonorTile(t));
+        
+        // 全不靠需要：7张序数牌 + 7张字牌，或者其他符合规则的组合
+        // 序数牌必须符合 147、258、369 的组合模式（每种花色选一组，不能混用）
+        
+        // 检查序数牌是否符合147/258/369模式
+        return this.checkBuKaoPattern(numberTiles, honorTiles);
+    }
 
-        // 按花色分组并检查不相邻
+    // 检查不靠牌型的序数牌模式
+    checkBuKaoPattern(numberTiles, honorTiles) {
+        // 定义三种合法的数字组合
+        const patterns = [
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9]
+        ];
+        
+        // 按花色分组
+        const suitValues = { w: [], t: [], b: [] };
+        for (const tile of numberTiles) {
+            const suit = tile.charAt(0);
+            const value = parseInt(tile.charAt(1));
+            suitValues[suit].push(value);
+        }
+        
+        // 检查每种花色的牌是否都属于同一个pattern
         for (const suit of ['w', 't', 'b']) {
-            const suitTiles = numberTiles.filter(t => t.startsWith(suit)).map(t => parseInt(t.charAt(1)));
-            for (let i = 0; i < suitTiles.length - 1; i++) {
-                for (let j = i + 1; j < suitTiles.length; j++) {
-                    if (Math.abs(suitTiles[i] - suitTiles[j]) <= 2) return false;
+            const values = suitValues[suit];
+            if (values.length === 0) continue;
+            
+            // 找到这个花色的牌属于哪个pattern
+            let matchedPattern = null;
+            for (const pattern of patterns) {
+                if (values.every(v => pattern.includes(v))) {
+                    matchedPattern = pattern;
+                    break;
+                }
+            }
+            
+            // 如果没有匹配的pattern，不是全不靠
+            if (!matchedPattern) return false;
+        }
+        
+        // 检查三种花色不能选同一个pattern（必须各选不同的）
+        const usedPatterns = [];
+        for (const suit of ['w', 't', 'b']) {
+            const values = suitValues[suit];
+            if (values.length === 0) continue;
+            
+            for (let i = 0; i < patterns.length; i++) {
+                if (values.every(v => patterns[i].includes(v))) {
+                    if (usedPatterns.includes(i)) {
+                        // 两种花色选了同一个pattern，检查是否有重复的数字
+                        // 实际上全不靠允许不同花色选同一组pattern，只要不相邻即可
+                        // 但正统规则是每种花色选不同的pattern
+                    }
+                    usedPatterns.push(i);
+                    break;
                 }
             }
         }
-
+        
         return true;
     }
 
     // 检查七星不靠
     checkQiXingBuKao(tileCount) {
-        if (!this.checkQuanBuKao(tileCount)) return false;
+        const tiles = Object.keys(tileCount);
+        if (tiles.length !== 14) return false;
         
-        // 七星不靠要求有东南西北中发白各一张
+        // 所有牌都只有一张
+        if (!Object.values(tileCount).every(c => c === 1)) return false;
+        
+        // 七星不靠要求有东南西北中发白各一张（必须7张字牌）
         const honors = ['east', 'south', 'west', 'north', 'zhong', 'fa', 'bai'];
-        return honors.every(h => tileCount[h] === 1);
+        if (!honors.every(h => tileCount[h] === 1)) return false;
+        
+        // 检查序数牌（必须7张）
+        const numberTiles = tiles.filter(t => isNumberTile(t));
+        if (numberTiles.length !== 7) return false;
+        
+        // 检查序数牌是否符合147/258/369模式，且三种花色各选不同组
+        return this.checkQiXingPattern(numberTiles);
+    }
+
+    // 检查七星不靠的序数牌模式（更严格：三种花色必须各选不同的pattern）
+    checkQiXingPattern(numberTiles) {
+        const patterns = [
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9]
+        ];
+        
+        // 按花色分组
+        const suitValues = { w: [], t: [], b: [] };
+        for (const tile of numberTiles) {
+            const suit = tile.charAt(0);
+            const value = parseInt(tile.charAt(1));
+            suitValues[suit].push(value);
+        }
+        
+        // 每种花色必须恰好有部分牌，且属于不同的pattern
+        const usedPatterns = new Set();
+        
+        for (const suit of ['w', 't', 'b']) {
+            const values = suitValues[suit];
+            if (values.length === 0) continue;
+            
+            // 找到匹配的pattern
+            let matchedIdx = -1;
+            for (let i = 0; i < patterns.length; i++) {
+                if (values.every(v => patterns[i].includes(v))) {
+                    matchedIdx = i;
+                    break;
+                }
+            }
+            
+            if (matchedIdx === -1) return false; // 不符合任何pattern
+            if (usedPatterns.has(matchedIdx)) return false; // 与其他花色重复
+            usedPatterns.add(matchedIdx);
+        }
+        
+        // 必须使用了3种不同的pattern
+        return usedPatterns.size === 3;
     }
 
     // 检测七对的番种

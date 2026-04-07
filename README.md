@@ -8,9 +8,8 @@ Chinese Official Mahjong Scoring Calculator
 
 ## 🎮 在线体验
 
-在线地址: `https://kkkkkkkkatie.github.io/mahjong-calculator/`
+- 在线体验: [https://kkkkkkkkatie.github.io/mahjong-calculator/](https://kkkkkkkkatie.github.io/mahjong-calculator/)
 
-仓库地址: `https://github.com/KKKKKKKKatie/mahjong-calculator`
 
 ## ✨ 功能特点
 

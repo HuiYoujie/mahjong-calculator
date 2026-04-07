@@ -6,9 +6,8 @@ A clean and user-friendly scoring calculator for Chinese Official Mahjong, cover
 
 ## 🎮 Project Link
 
-Live site: `https://kkkkkkkkatie.github.io/mahjong-calculator/`
-
-Repository: `https://github.com/KKKKKKKKatie/mahjong-calculator`
+- Live site: [https://kkkkkkkkatie.github.io/mahjong-calculator/](https://kkkkkkkkatie.github.io/mahjong-calculator/)
+- GitHub repository: [KKKKKKKKatie/mahjong-calculator](https://github.com/KKKKKKKKatie/mahjong-calculator)
 
 ## ✨ Features
 

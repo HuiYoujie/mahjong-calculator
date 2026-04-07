@@ -4,9 +4,11 @@ Chinese Official Mahjong Scoring Calculator
 
 一个简洁、美观的国标麻将算番器，支持国标麻将全部81种番种的计算。
 
+[English README](./README.en.md)
+
 ## 🎮 在线体验
 
-访问: `https://your-username.github.io/mahjong-calculator/`
+项目地址: `https://github.com/KKKKKKKKatie/mahjong-calculator`
 
 ## ✨ 功能特点
 
@@ -53,7 +55,7 @@ git init
 git add .
 git commit -m "Initial commit: 国标麻将算番器"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/mahjong-calculator.git
+git remote add origin https://github.com/KKKKKKKKatie/mahjong-calculator.git
 git push -u origin main
 ```
 
@@ -67,7 +69,8 @@ mahjong-calculator/
 ├── style.css       # 样式文件
 ├── fans.js         # 番种数据
 ├── app.js          # 应用逻辑
-└── README.md       # 说明文档
+├── README.md       # 中文说明文档
+└── README.en.md    # English README
 ```
 
 ## 📜 许可证

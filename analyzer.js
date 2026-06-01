@@ -80,7 +80,7 @@ class MahjongAnalyzer {
             if (specialResult) {
                 return specialResult;
             }
-            return { valid: false, fans: [], totalScore: 0, message: '牌型不能和牌' };
+            return { valid: false, fans: [], totalScore: 0, message: '诈和' };
         }
 
         // 对每种拆解方式计算番数，取最高的
@@ -196,9 +196,14 @@ class MahjongAnalyzer {
         const tileCount = this.countTiles(allTiles);
         const uniqueTiles = Object.keys(tileCount);
 
+
         // 检查十三幺
         if (this.melds.length === 0 && this.checkShiSanYao(tileCount)) {
             const fans = [{ name: '十三幺', score: 88 }];
+            // 不求人（4番）：门清自摸
+            if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
+                fans.push({ name: '不求人', score: 4 });
+            }
             this.addConditionFans(fans);
             const filteredFans = this.applyExclusionRules(fans);
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
@@ -207,6 +212,10 @@ class MahjongAnalyzer {
         // 检查七星不靠（先检查七星不靠，因为它包含全不靠）
         if (this.melds.length === 0 && this.checkQiXingBuKao(tileCount)) {
             const fans = [{ name: '七星不靠', score: 24 }];
+            // 不求人（4番）：门清自摸
+            if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
+                fans.push({ name: '不求人', score: 4 });
+            }
             this.addConditionFans(fans);
             const filteredFans = this.applyExclusionRules(fans);
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
@@ -215,6 +224,10 @@ class MahjongAnalyzer {
         // 检查全不靠
         if (this.melds.length === 0 && this.checkQuanBuKao(tileCount)) {
             const fans = [{ name: '全不靠', score: 12 }];
+            // 不求人（4番）：门清自摸
+            if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
+                fans.push({ name: '不求人', score: 4 });
+            }
             this.addConditionFans(fans);
             const filteredFans = this.applyExclusionRules(fans);
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
@@ -388,6 +401,10 @@ class MahjongAnalyzer {
     // 检测七对的番种
     detectQiduiFans(tileCount) {
         const fans = [{ name: '七对', score: 24 }];
+        // 不求人（4番）：门清自摸
+        if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
+            fans.push({ name: '不求人', score: 4 });
+        }
         const tiles = Object.keys(tileCount);
         
         // 检查连七对
@@ -597,7 +614,7 @@ class MahjongAnalyzer {
         }
 
         // 九莲宝灯
-        if (this.checkJiuLianBaoDeng(tileCount)) {
+        if (this.hand.length >= 13 && this.checkJiuLianBaoDeng(tileCount)) {
             fans.push({ name: '九莲宝灯', score: 88 });
         }
 

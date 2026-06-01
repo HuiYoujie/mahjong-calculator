@@ -3,11 +3,12 @@
 // 番种"不计"规则表 - 当计了某番种时，不计哪些番种
 const EXCLUSION_RULES = {
     '大四喜': ['圈风刻', '门风刻', '三风刻', '碰碰和'],
-    '大三元': ['箭刻'],
+    '大三元': ['箭刻', '双箭刻'],
     '绿一色': ['混一色'],
-    '九莲宝灯': ['清一色'],
-    '连七对': ['清一色', '不求人', '单钓将', '门前清'],
-    '十三幺': ['五门齐', '不求人', '单钓将', '门前清'],
+    '九莲宝灯': ['清一色', '门前清'],
+    '连七对': ['清一色', '单钓将', '门前清'],
+    '十三幺': ['五门齐', '单钓将', '门前清'],
+    '四杠': ['碰碰和'],
     '清幺九': ['碰碰和', '双同刻', '无字', '幺九刻'],
     '小四喜': ['三风刻'],
     '小三元': ['箭刻', '双箭刻'],
@@ -17,18 +18,19 @@ const EXCLUSION_RULES = {
     '一色四同顺': ['一色三节高', '一般高', '四归一', '一色三同顺'],
     '一色四节高': ['一色三同顺', '碰碰和', '一色三节高'],
     '混幺九': ['碰碰和', '幺九刻', '全带幺'],
-    '七对': ['不求人', '单钓将', '门前清'],
-    '七星不靠': ['五门齐', '不求人', '单钓将', '门前清'],
+    '七对': ['单钓将', '门前清'],
+    '七星不靠': ['全不靠', '五门齐', '单钓将', '门前清'],
     '全双刻': ['碰碰和', '断幺'],
     '清一色': ['无字'],
     '一色三同顺': ['一色三节高', '一般高'],
     '一色三节高': ['一色三同顺'],
     '全大': ['无字', '大于五'],
-    '全中': ['断幺'],
+    '全中': ['无字', '断幺'],
     '全小': ['无字', '小于五'],
+    '清龙': ['老少副'],
     '三色双龙会': ['喜相逢', '老少副', '无字', '平和'],
     '全带五': ['断幺'],
-    '全不靠': ['五门齐', '不求人', '单钓将', '门前清'],
+    '全不靠': ['五门齐', '单钓将', '门前清'],
     '大于五': ['无字'],
     '小于五': ['无字'],
     '妙手回春': ['自摸'],
@@ -102,6 +104,7 @@ class MahjongAnalyzer {
         for (const meld of this.melds) {
             tiles.push(...meld.tiles);
         }
+        console.log(tiles);
         return tiles;
     }
 
@@ -825,18 +828,6 @@ class MahjongAnalyzer {
             fans.push({ name: '三色三节高', score: 8 });
         }
 
-        // 双暗杠
-        const anGangs = gangs.filter(s => s.type === 'angang');
-        if (anGangs.length === 2) {
-            fans.push({ name: '双暗杠', score: 8 });
-        }
-
-        // 双箭刻
-        const dragonPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.DRAGON);
-        if (dragonPongs.length === 2) {
-            fans.push({ name: '双箭刻', score: 8 });
-        }
-
         // 6番
         // 碰碰和
         if (pongs.length === 4) {
@@ -857,6 +848,31 @@ class MahjongAnalyzer {
         // 五门齐
         if (this.checkWuMenQi(allTiles)) {
             fans.push({ name: '五门齐', score: 6 });
+        }
+
+        // 全求人
+        if ( !this.conditions.isSelfDrawn && this.hand.length <= 2) {
+            fans.push({ name: '全求人', score: 6 });
+        }
+
+        // 双箭刻
+        const dragonPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.DRAGON);
+        if (dragonPongs.length === 2) {
+            fans.push({ name: '双箭刻', score: 6 });
+        }
+
+        // 双暗杠
+        const anGangs = gangs.filter(s => s.type === 'angang');
+        if (anGangs.length === 2) {
+            fans.push({ name: '双暗杠', score: 6 });
+        }
+
+        // 5番
+        // 明暗杠
+        const anGang = gangs.filter(s => s.type === 'angang');
+        const mingGang = gangs.filter(s => s.type === 'minggang');
+        if (anGang && mingGang) {
+            fans.push({ name: '明暗杠', score: 5 });
         }
 
         // 4番

@@ -47,7 +47,7 @@ const FANS_DATA = [
     { id: 'sananke', name: '三暗刻', score: 16, desc: '3副暗刻' },
 
     // 12番 (5种)
-    { id: 'quanbukao', name: '全不靠', score: 12, desc: '不相邻序数牌+全部字牌' },
+    { id: 'quanbukao', name: '全不靠', score: 12, desc: '3色的147+258+369+全部字牌中的14张，两边都不全' },
     { id: 'zuhelong', name: '组合龙', score: 12, desc: '3色的147+258+369' },
     { id: 'dayuwu', name: '大于五', score: 12, desc: '全部由6789组成' },
     { id: 'xiaoyuwu', name: '小于五', score: 12, desc: '全部由1234组成' },
@@ -67,6 +67,14 @@ const FANS_DATA = [
     // 6番 (2种)
     { id: 'pengpenghe', name: '碰碰和', score: 6, desc: '4副刻子' },
     { id: 'hunyise', name: '混一色', score: 6, desc: '序数牌+字牌' },
+    { id: 'sansesanbugao', name: '三色三步高', score: 6, desc: '3副递增顺子' },
+    { id: 'wumenqi', name: '五门齐', score: 6, desc: '5种花色' },
+    { id: 'quanqiuren', name: '全求人', score: 6, desc: '全副露+点炮' }, // 已补逻辑-待确认
+    { id: 'shuangjianke', name: '双箭刻', score: 6, desc: '2副箭刻' },
+    { id: 'shuangangang', name: '双暗杠', score: 6, desc: '2副暗杠' },
+
+    // 5番 (1种)
+    { id: 'mingangang', name: '明暗杠', score: 5, desc: '1副明杠+1副暗杠' },
 
     // 4番 (4种)
     { id: 'quandaiyao', name: '全带幺', score: 4, desc: '每副牌都有19或字牌' },
@@ -88,6 +96,7 @@ const FANS_DATA = [
 
     // 1番 (13种)
     { id: 'yibangao', name: '一般高', score: 1, desc: '2副同顺子' },
+    { id: 'xixiangfeng', name: '喜相逢', score: 1, desc: '2副同数不同色的顺子,' },
     { id: 'lianliu', name: '连六', score: 1, desc: '2副相连顺子' },
     { id: 'laoshaofu', name: '老少副', score: 1, desc: '123+789同花色' },
     { id: 'yaojiuke', name: '幺九刻', score: 1, desc: '19序数牌刻子' },
@@ -99,5 +108,5 @@ const FANS_DATA = [
     { id: 'dandiaojiang', name: '单钓将', score: 1, desc: '单和将牌' },
     { id: 'zimo', name: '自摸', score: 1, desc: '自己摸牌和' },
     { id: 'huapai', name: '花牌', score: 1, desc: '每有1张花牌' },
-    { id: 'erwubajiang', name: '二五八将', score: 1, desc: '258作将' },
+    // { id: 'erwubajiang', name: '二五八将', score: 1, desc: '258作将' },
 ];

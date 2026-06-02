@@ -1,0 +1,364 @@
+.container {
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding-bottom: 40rpx;
+}
+
+.tile-selection {
+    background-color: #fff;
+    margin: 20rpx;
+    padding: 30rpx;
+    border-radius: 16rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.tile-row {
+    display: flex;
+    justify-content: center;
+    gap: 12rpx;
+    margin-bottom: 20rpx;
+}
+
+.tile-row:last-child {
+    margin-bottom: 0;
+}
+
+.tile-btn {
+    width: 70rpx;
+    height: 96rpx;
+    background-color: #fff;
+    border: 2rpx solid #ddd;
+    border-radius: 8rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24rpx;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.tile-btn.selected {
+    border-color: #409eff;
+    background-color: #ecf5ff;
+}
+
+.options-section {
+    background-color: #fff;
+    margin: 20rpx;
+    padding: 30rpx;
+    border-radius: 16rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.mode-selector {
+    display: flex;
+    gap: 16rpx;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 30rpx;
+}
+
+.mode-btn {
+    padding: 16rpx 32rpx;
+    border: 2rpx solid #ddd;
+    border-radius: 8rpx;
+    font-size: 28rpx;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+
+.mode-btn.active {
+    border-color: #409eff;
+    background-color: #ecf5ff;
+    color: #409eff;
+}
+
+.reset-btn {
+    margin-left: auto;
+    padding: 16rpx 32rpx;
+    background-color: #f56c6c;
+    color: #fff;
+    border-radius: 8rpx;
+    font-size: 28rpx;
+}
+
+.wind-selector {
+    display: flex;
+    gap: 40rpx;
+    margin-bottom: 30rpx;
+}
+
+.wind-group {
+    flex: 1;
+}
+
+.wind-group .label {
+    display: block;
+    font-size: 26rpx;
+    color: #666;
+    margin-bottom: 16rpx;
+}
+
+.wind-btns {
+    display: flex;
+    gap: 12rpx;
+}
+
+.wind-btn {
+    flex: 1;
+    padding: 16rpx 0;
+    border: 2rpx solid #ddd;
+    border-radius: 8rpx;
+    text-align: center;
+    font-size: 28rpx;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+
+.wind-btn.active {
+    border-color: #409eff;
+    background-color: #ecf5ff;
+    color: #409eff;
+}
+
+.flower-count {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+    margin-bottom: 30rpx;
+    padding: 20rpx 0;
+    border-top: 1rpx solid #eee;
+    border-bottom: 1rpx solid #eee;
+}
+
+.flower-count .label {
+    font-size: 26rpx;
+    color: #666;
+}
+
+.flower-controls {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+}
+
+.flower-btn {
+    width: 60rpx;
+    height: 60rpx;
+    background-color: #f0f0f0;
+    border: 1rpx solid #ddd;
+    border-radius: 8rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36rpx;
+    font-weight: bold;
+}
+
+.flower-value {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+    min-width: 60rpx;
+    text-align: center;
+}
+
+.check-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30rpx;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 10rpx;
+}
+
+.check-label {
+    font-size: 26rpx;
+    color: #666;
+}
+
+.selected-tiles {
+    background-color: #fff;
+    margin: 20rpx;
+    padding: 30rpx;
+    border-radius: 16rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.remaining-tips {
+    text-align: center;
+    font-size: 26rpx;
+    color: #666;
+    margin-bottom: 20rpx;
+}
+
+.concealed-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12rpx;
+    margin-bottom: 20rpx;
+}
+
+.concealed-tile {
+    width: 64rpx;
+    height: 88rpx;
+    background-color: #e6f7ff;
+    border: 1rpx solid #91d5ff;
+    border-radius: 6rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24rpx;
+    font-weight: bold;
+}
+
+.melds-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20rpx;
+}
+
+.meld-group {
+    display: flex;
+    align-items: center;
+    gap: 8rpx;
+    background-color: #fffbe6;
+    border: 2rpx solid #e6a23c;
+    border-radius: 10rpx;
+    padding: 12rpx;
+    position: relative;
+}
+
+.meld-group.angang {
+    background-color: #f0f9ff;
+    border-color: #67c23a;
+}
+
+.meld-tile {
+    width: 56rpx;
+    height: 80rpx;
+    background-color: #fffbe6;
+    border: 1rpx solid #e6a23c;
+    border-radius: 4rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22rpx;
+    font-weight: bold;
+}
+
+.meld-tile.angang {
+    background-color: #f0f9ff;
+    border-color: #67c23a;
+}
+
+.meld-type {
+    position: absolute;
+    bottom: -12rpx;
+    right: -8rpx;
+    background-color: #f56c6c;
+    color: #fff;
+    font-size: 20rpx;
+    padding: 4rpx 12rpx;
+    border-radius: 20rpx;
+}
+
+.waiting-section, .win-section {
+    background-color: #fff;
+    margin: 20rpx;
+    padding: 30rpx;
+    border-radius: 16rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 24rpx;
+}
+
+.waiting-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20rpx;
+}
+
+.waiting-item {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+    background-color: #fef0ff;
+    border: 2rpx solid #da70d6;
+    border-radius: 12rpx;
+    padding: 20rpx;
+}
+
+.waiting-tile {
+    width: 80rpx;
+    height: 112rpx;
+    background-color: #da70d6;
+    color: #fff;
+    border-radius: 8rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28rpx;
+    font-weight: bold;
+}
+
+.waiting-info .tile-name {
+    font-size: 28rpx;
+    font-weight: bold;
+    color: #9932cc;
+    margin-bottom: 8rpx;
+}
+
+.waiting-info .tile-fan {
+    font-size: 26rpx;
+    color: #666;
+}
+
+.win-content {
+    display: flex;
+    align-items: center;
+    gap: 30rpx;
+    margin-bottom: 24rpx;
+}
+
+.win-tile {
+    width: 120rpx;
+    height: 160rpx;
+    background-color: #67c23a;
+    color: #fff;
+    border: 4rpx solid #67c23a;
+    border-radius: 12rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40rpx;
+    font-weight: bold;
+}
+
+.win-fan {
+    font-size: 56rpx;
+    font-weight: bold;
+    color: #f7ba2a;
+}
+
+.fans-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16rpx;
+}
+
+.fan-item {
+    padding: 12rpx 24rpx;
+    background-color: #e6f7ff;
+    color: #409eff;
+    border-radius: 30rpx;
+    font-size: 24rpx;
+}

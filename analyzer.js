@@ -6,10 +6,10 @@ const EXCLUSION_RULES = {
     '大三元': ['箭刻', '双箭刻'],
     '绿一色': ['混一色'],
     '九莲宝灯': ['清一色', '门前清'],
-    '连七对': ['清一色', '单钓将', '门前清'],
-    '十三幺': ['五门齐', '单钓将', '门前清'],
+    '连七对': ['清一色', '单钓将', '不求人', '门前清', '七对'],
+    '十三幺': ['五门齐', '单钓将', '不求人', '门前清'],
     '四杠': ['碰碰和'],
-    '清幺九': ['碰碰和', '双同刻', '无字', '幺九刻'],
+    '清幺九': ['碰碰和', '三同刻', '双同刻', '无字', '全带幺', '幺九刻'],
     '小四喜': ['三风刻'],
     '小三元': ['箭刻', '双箭刻'],
     '字一色': ['碰碰和'],
@@ -17,9 +17,9 @@ const EXCLUSION_RULES = {
     '一色双龙会': ['平和', '七对', '清一色', '老少副', '一般高'],
     '一色四同顺': ['一色三节高', '一般高', '四归一', '一色三同顺'],
     '一色四节高': ['一色三同顺', '碰碰和', '一色三节高'],
-    '混幺九': ['碰碰和', '幺九刻', '全带幺'],
-    '七对': ['单钓将', '门前清'],
-    '七星不靠': ['全不靠', '五门齐', '单钓将', '门前清'],
+    '混幺九': ['碰碰和'],
+    '七对': ['单钓将', '不求人', '门前清'],
+    '七星不靠': ['全不靠', '五门齐', '单钓将', '不求人', '门前清'],
     '全双刻': ['碰碰和', '断幺'],
     '清一色': ['无字'],
     '一色三同顺': ['一色三节高', '一般高'],
@@ -27,10 +27,10 @@ const EXCLUSION_RULES = {
     '全大': ['无字', '大于五'],
     '全中': ['无字', '断幺'],
     '全小': ['无字', '小于五'],
-    '清龙': ['老少副'],
+    '清龙': ['老少副', '连六'],
     '三色双龙会': ['喜相逢', '老少副', '无字', '平和'],
     '全带五': ['断幺'],
-    '全不靠': ['五门齐', '单钓将', '门前清'],
+    '全不靠': ['五门齐', '单钓将', '不求人', '门前清'],
     '大于五': ['无字'],
     '小于五': ['无字'],
     '妙手回春': ['自摸'],
@@ -39,6 +39,7 @@ const EXCLUSION_RULES = {
     '推不倒': ['缺一门'],
     '全求人': ['单钓将'],
     '不求人': ['自摸', '门前清'],
+    '明暗杠': ['明杠', '暗杠'],
 };
 
 class MahjongAnalyzer {
@@ -69,11 +70,14 @@ class MahjongAnalyzer {
         this.conditions = { ...this.conditions, ...conditions };
     }
 
+    // TODO 连七对 计算不对
+    // 连七对 错的 计算也有问题 显示31 进去变成30 也就是听牌的番数计算有误
+
     // 分析番种并计算总分
     analyze() {
         const allTiles = this.getAllTiles();
         const decompositions = this.decomposeHand();
-        
+
         if (decompositions.length === 0) {
             // 检查特殊牌型
             const specialResult = this.checkSpecialHands(allTiles);
@@ -85,11 +89,11 @@ class MahjongAnalyzer {
 
         // 对每种拆解方式计算番数，取最高的
         let bestResult = { valid: true, fans: [], totalScore: 0 };
-        
+
         for (const decomp of decompositions) {
             const fans = this.detectFans(decomp, allTiles);
             const totalScore = fans.reduce((sum, f) => sum + f.score, 0);
-            
+
             if (totalScore > bestResult.totalScore) {
                 bestResult = { valid: true, fans, totalScore };
             }
@@ -122,17 +126,17 @@ class MahjongAnalyzer {
         const handTiles = [...this.hand];
         const tileCount = this.countTiles(handTiles);
         const decompositions = [];
-        
+
         // 递归拆解
         this._decompose(tileCount, [], null, decompositions);
-        
+
         return decompositions;
     }
 
     _decompose(tileCount, sets, pair, results) {
         // 检查是否完成拆解
         const remaining = Object.values(tileCount).reduce((a, b) => a + b, 0);
-        
+
         if (remaining === 0 && pair) {
             results.push({ sets: [...sets], pair });
             return;
@@ -161,7 +165,7 @@ class MahjongAnalyzer {
 
         const firstTile = sortedTiles[0];
         const tile = TILES[firstTile];
-        
+
         // 尝试作为将牌
         if (!pair && tileCount[firstTile] >= 2) {
             const newCount = { ...tileCount };
@@ -180,7 +184,7 @@ class MahjongAnalyzer {
         if (tile && isNumberTile(firstTile) && tile.value <= 7) {
             const next1 = firstTile.charAt(0) + (tile.value + 1);
             const next2 = firstTile.charAt(0) + (tile.value + 2);
-            
+
             if (tileCount[next1] > 0 && tileCount[next2] > 0) {
                 const newCount = { ...tileCount };
                 newCount[firstTile] -= 1;
@@ -238,14 +242,14 @@ class MahjongAnalyzer {
     checkShiSanYao(tileCount) {
         const yaoTiles = ['w1', 'w9', 't1', 't9', 'b1', 'b9', 'east', 'south', 'west', 'north', 'zhong', 'fa', 'bai'];
         let hasPair = false;
-        
+
         for (const tile of yaoTiles) {
             const count = tileCount[tile] || 0;
             if (count === 0) return false;
             if (count === 2) hasPair = true;
             if (count > 2) return false;
         }
-        
+
         return hasPair && Object.keys(tileCount).length === 13;
     }
 
@@ -253,19 +257,19 @@ class MahjongAnalyzer {
     checkQuanBuKao(tileCount) {
         const tiles = Object.keys(tileCount);
         if (tiles.length !== 14) return false;
-        
+
         // 所有牌都只有一张
         if (!Object.values(tileCount).every(c => c === 1)) return false;
 
         // 检查序数牌
         const numberTiles = tiles.filter(t => isNumberTile(t));
-        
+
         // 检查字牌
         const honorTiles = tiles.filter(t => isHonorTile(t));
-        
+
         // 全不靠需要：7张序数牌 + 7张字牌，或者其他符合规则的组合
         // 序数牌必须符合 147、258、369 的组合模式（每种花色选一组，不能混用）
-        
+
         // 检查序数牌是否符合147/258/369模式
         return this.checkBuKaoPattern(numberTiles, honorTiles);
     }
@@ -279,7 +283,7 @@ class MahjongAnalyzer {
             [2, 5, 8],
             [3, 6, 9]
         ];
-        
+
         // 按花色分组
         const suitValues = { w: [], t: [], b: [] };
         for (const tile of numberTiles) {
@@ -287,15 +291,15 @@ class MahjongAnalyzer {
             const value = parseInt(tile.charAt(1));
             suitValues[suit].push(value);
         }
-        
+
         // 记录每个花色使用的pattern索引
         const suitPatternMap = {};
-        
+
         // 检查每种花色的牌是否都属于同一个pattern
         for (const suit of ['w', 't', 'b']) {
             const values = suitValues[suit];
             if (values.length === 0) continue;
-            
+
             // 找到这个花色的牌属于哪个pattern
             let matchedPatternIdx = -1;
             for (let i = 0; i < patterns.length; i++) {
@@ -304,22 +308,22 @@ class MahjongAnalyzer {
                     break;
                 }
             }
-            
+
             // 如果没有匹配的pattern，不是全不靠
             if (matchedPatternIdx === -1) return false;
-            
+
             suitPatternMap[suit] = matchedPatternIdx;
         }
-        
+
         // 检查三种花色不能选同一个pattern（必须各选不同的）
         const usedPatterns = new Set(Object.values(suitPatternMap));
         const suitsWithTiles = Object.keys(suitPatternMap).length;
-        
+
         // 如果有多个花色选了同一个pattern，usedPatterns.size < suitsWithTiles
         if (usedPatterns.size < suitsWithTiles) {
             return false; // 有重复的pattern，不符合规则
         }
-        
+
         return true;
     }
 
@@ -327,18 +331,18 @@ class MahjongAnalyzer {
     checkQiXingBuKao(tileCount) {
         const tiles = Object.keys(tileCount);
         if (tiles.length !== 14) return false;
-        
+
         // 所有牌都只有一张
         if (!Object.values(tileCount).every(c => c === 1)) return false;
-        
+
         // 七星不靠要求有东南西北中发白各一张（必须7张字牌）
         const honors = ['east', 'south', 'west', 'north', 'zhong', 'fa', 'bai'];
         if (!honors.every(h => tileCount[h] === 1)) return false;
-        
+
         // 检查序数牌（必须7张）
         const numberTiles = tiles.filter(t => isNumberTile(t));
         if (numberTiles.length !== 7) return false;
-        
+
         // 检查序数牌是否符合147/258/369模式，且三种花色各选不同组
         return this.checkQiXingPattern(numberTiles);
     }
@@ -351,7 +355,7 @@ class MahjongAnalyzer {
             [2, 5, 8],
             [3, 6, 9]
         ];
-        
+
         // 按花色分组
         const suitValues = { w: [], t: [], b: [] };
         for (const tile of numberTiles) {
@@ -359,14 +363,14 @@ class MahjongAnalyzer {
             const value = parseInt(tile.charAt(1));
             suitValues[suit].push(value);
         }
-        
+
         // 记录每个花色使用的pattern索引
         const usedPatterns = new Set();
-        
+
         for (const suit of ['w', 't', 'b']) {
             const values = suitValues[suit];
             if (values.length === 0) continue;
-            
+
             // 找到匹配的pattern
             let matchedIdx = -1;
             for (let i = 0; i < patterns.length; i++) {
@@ -375,12 +379,12 @@ class MahjongAnalyzer {
                     break;
                 }
             }
-            
+
             if (matchedIdx === -1) return false; // 不符合任何pattern
             if (usedPatterns.has(matchedIdx)) return false; // 与其他花色重复
             usedPatterns.add(matchedIdx);
         }
-        
+
         // 必须使用了3种不同的pattern
         return usedPatterns.size === 3;
     }
@@ -389,7 +393,7 @@ class MahjongAnalyzer {
     detectQiduiFans(tileCount) {
         const fans = [{ name: '七对', score: 24 }];
         const tiles = Object.keys(tileCount);
-        
+
         // 检查连七对
         const suitCounts = { w: [], t: [], b: [] };
         for (const tile of tiles) {
@@ -405,7 +409,7 @@ class MahjongAnalyzer {
             if (values.length === 7) {
                 let isConsecutive = true;
                 for (let i = 1; i < 7; i++) {
-                    if (values[i] !== values[i-1] + 1) {
+                    if (values[i] !== values[i - 1] + 1) {
                         isConsecutive = false;
                         break;
                     }
@@ -453,26 +457,18 @@ class MahjongAnalyzer {
 
         // === 88番 ===
         this.check88Fan(fans, allSets, pair, allTiles, tileCount);
-        
+
         // === 64番 ===
-        if (!fans.some(f => f.score >= 88)) {
-            this.check64Fan(fans, allSets, pair, allTiles, tileCount);
-        }
+        this.check64Fan(fans, allSets, pair, allTiles, tileCount);
 
         // === 48番 ===
-        if (!fans.some(f => f.score >= 64)) {
-            this.check48Fan(fans, allSets, pair, allTiles, tileCount);
-        }
+        this.check48Fan(fans, allSets, pair, allTiles, tileCount);
 
         // === 32番 ===
-        if (!fans.some(f => f.score >= 48)) {
-            this.check32Fan(fans, allSets, pair, allTiles, tileCount);
-        }
+        this.check32Fan(fans, allSets, pair, allTiles, tileCount);
 
         // === 24番 ===
-        if (!fans.some(f => f.score >= 32)) {
-            this.check24Fan(fans, allSets, pair, allTiles, tileCount);
-        }
+        this.check24Fan(fans, allSets, pair, allTiles, tileCount);
 
         // === 16番及以下 ===
         this.checkLowerFans(fans, allSets, pair, allTiles, tileCount);
@@ -517,7 +513,7 @@ class MahjongAnalyzer {
             for (const set of sets) {
                 countInSets += set.tiles.filter(t => t === winTile).length;
             }
-            
+
             // 如果和牌没有出现在面子中，说明只用于将牌，是单钓将
             // 或者，如果手牌中该牌只有2张，也是单钓将
             const countInHand = this.hand.filter(t => t === winTile).length;
@@ -578,7 +574,7 @@ class MahjongAnalyzer {
     // 88番检测
     check88Fan(fans, allSets, pair, allTiles, tileCount) {
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
-        
+
         // 大四喜
         const windPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.WIND);
         if (windPongs.length === 4) {
@@ -611,7 +607,7 @@ class MahjongAnalyzer {
     // 64番检测
     check64Fan(fans, allSets, pair, allTiles, tileCount) {
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
-        
+
         // 清幺九
         if (allTiles.every(t => isTerminal(t))) {
             fans.push({ name: '清幺九', score: 64 });
@@ -637,7 +633,7 @@ class MahjongAnalyzer {
         }
 
         // 四暗刻
-        const anPongs = allSets.filter(s => 
+        const anPongs = allSets.filter(s =>
             (s.type === 'pong' && !this.melds.includes(s)) || s.type === 'angang'
         );
         if (anPongs.length === 4) {
@@ -653,7 +649,7 @@ class MahjongAnalyzer {
     // 48番检测
     check48Fan(fans, allSets, pair, allTiles, tileCount) {
         const chis = allSets.filter(s => s.type === 'chi');
-        
+
         // 一色四同顺
         if (this.checkSameChiCount(chis, 4)) {
             fans.push({ name: '一色四同顺', score: 48 });
@@ -679,8 +675,8 @@ class MahjongAnalyzer {
         }
 
         // 混幺九
-        if (allTiles.every(t => isTerminalOrHonor(t)) && 
-            allTiles.some(t => isTerminal(t)) && 
+        if (allTiles.every(t => isTerminalOrHonor(t)) &&
+            allTiles.some(t => isTerminal(t)) &&
             allTiles.some(t => isHonorTile(t))) {
             fans.push({ name: '混幺九', score: 32 });
         }
@@ -767,7 +763,7 @@ class MahjongAnalyzer {
         }
 
         // 三暗刻
-        const anPongs = allSets.filter(s => 
+        const anPongs = allSets.filter(s =>
             (s.type === 'pong' && !this.melds.includes(s)) || s.type === 'angang'
         );
         if (anPongs.length === 3) {
@@ -851,7 +847,7 @@ class MahjongAnalyzer {
         }
 
         // 全求人
-        if ( !this.conditions.isSelfDrawn && this.hand.length <= 2) {
+        if (!this.conditions.isSelfDrawn && this.hand.length <= 2) {
             fans.push({ name: '全求人', score: 6 });
         }
 
@@ -871,7 +867,7 @@ class MahjongAnalyzer {
         // 明暗杠
         const anGang = gangs.filter(s => s.type === 'angang');
         const mingGang = gangs.filter(s => s.type === 'minggang');
-        if (anGang && mingGang) {
+        if (anGang.length && mingGang.length) {
             fans.push({ name: '明暗杠', score: 5 });
         }
 
@@ -1013,8 +1009,21 @@ class MahjongAnalyzer {
         }
 
         // 不求人（4番）：门清自摸
+        // 但部分牌型不计不求人，只计自摸
+        const fanNames = new Set(fans.map(f => f.name));
+        const hasSpecialHand = fanNames.has('十三幺') || 
+            fanNames.has('连七对') || 
+            fanNames.has('七对') || 
+            fanNames.has('七星不靠') || 
+            fanNames.has('全不靠');
+
         if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
-            fans.push({ name: '不求人', score: 4 });
+            if (hasSpecialHand) {
+                // 特殊牌型不计不求人，计自摸
+                fans.push({ name: '自摸', score: 1 });
+            } else {
+                fans.push({ name: '不求人', score: 4 });
+            }
         }
         // 门前清（2番）：门清点和
         else if (this.melds.length === 0 && !this.conditions.isSelfDrawn) {
@@ -1034,19 +1043,19 @@ class MahjongAnalyzer {
             const pattern = [3, 1, 1, 1, 1, 1, 1, 1, 3];
             let matches = true;
             let extra = 0;
-            
+
             for (let i = 1; i <= 9; i++) {
                 const tileId = suit + i;
                 const count = tileCount[tileId] || 0;
                 const expected = pattern[i - 1];
-                
+
                 if (count < expected) {
                     matches = false;
                     break;
                 }
                 extra += count - expected;
             }
-            
+
             if (matches && extra === 1) {
                 const otherTiles = Object.keys(tileCount).filter(t => !t.startsWith(suit));
                 if (otherTiles.length === 0) return true;
@@ -1058,7 +1067,7 @@ class MahjongAnalyzer {
     checkYiSeShuangLongHui(allSets, pair) {
         const chis = allSets.filter(s => s.type === 'chi');
         if (chis.length !== 4) return false;
-        
+
         // 检查是否是同一花色的两个老少副，5作将
         const tile = TILES[pair];
         if (!tile || !isNumberTile(pair) || tile.value !== 5) return false;
@@ -1091,20 +1100,20 @@ class MahjongAnalyzer {
 
         const values = tiles.map(t => parseInt(t.charAt(1))).sort((a, b) => a - b);
         for (let i = 1; i < 4; i++) {
-            if (values[i] !== values[i-1] + 1) return false;
+            if (values[i] !== values[i - 1] + 1) return false;
         }
         return true;
     }
 
     checkSanJieGao(allSets) {
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
-        
+
         for (const suit of ['w', 't', 'b']) {
             const suitPongs = pongs.filter(p => p.tiles[0].charAt(0) === suit);
             if (suitPongs.length >= 3) {
                 const values = suitPongs.map(p => parseInt(p.tiles[0].charAt(1))).sort((a, b) => a - b);
                 for (let i = 0; i <= values.length - 3; i++) {
-                    if (values[i+1] === values[i] + 1 && values[i+2] === values[i] + 2) {
+                    if (values[i + 1] === values[i] + 1 && values[i + 2] === values[i] + 2) {
                         return true;
                     }
                 }
@@ -1140,8 +1149,8 @@ class MahjongAnalyzer {
             if (suitChis.length >= 3) {
                 const starts = suitChis.map(c => parseInt(c.tiles[0].charAt(1))).sort((a, b) => a - b);
                 for (let i = 0; i <= starts.length - 3; i++) {
-                    if (starts[i+1] === starts[i] + 1 && starts[i+2] === starts[i] + 2) return true;
-                    if (starts[i+1] === starts[i] + 2 && starts[i+2] === starts[i] + 4) return true;
+                    if (starts[i + 1] === starts[i] + 1 && starts[i + 2] === starts[i] + 2) return true;
+                    if (starts[i + 1] === starts[i] + 2 && starts[i + 2] === starts[i] + 4) return true;
                 }
             }
         }
@@ -1150,7 +1159,7 @@ class MahjongAnalyzer {
 
     checkQingLong(allSets) {
         const chis = allSets.filter(s => s.type === 'chi');
-        
+
         for (const suit of ['w', 't', 'b']) {
             const has123 = chis.some(c => c.tiles[0] === suit + '1');
             const has456 = chis.some(c => c.tiles[0] === suit + '4');
@@ -1216,7 +1225,7 @@ class MahjongAnalyzer {
         for (let startValue = 1; startValue <= 7; startValue++) {
             const suits = { w: false, t: false, b: false };
             let count = 0;
-            
+
             for (const pong of numberPongs) {
                 const tile = TILES[pong.tiles[0]];
                 const suit = pong.tiles[0].charAt(0);
@@ -1272,7 +1281,7 @@ class MahjongAnalyzer {
         for (const suit of ['w', 't', 'b']) {
             const suitChis = chis.filter(c => c.tiles[0].charAt(0) === suit);
             const starts = suitChis.map(c => parseInt(c.tiles[0].charAt(1)));
-            
+
             for (let i = 0; i < starts.length; i++) {
                 for (let j = i + 1; j < starts.length; j++) {
                     if (Math.abs(starts[i] - starts[j]) === 3) return true;
@@ -1298,14 +1307,14 @@ class MahjongAnalyzer {
         for (const chi of chis) {
             allChiTiles.push(...chi.tiles);
         }
-        
+
         // 需要从顺子中找出 147、258、369 各一组不同花色
         const patterns = [
             [1, 4, 7],
             [2, 5, 8],
             [3, 6, 9]
         ];
-        
+
         const hasSuits = { w: new Set(), t: new Set(), b: new Set() };
         for (const tile of allChiTiles) {
             if (isNumberTile(tile)) {
@@ -1314,7 +1323,7 @@ class MahjongAnalyzer {
                 hasSuits[suit].add(value);
             }
         }
-        
+
         // 检查是否能组成 3色的 147、258、369
         const suits = ['w', 't', 'b'];
         for (let i = 0; i < 6; i++) {
@@ -1323,7 +1332,7 @@ class MahjongAnalyzer {
                 suits[(i + 1) % 3],
                 suits[(i + 2) % 3]
             ];
-            
+
             let valid = true;
             for (let p = 0; p < 3; p++) {
                 const suit = assignment[p];
@@ -1344,27 +1353,27 @@ class MahjongAnalyzer {
     checkSanSeShuangLongHui(allSets, pair) {
         const chis = allSets.filter(s => s.type === 'chi');
         if (chis.length !== 4) return false;
-        
+
         const tile = TILES[pair];
         if (!tile || !isNumberTile(pair) || tile.value !== 5) return false;
-        
+
         const pairSuit = pair.charAt(0);
         const otherSuits = ['w', 't', 'b'].filter(s => s !== pairSuit);
-        
+
         // 检查两种其他花色是否各有一组老少副
         for (const suit of otherSuits) {
             const chi123 = chis.filter(c => c.tiles[0] === suit + '1').length;
             const chi789 = chis.filter(c => c.tiles[0] === suit + '7').length;
             if (chi123 !== 1 || chi789 !== 1) return false;
         }
-        
+
         return true;
     }
 
     // 检查三色三步高 (3种花色3副依次递增一位序数的顺子)
     checkSanSeSanBuGao(chis) {
         if (chis.length < 3) return false;
-        
+
         const chisByStart = {};
         for (const chi of chis) {
             const suit = chi.tiles[0].charAt(0);
@@ -1372,7 +1381,7 @@ class MahjongAnalyzer {
             const key = `${suit}-${start}`;
             chisByStart[key] = true;
         }
-        
+
         // 检查是否有三种不同花色的递增顺子
         for (let startVal = 1; startVal <= 7; startVal++) {
             const suits = ['w', 't', 'b'];
@@ -1382,7 +1391,7 @@ class MahjongAnalyzer {
                     suits[(i + 1) % 3],
                     suits[(i + 2) % 3]
                 ];
-                
+
                 if (chisByStart[`${assignment[0]}-${startVal}`] &&
                     chisByStart[`${assignment[1]}-${startVal + 1}`] &&
                     chisByStart[`${assignment[2]}-${startVal + 2}`]) {
@@ -1400,7 +1409,7 @@ class MahjongAnalyzer {
         const hasBing = allTiles.some(t => TILES[t]?.type === TILE_TYPES.BING);
         const hasWind = allTiles.some(t => TILES[t]?.type === TILE_TYPES.WIND);
         const hasDragon = allTiles.some(t => TILES[t]?.type === TILE_TYPES.DRAGON);
-        
+
         return hasWan && hasTiao && hasBing && hasWind && hasDragon;
     }
 
@@ -1408,22 +1417,22 @@ class MahjongAnalyzer {
     checkSiGuiYi(allSets, pair, allTiles) {
         const tileCount = this.countTiles(allTiles);
         let count = 0;
-        
+
         // 检查每种出现4次的牌
         for (const [tileId, num] of Object.entries(tileCount)) {
             if (num !== 4) continue;
-            
+
             // 检查是否都不在杠里
-            const inGang = allSets.some(s => 
-                (s.type === 'minggang' || s.type === 'angang') && 
+            const inGang = allSets.some(s =>
+                (s.type === 'minggang' || s.type === 'angang') &&
                 s.tiles[0] === tileId
             );
-            
+
             if (!inGang) {
                 count++;
             }
         }
-        
+
         return count;
     }
 
@@ -1451,7 +1460,80 @@ class MahjongAnalyzer {
         }
         return Object.values(chiMap).some(suits => suits.size >= 2);
     }
+
+    // 计算听牌
+    getWaitingTiles() {
+        const waitingTiles = [];
+        const currentHand = [...this.hand];
+        const currentMelds = [...this.melds];
+
+        // 遍历所有可能的牌（136张标准牌）
+        for (const tileId in TILES) {
+            const tile = TILES[tileId];
+            if (!tile) continue;
+
+            // 检查这张牌是否已经用完（每种牌最多4张）
+            const currentCount = currentHand.filter(t => t === tileId).length +
+                currentMelds.reduce((sum, m) => sum + m.tiles.filter(t => t === tileId).length, 0);
+            if (currentCount >= 4) continue;
+
+            // 尝试加入这张牌
+            const newHand = [...currentHand, tileId];
+
+            // 检查是否能和牌
+            this.setHand(newHand, currentMelds, tileId, this.conditions);
+            const result = this.analyze();
+
+            if (result.valid) {
+                waitingTiles.push({
+                    tileId,
+                    tile,
+                    fans: result.fans,
+                    totalScore: result.totalScore
+                });
+            }
+        }
+
+        // 恢复原始状态
+        this.setHand(currentHand, currentMelds, this.winTile, this.conditions);
+
+        return waitingTiles;
+    }
 }
 
 // 全局分析器实例
 const analyzer = new MahjongAnalyzer();
+
+// const meldGroups = [
+//     {
+//         type: 'pong',
+//         tiles: ['zhong', 'zhong', 'zhong']
+//     },
+//     {
+//         type: 'chi',
+//         tiles: ['t4', 't5', 't6']
+//     },
+//     {
+//         type: 'minggang',
+//         tiles: ['south', 'south', 'south', 'south']
+//     },
+//     {
+//         type: 'angang',
+//         tiles: ['north', 'north', 'north', 'north']
+//     }
+// ]
+// const concealedTiles = [
+
+// ]
+// analyzer.setHand(concealedTiles, meldGroups, null, {
+//     isSelfDrawn: true, // zimo
+//     prevalentWind: 'east',
+//     seatWind: 'east',
+//     flowerCount: 0,
+//     // this.options.isHaidilao || this.options.isMiaoshou
+//     isLastTile: false,
+//     // this.options.isGangshang || this.options.isQianggang
+//     isKongDraw: false,
+//     isJuezhang: false
+// });
+// return analyzer.analyze();

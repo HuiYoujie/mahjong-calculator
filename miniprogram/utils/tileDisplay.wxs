@@ -1,0 +1,139 @@
+var TILES = {
+    w1: { id: 'w1', name: '一万' },
+    w2: { id: 'w2', name: '二万' },
+    w3: { id: 'w3', name: '三万' },
+    w4: { id: 'w4', name: '四万' },
+    w5: { id: 'w5', name: '五万' },
+    w6: { id: 'w6', name: '六万' },
+    w7: { id: 'w7', name: '七万' },
+    w8: { id: 'w8', name: '八万' },
+    w9: { id: 'w9', name: '九万' },
+    t1: { id: 't1', name: '一条' },
+    t2: { id: 't2', name: '二条' },
+    t3: { id: 't3', name: '三条' },
+    t4: { id: 't4', name: '四条' },
+    t5: { id: 't5', name: '五条' },
+    t6: { id: 't6', name: '六条' },
+    t7: { id: 't7', name: '七条' },
+    t8: { id: 't8', name: '八条' },
+    t9: { id: 't9', name: '九条' },
+    b1: { id: 'b1', name: '一饼' },
+    b2: { id: 'b2', name: '二饼' },
+    b3: { id: 'b3', name: '三饼' },
+    b4: { id: 'b4', name: '四饼' },
+    b5: { id: 'b5', name: '五饼' },
+    b6: { id: 'b6', name: '六饼' },
+    b7: { id: 'b7', name: '七饼' },
+    b8: { id: 'b8', name: '八饼' },
+    b9: { id: 'b9', name: '九饼' },
+    east: { id: 'east', name: '东' },
+    south: { id: 'south', name: '南' },
+    west: { id: 'west', name: '西' },
+    north: { id: 'north', name: '北' },
+    zhong: { id: 'zhong', name: '中' },
+    fa: { id: 'fa', name: '发' },
+    bai: { id: 'bai', name: '白' }
+};
+
+function getTileDisplay(tileId) {
+    var tile = TILES[tileId];
+    if (!tile) return tileId;
+    var name = tile.name;
+    
+    // 转换数字
+    if (name.indexOf('一万') === 0) {
+        name = '1万';
+    } else if (name.indexOf('二万') === 0) {
+        name = '2万';
+    } else if (name.indexOf('三万') === 0) {
+        name = '3万';
+    } else if (name.indexOf('四万') === 0) {
+        name = '4万';
+    } else if (name.indexOf('五万') === 0) {
+        name = '5万';
+    } else if (name.indexOf('六万') === 0) {
+        name = '6万';
+    } else if (name.indexOf('七万') === 0) {
+        name = '7万';
+    } else if (name.indexOf('八万') === 0) {
+        name = '8万';
+    } else if (name.indexOf('九万') === 0) {
+        name = '9万';
+    } else if (name.indexOf('一条') === 0) {
+        name = '1条';
+    } else if (name.indexOf('二条') === 0) {
+        name = '2条';
+    } else if (name.indexOf('三条') === 0) {
+        name = '3条';
+    } else if (name.indexOf('四条') === 0) {
+        name = '4条';
+    } else if (name.indexOf('五条') === 0) {
+        name = '5条';
+    } else if (name.indexOf('六条') === 0) {
+        name = '6条';
+    } else if (name.indexOf('七条') === 0) {
+        name = '7条';
+    } else if (name.indexOf('八条') === 0) {
+        name = '8条';
+    } else if (name.indexOf('九条') === 0) {
+        name = '9条';
+    } else if (name.indexOf('一饼') === 0) {
+        name = '1筒';
+    } else if (name.indexOf('二饼') === 0) {
+        name = '2筒';
+    } else if (name.indexOf('三饼') === 0) {
+        name = '3筒';
+    } else if (name.indexOf('四饼') === 0) {
+        name = '4筒';
+    } else if (name.indexOf('五饼') === 0) {
+        name = '5筒';
+    } else if (name.indexOf('六饼') === 0) {
+        name = '6筒';
+    } else if (name.indexOf('七饼') === 0) {
+        name = '7筒';
+    } else if (name.indexOf('八饼') === 0) {
+        name = '8筒';
+    } else if (name.indexOf('九饼') === 0) {
+        name = '9筒';
+    }
+    
+    return name;
+}
+
+function getModeText(mode) {
+    var modeMap = {
+        'concealed': '立牌',
+        'pong': '碰',
+        'chi': '吃',
+        'minggang': '明杠',
+        'angang': '暗杠'
+    };
+    return modeMap[mode] || mode;
+}
+
+function getMeldTypeText(type) {
+    var typeMap = {
+        'pong': '碰',
+        'chi': '吃',
+        'minggang': '明杠',
+        'angang': '暗杠'
+    };
+    return typeMap[type] || type;
+}
+
+function getWindText(wind) {
+    var windMap = {
+        'east': '东',
+        'south': '南',
+        'west': '西',
+        'north': '北'
+    };
+    return windMap[wind] || wind;
+}
+
+module.exports = {
+    getTileDisplay: getTileDisplay,
+    getModeText: getModeText,
+    getMeldTypeText: getMeldTypeText,
+    getWindText: getWindText
+};

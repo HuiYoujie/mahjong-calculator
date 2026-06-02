@@ -194,63 +194,7 @@ Page({
         this.analyzeWaiting();
     },
 
-    getTileDisplay(tileId) {
-        const tile = TILES[tileId];
-        if (!tile) return tileId;
-        let name = tile.name;
-        console.log(name)
-        name = name.replace('w', '万');
-        name = name.replace('t', '条');
-        name = name.replace('b', '筒');
-        // name = name.replace('一万', '1万');
-        // name = name.replace('二万', '2万');
-        // name = name.replace('三万', '3万');
-        // name = name.replace('四万', '4万');
-        // name = name.replace('五万', '5万');
-        // name = name.replace('六万', '6万');
-        // name = name.replace('七万', '7万');
-        // name = name.replace('八万', '8万');
-        // name = name.replace('九万', '9万');
-        // name = name.replace('一条', '1条');
-        // name = name.replace('二条', '2条');
-        // name = name.replace('三条', '3条');
-        // name = name.replace('四条', '4条');
-        // name = name.replace('五条', '5条');
-        // name = name.replace('六条', '6条');
-        // name = name.replace('七条', '7条');
-        // name = name.replace('八条', '8条');
-        // name = name.replace('九条', '9条');
-        // name = name.replace('一饼', '1饼');
-        // name = name.replace('二饼', '2饼');
-        // name = name.replace('三饼', '3饼');
-        // name = name.replace('四饼', '4饼');
-        // name = name.replace('五饼', '5饼');
-        // name = name.replace('六饼', '6饼');
-        // name = name.replace('七饼', '7饼');
-        // name = name.replace('八饼', '8饼');
-        // name = name.replace('九饼', '9饼');
-        return name;
-    },
 
-    getMeldTypeText(type) {
-        const typeMap = {
-            'pong': '碰',
-            'chi': '吃',
-            'minggang': '明杠',
-            'angang': '暗杠'
-        };
-        return typeMap[type] || type;
-    },
-
-    getWindText(wind) {
-        const windMap = {
-            'east': '东',
-            'south': '南',
-            'west': '西',
-            'north': '北'
-        };
-        return windMap[wind] || wind;
-    },
 
     updateWinTile(e) {
         const winTile = e.currentTarget.dataset.tile;

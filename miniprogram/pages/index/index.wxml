@@ -1,3 +1,5 @@
+<wxs module="utils" src="../../utils/tileDisplay.wxs"></wxs>
+
 <view class="container">
 
     <view class="tile-selection">
@@ -5,7 +7,7 @@
             <view wx:for="{{['w1','w2','w3','w4','w5','w6','w7','w8','w9']}}" wx:key="*this" 
                   class="tile-btn {{concealedTiles.indexOf(item) > -1 ? 'selected' : ''}}"
                   data-tile="{{item}}" bindtap="toggleTile">
-                {{getTileDisplay(item)}}
+                {{utils.getTileDisplay(item)}}
             </view>
         </view>
 
@@ -13,7 +15,7 @@
             <view wx:for="{{['t1','t2','t3','t4','t5','t6','t7','t8','t9']}}" wx:key="*this" 
                   class="tile-btn {{concealedTiles.indexOf(item) > -1 ? 'selected' : ''}}"
                   data-tile="{{item}}" bindtap="toggleTile">
-                {{getTileDisplay(item)}}
+                {{utils.getTileDisplay(item)}}
             </view>
         </view>
 
@@ -21,7 +23,7 @@
             <view wx:for="{{['b1','b2','b3','b4','b5','b6','b7','b8','b9']}}" wx:key="*this" 
                   class="tile-btn {{concealedTiles.indexOf(item) > -1 ? 'selected' : ''}}"
                   data-tile="{{item}}" bindtap="toggleTile">
-                {{getTileDisplay(item)}}
+                {{utils.getTileDisplay(item)}}
             </view>
         </view>
 
@@ -29,7 +31,7 @@
             <view wx:for="{{['east','south','west','north','zhong','fa','bai']}}" wx:key="*this" 
                   class="tile-btn {{concealedTiles.indexOf(item) > -1 ? 'selected' : ''}}"
                   data-tile="{{item}}" bindtap="toggleTile">
-                {{getTileDisplay(item)}}
+                {{utils.getTileDisplay(item)}}
             </view>
         </view>
     </view>
@@ -39,7 +41,7 @@
             <view wx:for="{{['concealed','pong','chi','minggang','angang']}}" wx:key="*this" 
                   class="mode-btn {{currentMode === item ? 'active' : ''}}"
                   data-mode="{{item}}" bindtap="setMode">
-                {{getModeText(item)}}
+                {{utils.getModeText(item)}}
             </view>
             <view class="reset-btn" bindtap="resetAll">重置</view>
         </view>
@@ -51,7 +53,7 @@
                     <view wx:for="{{['east','south','west','north']}}" wx:key="*this"
                           class="wind-btn {{options.seatWind === item ? 'active' : ''}}"
                           data-wind="{{item}}" bindtap="setSeatWind">
-                        {{getWindText(item)}}
+                        {{utils.getWindText(item)}}
                     </view>
                 </view>
             </view>
@@ -62,7 +64,7 @@
                     <view wx:for="{{['east','south','west','north']}}" wx:key="*this"
                           class="wind-btn {{options.prevalentWind === item ? 'active' : ''}}"
                           data-wind="{{item}}" bindtap="setPrevalentWind">
-                        {{getWindText(item)}}
+                        {{utils.getWindText(item)}}
                     </view>
                 </view>
             </view>
@@ -118,7 +120,7 @@
         <view class="concealed-section" wx:if="{{concealedTiles.length > 0}}">
             <view wx:for="{{concealedTiles}}" wx:key="index" class="concealed-tile" 
                   data-tile="{{item}}" data-area="concealed" bindtap="removeTile">
-                {{getTileDisplay(item)}}
+                {{utils.getTileDisplay(item)}}
             </view>
         </view>
 
@@ -127,9 +129,9 @@
                   data-tile="{{item.tiles[0]}}" data-area="meld" bindtap="removeTile">
                 <view wx:for="{{item.tiles}}" wx:for-item="tile" wx:key="*this" 
                       class="meld-tile {{item.type === 'angang' ? 'angang' : ''}}">
-                    {{getTileDisplay(tile)}}
+                    {{utils.getTileDisplay(tile)}}
                 </view>
-                <view class="meld-type">{{getMeldTypeText(item.type)}}</view>
+                <view class="meld-type">{{utils.getMeldTypeText(item.type)}}</view>
             </view>
         </view>
     </view>
@@ -139,7 +141,7 @@
         <view class="waiting-list">
             <view wx:for="{{waitingTiles}}" wx:key="tileId" class="waiting-item" 
                   data-tile="{{item}}" bindtap="updateWinTile">
-                <view class="waiting-tile">{{getTileDisplay(item.tileId)}}</view>
+                <view class="waiting-tile">{{utils.getTileDisplay(item.tileId)}}</view>
                 <view class="waiting-info">
                     <view class="tile-name">{{item.tile.name}}</view>
                     <view class="tile-fan">{{item.totalScore}}番</view>
@@ -151,7 +153,7 @@
     <view class="win-section" wx:if="{{selectedWinTile}}" bindtap="clearWinTile">
         <view class="section-title">和牌（点击取消）</view>
         <view class="win-content">
-            <view class="win-tile">{{getTileDisplay(selectedWinTile.tileId)}}</view>
+            <view class="win-tile">{{utils.getTileDisplay(selectedWinTile.tileId)}}</view>
             <view class="win-fan">{{selectedWinTile.totalScore}}番</view>
         </view>
         <view class="fans-list">

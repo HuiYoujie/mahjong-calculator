@@ -71,7 +71,7 @@ class MahjongAnalyzer {
     }
 
     // TODO 连七对 计算不对
-    // 连七对 错的 计算也有问题 显示31 进去变成30 也就是听牌的番数计算有误
+    // 连七对 错的
 
     // 分析番种并计算总分
     analyze() {
@@ -92,7 +92,11 @@ class MahjongAnalyzer {
 
         for (const decomp of decompositions) {
             const fans = this.detectFans(decomp, allTiles);
-            const totalScore = fans.reduce((sum, f) => sum + f.score, 0);
+            let totalScore = fans.reduce((sum, f) => sum + f.score, 0);
+            if (totalScore === 0) {
+                fans.push({ name: '无番和', score: 8 });
+                totalScore = 8;
+            };
 
             if (totalScore > bestResult.totalScore) {
                 bestResult = { valid: true, fans, totalScore };
@@ -108,7 +112,6 @@ class MahjongAnalyzer {
         for (const meld of this.melds) {
             tiles.push(...meld.tiles);
         }
-        console.log(tiles);
         return tiles;
     }
 
@@ -996,14 +999,24 @@ class MahjongAnalyzer {
 
         // 杠上开花/抢杠和
         if (this.conditions.isKongDraw) {
+            const hasGang = this.melds.some(m => m.type === 'minggang' || m.type === 'angang');
+            const handHasWinTile = this.allTiles.includes(this.winTile);
+
             if (this.conditions.isSelfDrawn) {
-                fans.push({ name: '杠上开花', score: 8 });
+                // 杠上开花：必须自己有杠，且原始手牌中没有这张和牌
+                // 别人杠了之后打出的算开花吗？不算
+                if (hasGang && !handHasWinTile) {
+                    fans.push({ name: '杠上开花', score: 8 });
+                }
             } else {
-                fans.push({ name: '抢杠和', score: 8 });
+                // 抢杠和：必须原始手牌中没有这张和牌
+                if (!handHasWinTile) {
+                    fans.push({ name: '抢杠和', score: 8 });
+                }
             }
         }
 
-        // 绝张
+        // 绝张：必须持有的牌中没有这张和牌
         if (this.conditions.isJuezhang) {
             fans.push({ name: '和绝张', score: 4 });
         }

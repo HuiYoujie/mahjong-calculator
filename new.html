@@ -173,12 +173,12 @@
 
             <!-- 选中的牌显示区域 -->
             <section class="my-4">
-                <h2 class="text-center font-semibold text-gray-700 mb-2">可再选择{{ remainingTiles }}张牌</h2>
+                <h2 v-if="remainingTiles" class="text-center font-semibold text-gray-700 mb-2">可选择{{ remainingTiles }}张牌</h2>
                 
                 <!-- 手牌 -->
                 <div class="mb-2" v-if="concealedTiles.length">
                     <div class="flex flex-wrap gap-1 min-h-[48px]">
-                        <div v-for="(tile, index) in concealedTiles" :key="'c-' + index" 
+                        <div v-for="(tile, index) in sortedConcealedTiles" :key="'c-' + index" 
                             @click="removeTile(tile, 'concealed')"
                             class="w-8 h-11 bg-blue-100 border border-blue-400 rounded flex items-center justify-center text-lg font-bold cursor-pointer hover:bg-blue-200 transition-all">
                             {{getTileDisplay(tile)}}
@@ -189,7 +189,7 @@
                 <!-- 副露（包含碰、吃、明杠、暗杠） -->
                 <div class="flex flex-wrap gap-2 min-h-[48px]" v-if="meldGroups.length">
                     <!-- 副露分组（碰、吃、明杠、暗杠） -->
-                    <div v-for="(group, groupIndex) in meldGroups" :key="'mg-' + groupIndex" 
+                    <div v-for="(group, groupIndex) in sortedMeldGroups" :key="'mg-' + groupIndex" 
                         @click="removeTile(group.tiles[0], 'meld')"
                         class="flex items-center gap-1 rounded-lg p-1 cursor-pointer transition-all relative"
                         :class="group.type === 'angang' ? 'bg-green-100 border-2 border-green-400 hover:bg-green-200' : 'bg-yellow-100 border-2 border-yellow-400 hover:bg-yellow-200'">
@@ -206,12 +206,12 @@
             </section>
 
             <!-- 听牌显示区域 -->
-            <section v-if="waitingTiles.length" class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <section v-if="waitingTiles.length && !winTile" class="bg-white rounded-lg shadow-md p-4 mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">听牌</h2>
                 <div class="flex flex-wrap gap-2">
-                    <div v-for="wt in waitingTiles" :key="wt.tileId" 
+                    <div v-for="wt in waitingTiles" :key="wt.tileId"
                         class="bg-purple-50 border-2 border-purple-400 rounded-lg p-2 cursor-pointer hover:bg-purple-100 transition-all"
-                        @click="concealedTiles.push(wt.tileId)">
+                        @click="updateWinTile(wt)">
                         <div class="flex items-center gap-2">
                             <div class="w-10 h-14 bg-purple-100 border border-purple-300 rounded flex items-center justify-center text-xl font-bold">
                                 {{getTileDisplay(wt.tileId)}}
@@ -226,22 +226,20 @@
             </section>
 
             <!-- 和牌番数显示区域 -->
-            <section class="" v-if="analysisResult.totalScore">
-                <div class="grid grid-cols-1 gap-4 text-center">
-                    <div class="text-xl font-bold text-yellow-600">{{analysisResult.totalScore}}</div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="flex flex-wrap gap-2">
-                        <span v-for="fan in analysisResult.fans" :key="fan.name" 
-                            class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                            {{fan.name}} {{fan.score}}番
-                        </span>
+            <section v-if="selectedWinTile" class="bg-white rounded-lg shadow-md p-4 mb-6 cursor-pointer hover:bg-gray-50 transition-all" @click="winTile = null">
+                <h2 class="text-lg font-bold text-gray-800 mb-3">和牌（点击取消）</h2>
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-16 h-20 bg-green-100 border-2 border-green-500 rounded-lg flex items-center justify-center text-2xl font-bold">
+                        {{getTileDisplay(selectedWinTile.tileId)}}
                     </div>
+                    <div class="text-3xl font-bold text-yellow-600">{{selectedWinTile.totalScore}}番</div>
                 </div>
-            </section>
-            <section v-else class="text-center text-gray-500">
-                {{ analysisResult.message }}
+                <div class="flex flex-wrap gap-2">
+                    <span v-for="fan in selectedWinTile.fans" :key="fan.name"
+                        class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                        {{fan.name}} {{fan.score}}番
+                    </span>
+                </div>
             </section>
         </main>
     </div>
@@ -256,6 +254,7 @@
                     selectedTiles: [],        // 手牌（立牌）
                     concealedTiles: [],        // 手牌（立牌）
                     meldGroups: [],           // 副露分组（碰、吃、明杠、暗杠），每组格式：{tiles: [], type: 'pong'|'chi'|'minggang'|'angang'}
+                    winTile: null,        // 选择的和牌（来自听牌选项）
                     options: {
                         seatWind: 'east',      // 门风
                         prevalentWind: 'east',  // 圈风
@@ -272,31 +271,33 @@
             computed: {
                 // 剩余可选择的牌数
                 remainingTiles() {
-                    return 14 - this.concealedTiles.length - this.meldGroups.length * 3
+                    return 14 - this.concealedTiles.length - this.meldGroups.length * 3 - 1
                 },
                 meldTiles() {
                     return this.meldGroups.flatMap(group => group.tiles);
                 },
-                analysisResult() {
-                    const allTiles = [...this.concealedTiles, ...this.meldTiles];
-                    const gangCount = this.meldGroups.filter(g => g.type === 'minggang' || g.type === 'angang').length
-                    if (allTiles.length < 14 + gangCount) {
-                        return { valid: false, fans: [], totalScore: 0, message: '' };
-                    }
-                    const analyzer = new MahjongAnalyzer();
-                    console.log('allTiles', allTiles);
-                    console.log('this.meldGroups', this.meldGroups);
-                    analyzer.setHand(this.concealedTiles, this.meldGroups, null, {
-                        isSelfDrawn: this.options.isSelfDrawn,
-                        prevalentWind: this.options.prevalentWind,
-                        seatWind: this.options.seatWind,
-                        flowerCount: this.options.flowerCount,
-                        isLastTile: this.options.isHaidilao || this.options.isMiaoshou,
-                        isKongDraw: this.options.isGangshang || this.options.isQianggang,
-                        isJuezhang: this.options.isJuezhang
-                    });
-                    return analyzer.analyze();
-                },
+                // analysisResult() {
+                //     const allTiles = [...this.concealedTiles, ...this.meldTiles];
+                //     const gangCount = this.meldGroups.filter(g => g.type === 'minggang' || g.type === 'angang').length
+                //     if (allTiles.length < 14 + gangCount) {
+                //         return { valid: false, fans: [], totalScore: 0, message: '' };
+                //     }
+                //     const analyzer = new MahjongAnalyzer();
+                //     console.log('allTiles', allTiles);
+                //     console.log('this.meldGroups', this.meldGroups);
+                //     analyzer.setHand(this.concealedTiles, this.meldGroups, null, {
+                //         isSelfDrawn: this.options.isSelfDrawn,
+                //         prevalentWind: this.options.prevalentWind,
+                //         seatWind: this.options.seatWind,
+                //         flowerCount: this.options.flowerCount,
+                //         isLastTile: this.options.isHaidilao || this.options.isMiaoshou,
+                //         isKongDraw: this.options.isGangshang || this.options.isQianggang,
+                //         isJuezhang: this.options.isJuezhang
+                //     });
+                //     const res = analyzer.analyze();
+                //     console.log('和牌番数 :>> ', res);
+                //     return res;
+                // },
                 waitingTiles() {
                     const allTiles = [...this.concealedTiles, ...this.meldTiles];
                     const gangCount = this.meldGroups.filter(g => g.type === 'minggang' || g.type === 'angang').length;
@@ -305,7 +306,7 @@
                         return [];
                     }
                     const analyzer = new MahjongAnalyzer();
-                    analyzer.setHand(this.concealedTiles, this.meldGroups, null, {
+                    analyzer.setHand(this.concealedTiles, this.meldGroups, this.winTile?.tileId, {
                         isSelfDrawn: this.options.isSelfDrawn,
                         prevalentWind: this.options.prevalentWind,
                         seatWind: this.options.seatWind,
@@ -314,20 +315,94 @@
                         isKongDraw: this.options.isGangshang || this.options.isQianggang,
                         isJuezhang: this.options.isJuezhang
                     });
-                    return analyzer.getWaitingTiles();
+                    const res = analyzer.getWaitingTiles();
+                    console.log('听牌选项番数 :>> ', res);
+                    return res;
+                },
+                selectedWinTile() {
+                    if (!this.winTile) return null;
+                    const wt = this.waitingTiles.find(w => w.tileId === this.winTile.tileId);
+                    return wt || this.winTile;
+                },
+                // 排序后的手牌：万、条、筒、风、箭，同类型按数字排序
+                sortedConcealedTiles() {
+                    return [...this.concealedTiles].sort((a, b) => {
+                        const typeOrder = { 'w': 0, 't': 1, 'b': 2 };
+                        const windOrder = { 'east': 3, 'south': 3, 'west': 3, 'north': 3 };
+                        const dragonOrder = { 'zhong': 4, 'fa': 4, 'bai': 4 };
+                        
+                        const getTypeRank = (tileId) => {
+                            if (typeOrder[tileId[0]] !== undefined) return typeOrder[tileId[0]];
+                            if (windOrder[tileId] !== undefined) return windOrder[tileId];
+                            if (dragonOrder[tileId] !== undefined) return dragonOrder[tileId];
+                            return 5;
+                        };
+                        
+                        const getValue = (tileId) => {
+                            if (tileId[0] in typeOrder) return parseInt(tileId.slice(1)) || 0;
+                            const windValue = { 'east': 0, 'south': 1, 'west': 2, 'north': 3 };
+                            const dragonValue = { 'zhong': 0, 'fa': 1, 'bai': 2 };
+                            if (windValue[tileId] !== undefined) return windValue[tileId];
+                            if (dragonValue[tileId] !== undefined) return dragonValue[tileId];
+                            return 0;
+                        };
+                        
+                        const typeA = getTypeRank(a);
+                        const typeB = getTypeRank(b);
+                        if (typeA !== typeB) return typeA - typeB;
+                        return getValue(a) - getValue(b);
+                    });
+                },
+                // 排序后的副露：碰、吃、明杠、暗杠，同类型按牌面排序
+                sortedMeldGroups() {
+                    const typeOrder = { 'pong': 0, 'chi': 1, 'minggang': 2, 'angang': 3 };
+                    const tileTypeOrder = { 'w': 0, 't': 1, 'b': 2 };
+                    
+                    const getTileTypeRank = (tileId) => {
+                        if (tileTypeOrder[tileId[0]] !== undefined) return tileTypeOrder[tileId[0]];
+                        const windOrder = { 'east': 3, 'south': 3, 'west': 3, 'north': 3 };
+                        const dragonOrder = { 'zhong': 4, 'fa': 4, 'bai': 4 };
+                        if (windOrder[tileId] !== undefined) return 3;
+                        if (dragonOrder[tileId] !== undefined) return 4;
+                        return 5;
+                    };
+                    
+                    const getTileValue = (tileId) => {
+                        if (tileId[0] in tileTypeOrder) return parseInt(tileId.slice(1)) || 0;
+                        const windValue = { 'east': 0, 'south': 1, 'west': 2, 'north': 3 };
+                        const dragonValue = { 'zhong': 0, 'fa': 1, 'bai': 2 };
+                        if (windValue[tileId] !== undefined) return windValue[tileId];
+                        if (dragonValue[tileId] !== undefined) return dragonValue[tileId];
+                        return 0;
+                    };
+                    
+                    return [...this.meldGroups].sort((a, b) => {
+                        const typeA = typeOrder[a.type];
+                        const typeB = typeOrder[b.type];
+                        if (typeA !== typeB) return typeA - typeB;
+                        
+                        // 同类型按第一张牌排序
+                        const tileA = a.tiles[0];
+                        const tileB = b.tiles[0];
+                        const tileTypeA = getTileTypeRank(tileA);
+                        const tileTypeB = getTileTypeRank(tileB);
+                        if (tileTypeA !== tileTypeB) return tileTypeA - tileTypeB;
+                        return getTileValue(tileA) - getTileValue(tileB);
+                    });
                 }
             },
             methods: {
                 getAllTileCount(tileId) {
                     const concealedCount = this.concealedTiles.filter(t => t === tileId).length;
                     const meldCount = this.meldTiles.filter(t => t === tileId).length;
+                    console.log('concealedCount + meldCount :>> ', concealedCount + meldCount);
                     return concealedCount + meldCount;
                 },
                 toggleTile(tileId) {
                     if (this.currentMode === 'concealed') {
                         if (this.remainingTiles <= 0) return;
                         // 立牌模式：添加单张到手牌
-                        if (this.getAllTileCount(tileId) >= 4) return;
+                        if (this.getAllTileCount(tileId) > 3) return;
                         this.concealedTiles.push(tileId);
                     } else if (this.remainingTiles < 3) {
                         // 点击的牌数不足3张，不能添加到副露分组
@@ -335,12 +410,12 @@
                         return;
                     } else if (this.currentMode === 'angang') {
                         // 暗杠模式：添加4张一样的牌到副露分组
-                        if (this.getAllTileCount(tileId) >= 4) return;
+                        if (this.getAllTileCount(tileId) > 0) return;
                         const newTiles = [tileId, tileId, tileId, tileId];
                         this.meldGroups.push({ tiles: newTiles, type: 'angang' });
                     } else if (this.currentMode === 'pong') {
                         // 碰模式：添加3张一样的牌到副露分组
-                        if (this.getAllTileCount(tileId) >= 4) return;
+                        if (this.getAllTileCount(tileId) > 1) return;
                         const newTiles = [tileId, tileId, tileId];
                         this.meldGroups.push({ tiles: newTiles, type: 'pong' });
                     } else if (this.currentMode === 'chi') {
@@ -360,13 +435,13 @@
                         
                         // 检查每种牌是否超过4张
                         for (const t of newTiles) {
-                            if (this.getAllTileCount(t) >= 4) return;
+                            if (this.getAllTileCount(t) > 1) return;
                         }
                         
                         this.meldGroups.push({ tiles: newTiles, type: 'chi' });
                     } else if (this.currentMode === 'minggang') {
                         // 明杠模式：添加4张一样的牌到副露分组
-                        if (this.getAllTileCount(tileId) >= 4) return;
+                        if (this.getAllTileCount(tileId) > 0) return;
                         const newTiles = [tileId, tileId, tileId, tileId];
                         this.meldGroups.push({ tiles: newTiles, type: 'minggang' });
                     }
@@ -392,10 +467,15 @@
                 getMeldTypeText(type) {
                     return type === 'pong' ? '碰' : type === 'chi' ? '吃' : type === 'angang' ? '暗杠' : '明杠';
                 },
+                updateWinTile(tile) {
+                    this.winTile = tile;
+                },
                 resetAll() {
                     this.currentMode = 'concealed';
                     this.concealedTiles = [];
                     this.meldGroups = [];
+                    this.waitingTiles = [];
+                    this.winTile = null;
                     this.options = {
                         seatWind: 'east',
                         prevalentWind: 'east',

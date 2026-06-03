@@ -36,7 +36,7 @@ const TILES = {
     w7: { id: 'w7', type: TILE_TYPES.WAN, value: 7, name: '七万', unicode: '🀍', isTerminal: false },
     w8: { id: 'w8', type: TILE_TYPES.WAN, value: 8, name: '八万', unicode: '🀎', isTerminal: false },
     w9: { id: 'w9', type: TILE_TYPES.WAN, value: 9, name: '九万', unicode: '🀏', isTerminal: true },
-
+    
     // 条
     t1: { id: 't1', type: TILE_TYPES.TIAO, value: 1, name: '一条', unicode: '🀐', isTerminal: true },
     t2: { id: 't2', type: TILE_TYPES.TIAO, value: 2, name: '二条', unicode: '🀑', isTerminal: false },
@@ -47,7 +47,7 @@ const TILES = {
     t7: { id: 't7', type: TILE_TYPES.TIAO, value: 7, name: '七条', unicode: '🀖', isTerminal: false },
     t8: { id: 't8', type: TILE_TYPES.TIAO, value: 8, name: '八条', unicode: '🀗', isTerminal: false },
     t9: { id: 't9', type: TILE_TYPES.TIAO, value: 9, name: '九条', unicode: '🀘', isTerminal: true },
-
+    
     // 饼
     b1: { id: 'b1', type: TILE_TYPES.BING, value: 1, name: '一饼', unicode: '🀙', isTerminal: true },
     b2: { id: 'b2', type: TILE_TYPES.BING, value: 2, name: '二饼', unicode: '🀚', isTerminal: false },
@@ -58,13 +58,13 @@ const TILES = {
     b7: { id: 'b7', type: TILE_TYPES.BING, value: 7, name: '七饼', unicode: '🀟', isTerminal: false },
     b8: { id: 'b8', type: TILE_TYPES.BING, value: 8, name: '八饼', unicode: '🀠', isTerminal: false },
     b9: { id: 'b9', type: TILE_TYPES.BING, value: 9, name: '九饼', unicode: '🀡', isTerminal: true },
-
+    
     // 风牌
     east: { id: 'east', type: TILE_TYPES.WIND, value: 'east', name: '东', unicode: '🀀', isHonor: true },
     south: { id: 'south', type: TILE_TYPES.WIND, value: 'south', name: '南', unicode: '🀁', isHonor: true },
     west: { id: 'west', type: TILE_TYPES.WIND, value: 'west', name: '西', unicode: '🀂', isHonor: true },
     north: { id: 'north', type: TILE_TYPES.WIND, value: 'north', name: '北', unicode: '🀃', isHonor: true },
-
+    
     // 箭牌
     zhong: { id: 'zhong', type: TILE_TYPES.DRAGON, value: 'zhong', name: '中', unicode: '🀄', isHonor: true },
     fa: { id: 'fa', type: TILE_TYPES.DRAGON, value: 'fa', name: '发', unicode: '🀅', isHonor: true },
@@ -136,7 +136,7 @@ const MELD_TYPES = {
     AN_GANG: 'angang'      // 暗杠
 };
 
-module.exports = {
+export {
     TILE_TYPES,
     WINDS,
     DRAGONS,
@@ -144,12 +144,12 @@ module.exports = {
     TILES_BY_TYPE,
     GREEN_TILES,
     REVERSIBLE_TILES,
+    MELD_TYPES,
     isNumberTile,
     isHonorTile,
     isTerminalOrHonor,
     isTerminal,
     getSameSuitTiles,
     getTileName,
-    getTileUnicode,
-    MELD_TYPES
-};
+    getTileUnicode
+}

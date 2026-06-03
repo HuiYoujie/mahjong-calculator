@@ -1,20 +1,6 @@
-const { 
-    TILE_TYPES, 
-    WINDS, 
-    DRAGONS, 
-    TILES, 
-    TILES_BY_TYPE, 
-    GREEN_TILES, 
-    REVERSIBLE_TILES, 
-    isNumberTile, 
-    isHonorTile, 
-    isTerminalOrHonor, 
-    isTerminal, 
-    getSameSuitTiles, 
-    getTileName, 
-    getTileUnicode, 
-    MELD_TYPES 
-} = require('./tiles.js');
+import { TILES, TILE_TYPES, GREEN_TILES, REVERSIBLE_TILES, isNumberTile, isHonorTile, isTerminalOrHonor, isTerminal } from './tiles.js';
+
+// 国标麻将番种分析器
 
 // 番种"不计"规则表 - 当计了某番种时，不计哪些番种
 const EXCLUSION_RULES = {
@@ -64,20 +50,21 @@ class MahjongAnalyzer {
     }
 
     reset() {
-        this.hand = [];
-        this.melds = [];
-        this.winTile = null;
+        this.hand = [];           // 手牌
+        this.melds = [];          // 副露
+        this.winTile = null;      // 和牌
         this.conditions = {
-            isSelfDrawn: true,
-            prevalentWind: 'east',
-            seatWind: 'east',
-            flowerCount: 0,
-            isLastTile: false,
-            isKongDraw: false,
-            isJuezhang: false
+            isSelfDrawn: true,    // 自摸
+            prevalentWind: 'east', // 圈风
+            seatWind: 'east',     // 门风
+            flowerCount: 0,       // 花牌数
+            isLastTile: false,    // 海底/河底
+            isKongDraw: false,    // 杠上开花/抢杠和
+            isJuezhang: false     // 绝张
         };
     }
 
+    // 设置手牌数据
     setHand(hand, melds, winTile, conditions) {
         this.hand = [...hand];
         this.melds = [...melds];
@@ -85,6 +72,7 @@ class MahjongAnalyzer {
         this.conditions = { ...this.conditions, ...conditions };
     }
 
+    // 分析番种并计算总分
     analyze() {
         const allTiles = this.getAllTiles();
         const decompositions = this.decomposeHand();
@@ -105,7 +93,7 @@ class MahjongAnalyzer {
             if (totalScore === 0) {
                 fans.push({ name: '无番和', score: 8 });
                 totalScore = 8;
-            }
+            };
 
             if (totalScore > bestResult.totalScore) {
                 bestResult = { valid: true, fans, totalScore };
@@ -115,6 +103,7 @@ class MahjongAnalyzer {
         return bestResult;
     }
 
+    // 获取所有牌（手牌+副露）
     getAllTiles() {
         const tiles = [...this.hand];
         for (const meld of this.melds) {
@@ -123,6 +112,7 @@ class MahjongAnalyzer {
         return tiles;
     }
 
+    // 统计牌的数量
     countTiles(tiles) {
         const count = {};
         for (const tile of tiles) {
@@ -131,6 +121,7 @@ class MahjongAnalyzer {
         return count;
     }
 
+    // 拆解手牌为面子+将
     decomposeHand() {
         const handTiles = [...this.hand];
         const tileCount = this.countTiles(handTiles);
@@ -196,10 +187,12 @@ class MahjongAnalyzer {
         }
     }
 
+    // 检查特殊牌型（七对、十三幺、全不靠等）
     checkSpecialHands(allTiles) {
         const tileCount = this.countTiles(allTiles);
         const uniqueTiles = Object.keys(tileCount);
 
+        // 检查十三幺
         if (this.melds.length === 0 && this.checkShiSanYao(tileCount)) {
             const fans = [{ name: '十三幺', score: 88 }];
             this.addConditionFans(fans);
@@ -207,6 +200,7 @@ class MahjongAnalyzer {
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
         }
 
+        // 检查七星不靠
         if (this.melds.length === 0 && this.checkQiXingBuKao(tileCount)) {
             const fans = [{ name: '七星不靠', score: 24 }];
             this.addConditionFans(fans);
@@ -214,6 +208,7 @@ class MahjongAnalyzer {
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
         }
 
+        // 检查全不靠
         if (this.melds.length === 0 && this.checkQuanBuKao(tileCount)) {
             const fans = [{ name: '全不靠', score: 12 }];
             this.addConditionFans(fans);
@@ -221,7 +216,9 @@ class MahjongAnalyzer {
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
         }
 
+        // 检查七对
         if (this.melds.length === 0 && allTiles.length === 14) {
+            const tileCount = this.countTiles(allTiles);
             const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
             const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
             if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
@@ -234,6 +231,7 @@ class MahjongAnalyzer {
         return null;
     }
 
+    // 检查十三幺
     checkShiSanYao(tileCount) {
         const yaoTiles = ['w1', 'w9', 't1', 't9', 'b1', 'b9', 'east', 'south', 'west', 'north', 'zhong', 'fa', 'bai'];
         let hasPair = false;
@@ -248,6 +246,7 @@ class MahjongAnalyzer {
         return hasPair && Object.keys(tileCount).length === 13;
     }
 
+    // 检查全不靠
     checkQuanBuKao(tileCount) {
         const tiles = Object.keys(tileCount);
         if (tiles.length !== 14) return false;
@@ -255,12 +254,12 @@ class MahjongAnalyzer {
         if (!Object.values(tileCount).every(c => c === 1)) return false;
 
         const numberTiles = tiles.filter(t => isNumberTile(t));
-
         const honorTiles = tiles.filter(t => isHonorTile(t));
 
         return this.checkBuKaoPattern(numberTiles, honorTiles);
     }
 
+    // 检查不靠牌型的序数牌模式
     checkBuKaoPattern(numberTiles, honorTiles) {
         const patterns = [
             [1, 4, 7],
@@ -304,6 +303,7 @@ class MahjongAnalyzer {
         return true;
     }
 
+    // 检查七星不靠
     checkQiXingBuKao(tileCount) {
         const tiles = Object.keys(tileCount);
         if (tiles.length !== 14) return false;
@@ -319,6 +319,7 @@ class MahjongAnalyzer {
         return this.checkQiXingPattern(numberTiles);
     }
 
+    // 检查七星不靠的序数牌模式
     checkQiXingPattern(numberTiles) {
         const patterns = [
             [1, 4, 7],
@@ -355,10 +356,12 @@ class MahjongAnalyzer {
         return usedPatterns.size === 3;
     }
 
+    // 检测七对的番种
     detectQiduiFans(tileCount) {
         const fans = [{ name: '七对', score: 24 }];
         const tiles = Object.keys(tileCount);
 
+        // 检查连七对
         const suitCounts = { w: [], t: [], b: [] };
         for (const tile of tiles) {
             if (isNumberTile(tile)) {
@@ -386,12 +389,15 @@ class MahjongAnalyzer {
             }
         }
 
+        // 其他番种检查
         if (fans[0].name === '七对') {
+            // 清一色
             const types = new Set(tiles.map(t => TILES[t]?.type));
             if (types.size === 1 && !tiles.some(t => isHonorTile(t))) {
                 fans.push({ name: '清一色', score: 24 });
             }
 
+            // 全双刻
             if (tiles.every(t => {
                 const tile = TILES[t];
                 return isNumberTile(t) && tile.value % 2 === 0;
@@ -399,40 +405,62 @@ class MahjongAnalyzer {
                 fans.push({ name: '全双刻', score: 24 });
             }
 
+            // 断幺
             if (tiles.every(t => !isTerminalOrHonor(t))) {
                 fans.push({ name: '断幺', score: 2 });
             }
         }
 
-        this.addConditionFans(fans);
         return fans;
     }
 
+    // 主要番种检测
     detectFans(decomp, allTiles) {
         const fans = [];
         const { sets, pair } = decomp;
         const allSets = [...sets, ...this.melds];
         const tileCount = this.countTiles(allTiles);
 
+        // 检查七对
+        if (this.melds.length === 0 && allTiles.length === 14) {
+            const tileCount = this.countTiles(allTiles);
+            const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
+            const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
+            if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
+                const fan = this.detectQiduiFans(tileCount);
+                fans.push(...fan);
+            }
+        }
+
+        // === 88番 ===
         this.check88Fan(fans, allSets, pair, allTiles, tileCount);
 
+        // === 64番 ===
         this.check64Fan(fans, allSets, pair, allTiles, tileCount);
 
+        // === 48番 ===
         this.check48Fan(fans, allSets, pair, allTiles, tileCount);
 
+        // === 32番 ===
         this.check32Fan(fans, allSets, pair, allTiles, tileCount);
 
+        // === 24番 ===
         this.check24Fan(fans, allSets, pair, allTiles, tileCount);
 
+        // === 16番及以下 ===
         this.checkLowerFans(fans, allSets, pair, allTiles, tileCount);
 
+        // 添加条件相关番种
         this.addConditionFans(fans);
 
+        // 添加和牌方式番种（边张、坎张、单钓将）
         this.addWinTypeFans(fans, decomp, allSets, pair);
 
+        // 应用"不计"规则过滤重复番种
         return this.applyExclusionRules(fans);
     }
 
+    // 检测和牌方式：边张、坎张、单钓将
     addWinTypeFans(fans, decomp, allSets, pair) {
         if (!this.winTile) return;
 
@@ -448,6 +476,7 @@ class MahjongAnalyzer {
         }
     }
 
+    // 检测和牌类型：边张、坎张、单钓将
     detectWinType(decomp, allSets, pair, winTile) {
         const { sets } = decomp;
         const tile = TILES[winTile];
@@ -489,6 +518,7 @@ class MahjongAnalyzer {
         return null;
     }
 
+    // 应用"不计"规则
     applyExclusionRules(fans) {
         const fanNames = new Set(fans.map(f => f.name));
         const excludedFans = new Set();
@@ -505,56 +535,68 @@ class MahjongAnalyzer {
         return fans.filter(f => !excludedFans.has(f.name));
     }
 
+    // 88番检测
     check88Fan(fans, allSets, pair, allTiles, tileCount) {
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
 
+        // 大四喜
         const windPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.WIND);
         if (windPongs.length === 4) {
             fans.push({ name: '大四喜', score: 88 });
         }
 
+        // 大三元
         const dragonPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.DRAGON);
         if (dragonPongs.length === 3) {
             fans.push({ name: '大三元', score: 88 });
         }
 
+        // 绿一色
         if (allTiles.every(t => GREEN_TILES.includes(t))) {
             fans.push({ name: '绿一色', score: 88 });
         }
 
+        // 九莲宝灯
         if (this.hand.length >= 13 && this.checkJiuLianBaoDeng(tileCount)) {
             fans.push({ name: '九莲宝灯', score: 88 });
         }
 
+        // 四杠
         const gangs = allSets.filter(s => s.type === 'minggang' || s.type === 'angang');
         if (gangs.length === 4) {
             fans.push({ name: '四杠', score: 88 });
         }
     }
 
+    // 64番检测
     check64Fan(fans, allSets, pair, allTiles, tileCount) {
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
 
+        // 清幺九
         if (allTiles.every(t => isTerminal(t))) {
             fans.push({ name: '清幺九', score: 64 });
         }
 
+        // 小四喜
         const windPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.WIND);
         const windPair = TILES[pair]?.type === TILE_TYPES.WIND;
         if (windPongs.length === 3 && windPair) {
             fans.push({ name: '小四喜', score: 64 });
         }
 
+        // 小三元
         const dragonPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.DRAGON);
         const dragonPair = TILES[pair]?.type === TILE_TYPES.DRAGON;
         if (dragonPongs.length === 2 && dragonPair) {
             fans.push({ name: '小三元', score: 64 });
         }
 
+        // 字一色
         if (allTiles.every(t => isHonorTile(t))) {
             fans.push({ name: '字一色', score: 64 });
         }
 
+        // 四暗刻
         const anPongs = allSets.filter(s =>
             (s.type === 'pong' && !this.melds.includes(s)) || s.type === 'angang'
         );
@@ -562,33 +604,41 @@ class MahjongAnalyzer {
             fans.push({ name: '四暗刻', score: 64 });
         }
 
+        // 一色双龙会
         if (this.checkYiSeShuangLongHui(allSets, pair)) {
             fans.push({ name: '一色双龙会', score: 64 });
         }
     }
 
+    // 48番检测
     check48Fan(fans, allSets, pair, allTiles, tileCount) {
         const chis = allSets.filter(s => s.type === 'chi');
 
+        // 一色四同顺
         if (this.checkSameChiCount(chis, 4)) {
             fans.push({ name: '一色四同顺', score: 48 });
         }
 
+        // 一色四节高
         if (this.checkSiJieGao(allSets)) {
             fans.push({ name: '一色四节高', score: 48 });
         }
     }
 
+    // 32番检测
     check32Fan(fans, allSets, pair, allTiles, tileCount) {
+        // 一色四步高
         if (this.checkYiSeSiBuGao(allSets)) {
             fans.push({ name: '一色四步高', score: 32 });
         }
 
+        // 三杠
         const gangs = allSets.filter(s => s.type === 'minggang' || s.type === 'angang');
         if (gangs.length === 3) {
             fans.push({ name: '三杠', score: 32 });
         }
 
+        // 混幺九
         if (allTiles.every(t => isTerminalOrHonor(t)) &&
             allTiles.some(t => isTerminal(t)) &&
             allTiles.some(t => isHonorTile(t))) {
@@ -596,12 +646,15 @@ class MahjongAnalyzer {
         }
     }
 
+    // 24番检测
     check24Fan(fans, allSets, pair, allTiles, tileCount) {
+        // 清一色
         const types = new Set(allTiles.map(t => TILES[t]?.type));
         if (types.size === 1 && !allTiles.some(t => isHonorTile(t))) {
             fans.push({ name: '清一色', score: 24 });
         }
 
+        // 全双刻
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
         if (pongs.length === 4 && allTiles.every(t => {
             const tile = TILES[t];
@@ -610,15 +663,18 @@ class MahjongAnalyzer {
             fans.push({ name: '全双刻', score: 24 });
         }
 
+        // 一色三同顺
         const chis = allSets.filter(s => s.type === 'chi');
         if (this.checkSameChiCount(chis, 3)) {
             fans.push({ name: '一色三同顺', score: 24 });
         }
 
+        // 一色三节高
         if (this.checkSanJieGao(allSets)) {
             fans.push({ name: '一色三节高', score: 24 });
         }
 
+        // 全大
         if (allTiles.every(t => {
             const tile = TILES[t];
             return isNumberTile(t) && tile.value >= 7;
@@ -626,6 +682,7 @@ class MahjongAnalyzer {
             fans.push({ name: '全大', score: 24 });
         }
 
+        // 全中
         if (allTiles.every(t => {
             const tile = TILES[t];
             return isNumberTile(t) && tile.value >= 4 && tile.value <= 6;
@@ -633,6 +690,7 @@ class MahjongAnalyzer {
             fans.push({ name: '全中', score: 24 });
         }
 
+        // 全小
         if (allTiles.every(t => {
             const tile = TILES[t];
             return isNumberTile(t) && tile.value <= 3;
@@ -641,27 +699,34 @@ class MahjongAnalyzer {
         }
     }
 
+    // 16番及以下检测
     checkLowerFans(fans, allSets, pair, allTiles, tileCount) {
         const pongs = allSets.filter(s => s.type === 'pong' || s.type === 'minggang' || s.type === 'angang');
         const chis = allSets.filter(s => s.type === 'chi');
         const gangs = allSets.filter(s => s.type === 'minggang' || s.type === 'angang');
 
+        // 16番
+        // 清龙
         if (this.checkQingLong(allSets)) {
             fans.push({ name: '清龙', score: 16 });
         }
 
+        // 三色双龙会
         if (this.checkSanSeShuangLongHui(allSets, pair)) {
             fans.push({ name: '三色双龙会', score: 16 });
         }
 
+        // 一色三步高
         if (this.checkYiSeSanBuGao(chis)) {
             fans.push({ name: '一色三步高', score: 16 });
         }
 
+        // 三同刻
         if (this.checkSanTongKe(pongs)) {
             fans.push({ name: '三同刻', score: 16 });
         }
 
+        // 三暗刻
         const anPongs = allSets.filter(s =>
             (s.type === 'pong' && !this.melds.includes(s)) || s.type === 'angang'
         );
@@ -669,14 +734,18 @@ class MahjongAnalyzer {
             fans.push({ name: '三暗刻', score: 16 });
         }
 
+        // 全带五
         if (this.checkQuanDaiWu(allSets, pair)) {
             fans.push({ name: '全带五', score: 16 });
         }
 
+        // 12番
+        // 组合龙
         if (this.checkZuHeLong(allSets)) {
             fans.push({ name: '组合龙', score: 12 });
         }
 
+        // 大于五
         if (allTiles.every(t => {
             const tile = TILES[t];
             return isNumberTile(t) && tile.value >= 6;
@@ -684,6 +753,7 @@ class MahjongAnalyzer {
             fans.push({ name: '大于五', score: 12 });
         }
 
+        // 小于五
         if (allTiles.every(t => {
             const tile = TILES[t];
             return isNumberTile(t) && tile.value <= 4;
@@ -691,128 +761,163 @@ class MahjongAnalyzer {
             fans.push({ name: '小于五', score: 12 });
         }
 
+        // 三风刻
         const windPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.WIND);
         if (windPongs.length === 3) {
             fans.push({ name: '三风刻', score: 12 });
         }
 
+        // 8番
+        // 花龙
         if (this.checkHuaLong(chis)) {
             fans.push({ name: '花龙', score: 8 });
         }
 
+        // 推不倒
         if (allTiles.every(t => REVERSIBLE_TILES.includes(t))) {
             fans.push({ name: '推不倒', score: 8 });
         }
 
+        // 三色三同顺
         if (this.checkSanSeSanTongShun(chis)) {
             fans.push({ name: '三色三同顺', score: 8 });
         }
 
+        // 三色三节高
         if (this.checkSanSeSanJieGao(pongs)) {
             fans.push({ name: '三色三节高', score: 8 });
         }
 
+        // 6番
+        // 碰碰和
         if (pongs.length === 4) {
             fans.push({ name: '碰碰和', score: 6 });
         }
 
+        // 混一色
         const numberTypes = new Set(allTiles.filter(t => isNumberTile(t)).map(t => TILES[t].type));
         if (numberTypes.size === 1 && allTiles.some(t => isHonorTile(t))) {
             fans.push({ name: '混一色', score: 6 });
         }
 
+        // 三色三步高
         if (this.checkSanSeSanBuGao(chis)) {
             fans.push({ name: '三色三步高', score: 6 });
         }
 
+        // 五门齐
         if (this.checkWuMenQi(allTiles)) {
             fans.push({ name: '五门齐', score: 6 });
         }
 
+        // 全求人
         if (!this.conditions.isSelfDrawn && this.hand.length <= 2) {
             fans.push({ name: '全求人', score: 6 });
         }
 
+        // 双箭刻
         const dragonPongs = pongs.filter(s => TILES[s.tiles[0]]?.type === TILE_TYPES.DRAGON);
         if (dragonPongs.length === 2) {
             fans.push({ name: '双箭刻', score: 6 });
         }
 
+        // 双暗杠
         const anGangs = gangs.filter(s => s.type === 'angang');
         if (anGangs.length === 2) {
             fans.push({ name: '双暗杠', score: 6 });
         }
 
+        // 5番
+        // 明暗杠
         const anGang = gangs.filter(s => s.type === 'angang');
         const mingGang = gangs.filter(s => s.type === 'minggang');
         if (anGang.length && mingGang.length) {
             fans.push({ name: '明暗杠', score: 5 });
         }
 
+        // 4番
+        // 全带幺
         if (this.checkQuanDaiYao(allSets, pair)) {
             fans.push({ name: '全带幺', score: 4 });
         }
 
+        // 双明杠
         const mingGangs = gangs.filter(s => s.type === 'minggang');
         if (mingGangs.length === 2) {
             fans.push({ name: '双明杠', score: 4 });
         }
 
+        // 2番
+        // 箭刻
         if (dragonPongs.length === 1) {
             fans.push({ name: '箭刻', score: 2 });
         }
 
+        // 圈风刻
         const quanFengKe = pongs.find(s => s.tiles[0] === this.conditions.prevalentWind);
         if (quanFengKe) {
             fans.push({ name: '圈风刻', score: 2 });
         }
 
+        // 门风刻
         const menFengKe = pongs.find(s => s.tiles[0] === this.conditions.seatWind);
         if (menFengKe && menFengKe !== quanFengKe) {
             fans.push({ name: '门风刻', score: 2 });
         }
 
+        // 平和
         if (chis.length === 4 && isNumberTile(pair)) {
             fans.push({ name: '平和', score: 2 });
         }
 
+        // 双暗刻
         if (anPongs.length === 2) {
             fans.push({ name: '双暗刻', score: 2 });
         }
 
+        // 暗杠
         if (anGangs.length === 1) {
             fans.push({ name: '暗杠', score: 2 });
         }
 
+        // 断幺
         if (allTiles.every(t => !isTerminalOrHonor(t))) {
             fans.push({ name: '断幺', score: 2 });
         }
 
+        // 四归一
         const siGuiYiCount = this.checkSiGuiYi(allSets, pair, allTiles);
         for (let i = 0; i < siGuiYiCount; i++) {
             fans.push({ name: '四归一', score: 2 });
         }
 
+        // 双同刻
         if (this.checkShuangTongKe(pongs)) {
             fans.push({ name: '双同刻', score: 2 });
         }
 
+        // 1番
+        // 一般高
         if (this.checkYiBanGao(chis)) {
             fans.push({ name: '一般高', score: 1 });
         }
 
+        // 喜相逢
         if (this.checkXiXiangFeng(chis)) {
             fans.push({ name: '喜相逢', score: 1 });
         }
 
+        // 连六
         if (this.checkLianLiu(chis)) {
             fans.push({ name: '连六', score: 1 });
         }
 
+        // 老少副
         if (this.checkLaoShaoFu(chis)) {
             fans.push({ name: '老少副', score: 1 });
         }
 
+        // 幺九刻
         const yaoKe = pongs.filter(s => isTerminal(s.tiles[0]));
         if (yaoKe.length > 0) {
             for (let i = 0; i < yaoKe.length; i++) {
@@ -820,25 +925,31 @@ class MahjongAnalyzer {
             }
         }
 
+        // 明杠
         if (mingGangs.length === 1) {
             fans.push({ name: '明杠', score: 1 });
         }
 
+        // 缺一门
         const suits = new Set(allTiles.filter(t => isNumberTile(t)).map(t => TILES[t].type));
         if (suits.size === 2 && !allTiles.some(t => isHonorTile(t))) {
             fans.push({ name: '缺一门', score: 1 });
         }
 
+        // 无字
         if (!allTiles.some(t => isHonorTile(t)) && allTiles.length > 0) {
             fans.push({ name: '无字', score: 1 });
         }
     }
 
+    // 添加条件相关番种
     addConditionFans(fans) {
+        // 花牌
         if (this.conditions.flowerCount > 0) {
             fans.push({ name: `花牌×${this.conditions.flowerCount}`, score: this.conditions.flowerCount });
         }
 
+        // 海底/河底
         if (this.conditions.isLastTile) {
             if (this.conditions.isSelfDrawn) {
                 fans.push({ name: '妙手回春', score: 8 });
@@ -847,10 +958,10 @@ class MahjongAnalyzer {
             }
         }
 
+        // 杠上开花/抢杠和
         if (this.conditions.isKongDraw) {
             const hasGang = this.melds.some(m => m.type === 'minggang' || m.type === 'angang');
-            const allTiles = this.getAllTiles();
-            const handHasWinTile = allTiles.includes(this.winTile);
+            const handHasWinTile = this.allTiles.includes(this.winTile);
 
             if (this.conditions.isSelfDrawn) {
                 if (hasGang && !handHasWinTile) {
@@ -863,15 +974,17 @@ class MahjongAnalyzer {
             }
         }
 
-        if (this.conditions.isJuezhang) {
+        // 绝张
+        if (this.conditions.isJuezhang && this.hand.filter(t => t === this.winTile).length === 1) {
             fans.push({ name: '和绝张', score: 4 });
         }
 
+        // 不求人（4番）：门清自摸
         const fanNames = new Set(fans.map(f => f.name));
-        const hasSpecialHand = fanNames.has('十三幺') ||
-            fanNames.has('连七对') ||
-            fanNames.has('七对') ||
-            fanNames.has('七星不靠') ||
+        const hasSpecialHand = fanNames.has('十三幺') || 
+            fanNames.has('连七对') || 
+            fanNames.has('七对') || 
+            fanNames.has('七星不靠') || 
             fanNames.has('全不靠');
 
         if (this.melds.length === 0 && this.conditions.isSelfDrawn) {
@@ -880,12 +993,18 @@ class MahjongAnalyzer {
             } else {
                 fans.push({ name: '不求人', score: 4 });
             }
-        } else if (this.melds.length === 0 && !this.conditions.isSelfDrawn) {
+        }
+        // 门前清（2番）：门清点和
+        else if (this.melds.length === 0 && !this.conditions.isSelfDrawn) {
             fans.push({ name: '门前清', score: 2 });
-        } else if (this.conditions.isSelfDrawn) {
+        }
+        // 自摸（1番）：有副露时自摸
+        else if (this.conditions.isSelfDrawn) {
             fans.push({ name: '自摸', score: 1 });
         }
     }
+
+    // === 辅助检测函数 ===
 
     checkJiuLianBaoDeng(tileCount) {
         const suits = ['w', 't', 'b'];
@@ -979,9 +1098,11 @@ class MahjongAnalyzer {
             const suitChis = chis.filter(c => c.tiles[0].charAt(0) === suit);
             if (suitChis.length === 4) {
                 const starts = suitChis.map(c => parseInt(c.tiles[0].charAt(1))).sort((a, b) => a - b);
+                // 检查递增1
                 if (starts[1] === starts[0] + 1 && starts[2] === starts[0] + 2 && starts[3] === starts[0] + 3) {
                     return true;
                 }
+                // 检查递增2
                 if (starts[1] === starts[0] + 2 && starts[2] === starts[0] + 4 && starts[3] === starts[0] + 6) {
                     return true;
                 }
@@ -1008,97 +1129,86 @@ class MahjongAnalyzer {
         const chis = allSets.filter(s => s.type === 'chi');
 
         for (const suit of ['w', 't', 'b']) {
-            const suitChis = chis.filter(c => c.tiles[0].charAt(0) === suit);
-            const has123 = suitChis.some(c => c.tiles[0] === suit + '1');
-            const has456 = suitChis.some(c => c.tiles[0] === suit + '4');
-            const has789 = suitChis.some(c => c.tiles[0] === suit + '7');
+            const has123 = chis.some(c => c.tiles[0] === suit + '1');
+            const has456 = chis.some(c => c.tiles[0] === suit + '4');
+            const has789 = chis.some(c => c.tiles[0] === suit + '7');
             if (has123 && has456 && has789) return true;
         }
         return false;
     }
 
     checkHuaLong(chis) {
-        const has123 = { w: false, t: false, b: false };
-        const has456 = { w: false, t: false, b: false };
-        const has789 = { w: false, t: false, b: false };
-
-        for (const chi of chis) {
-            const suit = chi.tiles[0].charAt(0);
-            const start = parseInt(chi.tiles[0].charAt(1));
-            if (start === 1) has123[suit] = true;
-            if (start === 4) has456[suit] = true;
-            if (start === 7) has789[suit] = true;
-        }
-
-        const combinations = [
-            ['w123', 't456', 'b789'],
-            ['w123', 'b456', 't789'],
-            ['t123', 'w456', 'b789'],
-            ['t123', 'b456', 'w789'],
-            ['b123', 'w456', 't789'],
-            ['b123', 't456', 'w789']
+        const suits = ['w', 't', 'b'];
+        const segments = [
+            { start: 1, suits: [] },
+            { start: 4, suits: [] },
+            { start: 7, suits: [] }
         ];
 
-        for (const combo of combinations) {
-            const suit1 = combo[0].charAt(0);
-            const suit2 = combo[1].charAt(0);
-            const suit3 = combo[2].charAt(0);
-            if (has123[suit1] && has456[suit2] && has789[suit3]) return true;
-        }
-
-        return false;
-    }
-
-    checkSanSeSanTongShun(chis) {
-        const starts = {};
         for (const chi of chis) {
             const suit = chi.tiles[0].charAt(0);
             const start = parseInt(chi.tiles[0].charAt(1));
-            if (!starts[start]) starts[start] = new Set();
-            starts[start].add(suit);
+            if (start === 1) segments[0].suits.push(suit);
+            if (start === 4) segments[1].suits.push(suit);
+            if (start === 7) segments[2].suits.push(suit);
         }
 
-        return Object.values(starts).some(suits => suits.size === 3);
-    }
-
-    checkSanSeSanJieGao(pongs) {
-        const valueSuits = {};
-        for (const pong of pongs) {
-            const tile = TILES[pong.tiles[0]];
-            if (tile && isNumberTile(pong.tiles[0])) {
-                const value = tile.value;
-                const suit = pong.tiles[0].charAt(0);
-                if (!valueSuits[value]) valueSuits[value] = new Set();
-                valueSuits[value].add(suit);
-            }
-        }
-
-        for (let startVal = 1; startVal <= 7; startVal++) {
-            const allSuits = new Set();
-            for (let val = startVal; val <= startVal + 2; val++) {
-                if (valueSuits[val]) {
-                    valueSuits[val].forEach(suit => allSuits.add(suit));
+        for (const s1 of segments[0].suits) {
+            for (const s2 of segments[1].suits) {
+                for (const s3 of segments[2].suits) {
+                    if (s1 !== s2 && s2 !== s3 && s1 !== s3) return true;
                 }
             }
-            if (allSuits.size === 3) return true;
         }
-
         return false;
     }
 
     checkSanTongKe(pongs) {
-        const valueSuits = {};
+        const valueMap = {};
         for (const pong of pongs) {
             const tile = TILES[pong.tiles[0]];
             if (tile && isNumberTile(pong.tiles[0])) {
                 const value = tile.value;
-                const suit = pong.tiles[0].charAt(0);
-                if (!valueSuits[value]) valueSuits[value] = new Set();
-                valueSuits[value].add(suit);
+                valueMap[value] = (valueMap[value] || 0) + 1;
             }
         }
+        return Object.values(valueMap).some(c => c >= 3);
+    }
 
-        return Object.values(valueSuits).some(suits => suits.size === 3);
+    checkSanSeSanTongShun(chis) {
+        const chiMap = {};
+        for (const chi of chis) {
+            const value = parseInt(chi.tiles[0].charAt(1));
+            if (!chiMap[value]) chiMap[value] = new Set();
+            chiMap[value].add(chi.tiles[0].charAt(0));
+        }
+        return Object.values(chiMap).some(suits => suits.size >= 3);
+    }
+
+    checkSanSeSanJieGao(pongs) {
+        const numberPongs = pongs.filter(p => isNumberTile(p.tiles[0]));
+        if (numberPongs.length < 3) return false;
+
+        for (let startValue = 1; startValue <= 7; startValue++) {
+            const suits = { w: false, t: false, b: false };
+            let count = 0;
+
+            for (const pong of numberPongs) {
+                const tile = TILES[pong.tiles[0]];
+                const suit = pong.tiles[0].charAt(0);
+                if (tile.value >= startValue && tile.value <= startValue + 2) {
+                    if (!suits[suit]) {
+                        suits[suit] = tile.value;
+                    }
+                }
+            }
+
+            const values = Object.values(suits).filter(v => v !== false).sort((a, b) => a - b);
+            if (values.length === 3 && values[1] === values[0] + 1 && values[2] === values[0] + 2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     checkQuanDaiWu(allSets, pair) {
@@ -1157,6 +1267,7 @@ class MahjongAnalyzer {
         return false;
     }
 
+    // 检查组合龙
     checkZuHeLong(allSets) {
         const chis = allSets.filter(s => s.type === 'chi');
         const allChiTiles = [];
@@ -1203,6 +1314,7 @@ class MahjongAnalyzer {
         return false;
     }
 
+    // 检查三色双龙会
     checkSanSeShuangLongHui(allSets, pair) {
         const chis = allSets.filter(s => s.type === 'chi');
         if (chis.length !== 4) return false;
@@ -1222,6 +1334,7 @@ class MahjongAnalyzer {
         return true;
     }
 
+    // 检查三色三步高
     checkSanSeSanBuGao(chis) {
         if (chis.length < 3) return false;
 
@@ -1252,6 +1365,7 @@ class MahjongAnalyzer {
         return false;
     }
 
+    // 检查五门齐
     checkWuMenQi(allTiles) {
         const hasWan = allTiles.some(t => TILES[t]?.type === TILE_TYPES.WAN);
         const hasTiao = allTiles.some(t => TILES[t]?.type === TILE_TYPES.TIAO);
@@ -1262,6 +1376,7 @@ class MahjongAnalyzer {
         return hasWan && hasTiao && hasBing && hasWind && hasDragon;
     }
 
+    // 检查四归一
     checkSiGuiYi(allSets, pair, allTiles) {
         const tileCount = this.countTiles(allTiles);
         let count = 0;
@@ -1282,6 +1397,7 @@ class MahjongAnalyzer {
         return count;
     }
 
+    // 检查双同刻
     checkShuangTongKe(pongs) {
         const valueCount = {};
         for (const pong of pongs) {
@@ -1294,6 +1410,7 @@ class MahjongAnalyzer {
         return Object.values(valueCount).some(c => c >= 2);
     }
 
+    // 检查喜相逢
     checkXiXiangFeng(chis) {
         const chiMap = {};
         for (const chi of chis) {
@@ -1305,6 +1422,7 @@ class MahjongAnalyzer {
         return Object.values(chiMap).some(suits => suits.size >= 2);
     }
 
+    // 计算听牌
     getWaitingTiles() {
         const waitingTiles = [];
         const currentHand = [...this.hand];
@@ -1339,4 +1457,4 @@ class MahjongAnalyzer {
     }
 }
 
-module.exports = MahjongAnalyzer;
+export { MahjongAnalyzer };

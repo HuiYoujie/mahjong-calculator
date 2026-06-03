@@ -17,6 +17,13 @@
             </nav>
         </header>
 
+        <!-- Toast 通知 -->
+        <div v-if="toast.show" 
+            class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-lg shadow-lg transition-all duration-300"
+            :class="toast.type === 'error' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'">
+            {{ toast.message }}
+        </div>
+
         <main class="flex-grow container mx-auto p-4">
             <!-- 牌种选择区域 -->
             <section class="mb-2">
@@ -255,6 +262,11 @@
                     concealedTiles: [],        // 手牌（立牌）
                     meldGroups: [],           // 副露分组（碰、吃、明杠、暗杠），每组格式：{tiles: [], type: 'pong'|'chi'|'minggang'|'angang'}
                     winTile: null,        // 选择的和牌（来自听牌选项）
+                    toast: {
+                        show: false,
+                        message: '',
+                        type: 'error'
+                    },
                     options: {
                         seatWind: 'east',      // 门风
                         prevalentWind: 'east',  // 圈风
@@ -391,7 +403,22 @@
                     });
                 }
             },
+            watch: {
+                remainingTiles(newVal) {
+                    if (newVal > 0) {
+                        this.winTile = null;
+                    }
+                }
+            },
             methods: {
+                // todo 将选了4张的牌置灰
+
+                showToast(message, type = 'error') {
+                    this.toast = { show: true, message, type };
+                    setTimeout(() => {
+                        this.toast.show = false;
+                    }, 2000);
+                },
                 getAllTileCount(tileId) {
                     const concealedCount = this.concealedTiles.filter(t => t === tileId).length;
                     const meldCount = this.meldTiles.filter(t => t === tileId).length;
@@ -406,7 +433,8 @@
                         this.concealedTiles.push(tileId);
                     } else if (this.remainingTiles < 3) {
                         // 点击的牌数不足3张，不能添加到副露分组
-                        alert(`您当前选择的是牌型是 ${this.currentMode}`)
+                        const modeText = this.currentMode === 'pong' ? '碰' : this.currentMode === 'chi' ? '吃' : this.currentMode === 'minggang' ? '明杠' : '暗杠';
+                        this.showToast(`剩余牌数不足，无法${modeText}`);
                         return;
                     } else if (this.currentMode === 'angang') {
                         // 暗杠模式：添加4张一样的牌到副露分组

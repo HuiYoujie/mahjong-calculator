@@ -70,17 +70,18 @@ class MahjongAnalyzer {
         this.conditions = { ...this.conditions, ...conditions };
     }
 
-    // TODO 连七对 计算不对
-    // 连七对 错的
-
     // 分析番种并计算总分
     analyze() {
         const allTiles = this.getAllTiles();
         const decompositions = this.decomposeHand();
 
+        // console.log('decompositions', decompositions);
+
         if (decompositions.length === 0) {
             // 检查特殊牌型
             const specialResult = this.checkSpecialHands(allTiles);
+            // console.log('specialResult', specialResult);
+
             if (specialResult) {
                 return specialResult;
             }
@@ -227,16 +228,17 @@ class MahjongAnalyzer {
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
         }
 
-        // 检查七对
-        if (this.melds.length === 0 && allTiles.length === 14) {
-            const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
-            const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
-            if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
-                const fans = this.detectQiduiFans(tileCount);
-                const filteredFans = this.applyExclusionRules(fans);
-                return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
-            }
-        }
+        // // 检查七对
+        // if (this.melds.length === 0 && allTiles.length === 14) {
+        //     const tileCount = this.countTiles(allTiles);
+        //     const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
+        //     const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
+        //     if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
+        //         const fans = this.detectQiduiFans(tileCount);
+        //         const filteredFans = this.applyExclusionRules(fans);
+        //         return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
+        //     }
+        // }
 
         return null;
     }
@@ -447,7 +449,7 @@ class MahjongAnalyzer {
             }
         }
 
-        this.addConditionFans(fans);
+        // this.addConditionFans(fans);
         return fans;
     }
 
@@ -457,6 +459,17 @@ class MahjongAnalyzer {
         const { sets, pair } = decomp;
         const allSets = [...sets, ...this.melds];
         const tileCount = this.countTiles(allTiles);
+
+        // 检查七对
+        if (this.melds.length === 0 && allTiles.length === 14) {
+            const tileCount = this.countTiles(allTiles);
+            const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
+            const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
+            if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
+                const fan = this.detectQiduiFans(tileCount);
+                fans.push(...fan);
+            }
+        }
 
         // === 88番 ===
         this.check88Fan(fans, allSets, pair, allTiles, tileCount);
@@ -1016,8 +1029,8 @@ class MahjongAnalyzer {
             }
         }
 
-        // 绝张：必须持有的牌中没有这张和牌
-        if (this.conditions.isJuezhang) {
+        // 绝张：必须持有的手牌中只有这一张，因为会加进原始手牌中
+        if (this.conditions.isJuezhang && this.hand.filter(t => t === this.winTile).length === 1) {
             fans.push({ name: '和绝张', score: 4 });
         }
 

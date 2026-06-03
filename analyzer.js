@@ -228,17 +228,17 @@ class MahjongAnalyzer {
             return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
         }
 
-        // // 检查七对
-        // if (this.melds.length === 0 && allTiles.length === 14) {
-        //     const tileCount = this.countTiles(allTiles);
-        //     const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
-        //     const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
-        //     if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
-        //         const fans = this.detectQiduiFans(tileCount);
-        //         const filteredFans = this.applyExclusionRules(fans);
-        //         return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
-        //     }
-        // }
+        // 检查七对
+        if (this.melds.length === 0 && allTiles.length === 14) {
+            const tileCount = this.countTiles(allTiles);
+            const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
+            const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
+            if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
+                const fans = this.detectQiduiFans(tileCount);
+                const filteredFans = this.applyExclusionRules(fans);
+                return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
+            }
+        }
 
         return null;
     }
@@ -394,7 +394,8 @@ class MahjongAnalyzer {
         return usedPatterns.size === 3;
     }
 
-    // 检测七对的番种
+    // 检测七对的番种 七对还有bug
+    // todo 可能还有其他番种 比如：清一色、全双刻、断幺等
     detectQiduiFans(tileCount) {
         const fans = [{ name: '七对', score: 24 }];
         const tiles = Object.keys(tileCount);

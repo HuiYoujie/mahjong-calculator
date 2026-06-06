@@ -74,84 +74,90 @@
 					</button>
 				</view>
 
-				<!-- 门风圈风 -->
-				<view class="wind-row">
-					<!-- 门风 -->
-					<view class="wind-group">
-						<span class="wind-label">门风</span>
-						<view class="wind-btns">
-							<button v-for="wind in ['east','south','west','north']" :key="wind" 
-								@click="options.seatWind = wind"
-								class="wind-btn"
-								:class="options.seatWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
-								{{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
-							</button>
-						</view>
-					</view>
+                <view style="display: flex;justify-content: space-between;">
+                    <!-- 门风圈风 -->
+                    <view class="wind-row">
+                        <!-- 门风 -->
+                        <view class="wind-group">
+                            <span class="wind-label">门风</span>
+                            <view class="wind-btns">
+                                <button v-for="wind in ['east','south','west','north']" :key="wind" 
+                                    @click="options.seatWind = wind"
+                                    class="mode-btn"
+                                    :class="options.seatWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
+                                    {{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
+                                </button>
+                            </view>
+                        </view>
 
-					<!-- 圈风 -->
-					<view class="wind-group">
-						<span class="wind-label">圈风</span>
-						<view class="wind-btns">
-							<button v-for="wind in ['east','south','west','north']" :key="wind" 
-								@click="options.prevalentWind = wind"
-								class="wind-btn"
-								:class="options.prevalentWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
-								{{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
-							</button>
-						</view>
-					</view>
-				</view>
+                        <!-- 圈风 -->
+                        <view class="wind-group">
+                            <span class="wind-label">圈风</span>˙
+                            <view class="wind-btns">
+                                <button v-for="wind in ['east','south','west','north']" :key="wind" 
+                                    @click="options.prevalentWind = wind"
+                                    class="mode-btn"
+                                    :class="options.prevalentWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
+                                    {{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
+                                </button>
+                            </view>
+                        </view>
+                    </view>
 
-				<!-- 花牌数量 -->
-				<view class="flower-row">
-					<span class="flower-label">花牌数量</span>
-					<button @click="options.flowerCount = Math.max(0, options.flowerCount - 1)" class="flower-btn">
-						-
-					</button>
-					<span class="flower-count">{{options.flowerCount}}</span>
-					<button @click="options.flowerCount = Math.min(8, options.flowerCount + 1)" class="flower-btn">
-						+
-					</button>
-				</view>
+                    <!-- 花牌数量 -->
+                    <view class="flower-row">
+                        <span class="flower-label">花牌数量</span>
+                        <view style="display: flex;align-items: center;">
+                            <button @click="options.flowerCount = Math.max(0, options.flowerCount - 1)" class="flower-btn">
+                                -
+                            </button>
+                            <span class="flower-count">{{options.flowerCount}}</span>
+                            <button @click="options.flowerCount = Math.min(8, options.flowerCount + 1)" class="flower-btn">
+                                +
+                            </button>
+                        </view>
+                    </view>
+                </view>
 
 				<!-- 勾选项 -->
 				<view class="checkbox-row">
-					<!-- 自摸 -->
-					<label class="checkbox-label">
-						<input type="checkbox" v-model="options.isSelfDrawn" class="checkbox-input">
-						<span class="checkbox-text">自摸</span>
-					</label>
+					<checkbox-group @change="checkboxChange">
+						<!-- 自摸 -->
+						<label class="checkbox-label">
+							<checkbox :value="options.isSelfDrawn" :checked="options.isSelfDrawn" @change="evt => options.isSelfDrawn = evt.detail.value" class="checkbox-input" />
+							<span class="checkbox-text">自摸</span>
+						</label>
 
-					<!-- 和绝张 -->
-					<label class="checkbox-label">
-						<input type="checkbox" v-model="options.isJuezhang" class="checkbox-input">
-						<span class="checkbox-text">和绝张</span>
-					</label>
+						<!-- 和绝张 -->
+						<label class="checkbox-label">
+							<checkbox :value="options.isJuezhang" :checked="options.isJuezhang" @change="evt => options.isJuezhang = evt.detail.value" class="checkbox-input" />
+							<span class="checkbox-text">和绝张</span>
+						</label>
 
-					<!-- 妙手回春 -->
-					<label v-if="options.isSelfDrawn" class="checkbox-label">
-						<input type="checkbox" v-model="options.isMiaoshou" class="checkbox-input">
-						<span class="checkbox-text">妙手回春</span>
-					</label>
+						<!-- 妙手回春 -->
+						<label v-if="options.isSelfDrawn" class="checkbox-label">
+							<checkbox :value="options.isMiaoshou" :checked="options.isMiaoshou" @change="evt => options.isMiaoshou = evt.detail.value" class="checkbox-input" />
+							<span class="checkbox-text">妙手回春</span>
+						</label>
 
-					<!-- 杠上开花 -->
-					<label v-if="options.isSelfDrawn" class="checkbox-label">
-						<input type="checkbox" v-model="options.isGangshang" class="checkbox-input">
-						<span class="checkbox-text">杠上开花</span>
-					</label>
+						<!-- 杠上开花 -->
+						<label v-if="options.isSelfDrawn" class="checkbox-label">
+							<checkbox :value="options.isGangshang" :checked="options.isGangshang" @change="evt => options.isGangshang = evt.detail.value" class="checkbox-input" />
+							<span class="checkbox-text">杠上开花</span>
+						</label>
 
-					<!-- 海底捞月 -->
-					<label v-if="!options.isSelfDrawn" class="checkbox-label">
-						<input type="checkbox" v-model="options.isHaidilao" class="checkbox-input">
-						<span class="checkbox-text">海底捞月</span>
-					</label>
+						<!-- 海底捞月 -->
+						<label v-if="!options.isSelfDrawn" class="checkbox-label">
+							<checkbox :value="options.isHaidilao" :checked="options.isHaidilao" @change="evt => options.isHaidilao = evt.detail.value" class="checkbox-input" />
+							<span class="checkbox-text">海底捞月</span>
+						</label>
 
-					<!-- 抢杠和 -->
-					<label v-if="!options.isSelfDrawn" class="checkbox-label">
-						<input type="checkbox" v-model="options.isQianggang" class="checkbox-input">
-						<span class="checkbox-text">抢杠和</span>
-					</label>
+						<!-- 抢杠和 -->
+						<label v-if="!options.isSelfDrawn" class="checkbox-label">
+							<checkbox :value="options.isQianggang" :checked="options.isQianggang" @change="evt => options.isQianggang = evt.detail.value" class="checkbox-input" />
+							<span class="checkbox-text">抢杠和</span>
+						</label>
+					</checkbox-group>
 				</view>
 			</section>
 
@@ -367,6 +373,9 @@
 					this.toast.show = false;
 				}, 2000);
 			},
+			checkboxChange(evt) {
+				console.log('checkboxChange :>> ', evt.detail.value);
+			},
 			getTileCount(tileId) {
 				const concealedCount = this.concealedTiles.filter(t => t === tileId).length;
 				const meldCount = this.meldTiles.filter(t => t === tileId).length;
@@ -458,7 +467,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.app {
 		min-height: 100vh;
 		background-color: #f9fafb;
@@ -555,7 +564,16 @@
 		font-size: 28rpx;
 		font-weight: 500;
 		transition: all 0.2s;
+        border: none;
 	}
+    
+    button {
+        line-height: 1;
+        
+        &::after {
+            border: none;
+        }
+    }
 
 	.mode-btn-inactive {
 		border-color: #d1d5db;
@@ -571,7 +589,7 @@
 
 	.reset-btn {
 		margin-left: auto;
-		padding: 16rpx 32rpx;
+		padding: 16rpx 24rpx;
 		background-color: #ef4444;
 		color: #ffffff;
 		border-radius: 16rpx;
@@ -583,7 +601,7 @@
 	.wind-row {
 		display: flex;
 		flex-direction: column;
-		gap: 16rpx;
+		gap: 8rpx;
 		margin-bottom: 8rpx;
 	}
 
@@ -596,9 +614,7 @@
 	.wind-label {
 		font-size: 28rpx;
 		color: #4b5563;
-		margin-bottom: 8rpx;
 		display: block;
-		width: 120rpx;
 	}
 
 	.wind-btns {
@@ -631,38 +647,38 @@
 
 	.flower-row {
 		display: flex;
+        flex-direction: column;
 		align-items: center;
 		justify-content: flex-start;
-		gap: 32rpx;
+		gap: 8rpx;
 		margin-bottom: 8rpx;
-		padding: 8rpx 0;
 	}
 
 	.flower-label {
+        height: 60rpx;
+        line-height: 60rpx;
 		font-size: 28rpx;
 		color: #4b5563;
 	}
 
 	.flower-btn {
-		width: 64rpx;
-		height: 64rpx;
+		width: 60rpx;
+		height: 60rpx;
 		background-color: #f3f4f6;
 		border: 2rpx solid #d1d5db;
 		border-radius: 16rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 40rpx;
-		font-weight: bold;
+		font-size: 28rpx;
 		transition: background-color 0.2s;
 	}
 
 	.flower-count {
 		width: 80rpx;
 		text-align: center;
-		font-size: 40rpx;
-		font-weight: bold;
-		color: #1f2937;
+		font-size: 32rpx;
+		color: #666;
 	}
 
 	.checkbox-row {

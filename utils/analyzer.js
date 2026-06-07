@@ -491,8 +491,8 @@ class MahjongAnalyzer {
 
             // 四归一 七对的四归一只需要判断有几个4张一样的
             const siGuiYiCount = Object.values(tileCount).filter(c => c === 4).length;
-            for (let i = 0; i < siGuiYiCount; i++) {
-                fans.push({ name: "四归一", score: 2 });
+            if (siGuiYiCount) {
+                fans.push({ name: `四归一×${siGuiYiCount}`, score: 2 * siGuiYiCount });
             }
 
             // 缺一门
@@ -983,8 +983,8 @@ class MahjongAnalyzer {
 
         // 四归一
         const siGuiYiCount = this.checkSiGuiYi(allSets, pair, allTiles);
-        for (let i = 0; i < siGuiYiCount; i++) {
-            fans.push({ name: '四归一', score: 2 });
+        if (siGuiYiCount) {
+            fans.push({ name: `四归一×${siGuiYiCount}`, score: 2 * siGuiYiCount });
         }
 
         // 双同刻

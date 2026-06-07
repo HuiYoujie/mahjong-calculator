@@ -14,7 +14,7 @@
 					<view class="tile-row-inner">
 						<button v-for="i in 9" :key="'w'+i" @click="toggleTile('w'+i)" 
 							class="tile-btn"
-							:class="getTileCount('w'+i) > 0 ? 'tile-btn-active' : 'tile-btn-inactive'">
+							:class="getTileCount('w'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
 							{{getTileDisplay('w'+i)}}
 						</button>
 					</view>
@@ -25,7 +25,7 @@
 					<view class="tile-row-inner">
 						<button v-for="i in 9" :key="'t'+i" @click="toggleTile('t'+i)" 
 							class="tile-btn"
-							:class="getTileCount('t'+i) > 0 ? 'tile-btn-active' : 'tile-btn-inactive'">
+							:class="getTileCount('t'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
 							{{getTileDisplay('t'+i)}}
 						</button>
 					</view>
@@ -36,7 +36,7 @@
 					<view class="tile-row-inner">
 						<button v-for="i in 9" :key="'b'+i" @click="toggleTile('b'+i)" 
 							class="tile-btn"
-							:class="getTileCount('b'+i) > 0 ? 'tile-btn-active' : 'tile-btn-inactive'">
+							:class="getTileCount('b'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
 							{{getTileDisplay('b'+i)}}
 						</button>
 					</view>
@@ -47,12 +47,12 @@
 					<view class="tile-row-inner">
 						<button v-for="wind in ['east','south','west','north']" :key="wind" @click="toggleTile(wind)" 
 							class="tile-btn"
-							:class="getTileCount(wind) > 0 ? 'tile-btn-active' : 'tile-btn-inactive'">
+							:class="getTileCount(wind) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
 							{{getTileDisplay(wind)}}
 						</button>
 						<button v-for="dragon in ['zhong','fa','bai']" :key="dragon" @click="toggleTile(dragon)" 
 							class="tile-btn"
-							:class="getTileCount(dragon) > 0 ? 'tile-btn-active' : 'tile-btn-inactive'">
+							:class="getTileCount(dragon) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
 							{{getTileDisplay(dragon)}}
 						</button>
 					</view>
@@ -163,6 +163,10 @@
 			<section class="selected-section">
 				<h2 v-if="remainingTiles" class="remaining-title">可选择{{ remainingTiles }}张牌</h2>
 				
+                <h2 v-if="waitingTiles.length === 0 && this.remainingTiles <= 0" class="remaining-title">
+                    未听牌
+                </h2>
+				
 				<!-- 手牌 -->
 				<view class="concealed-row" v-if="concealedTiles.length">
 					<view class="concealed-inner">
@@ -211,12 +215,6 @@
 					</view>
 				</view>
 			</section>
-            
-            <section v-if="waitingTiles.length === 0 && this.remainingTiles <= 0">
-                <view>
-                    未听牌
-                </view>
-            </section>
 
 			<!-- 和牌番数显示区域 -->
 			<section v-if="selectedWinTile" class="win-section" @click="winTile = null">

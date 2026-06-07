@@ -222,7 +222,8 @@ class MahjongAnalyzer {
             const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
             const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
             if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
-                const fans = this.detectQiduiFans(tileCount);
+                const fans = this.detectQiduiFans(tileCount, allTiles);
+                this.addConditionFans(fans);
                 const filteredFans = this.applyExclusionRules(fans);
                 return { valid: true, fans: filteredFans, totalScore: filteredFans.reduce((s, f) => s + f.score, 0) };
             }
@@ -357,7 +358,7 @@ class MahjongAnalyzer {
     }
 
     // 检测七对的番种
-    detectQiduiFans(tileCount) {
+    detectQiduiFans(tileCount, allTiles) {
         const fans = [{ name: '七对', score: 24 }];
         const tiles = Object.keys(tileCount);
 
@@ -391,6 +392,28 @@ class MahjongAnalyzer {
 
         // 其他番种检查
         if (fans[0].name === '七对') {
+            // 绿一色
+            if (allTiles.every(t => GREEN_TILES.includes(t))) {
+                fans.push({ name: '绿一色', score: 88 });
+            }
+
+            // 字一色
+            if (allTiles.every(t => isHonorTile(t))) {
+                fans.push({ name: '字一色', score: 64 });
+            }
+
+            // 清幺九
+            if (allTiles.every(t => isTerminal(t))) {
+                fans.push({ name: '清幺九', score: 64 });
+            }
+
+            // 混幺九
+            if (allTiles.every(t => isTerminalOrHonor(t)) &&
+                allTiles.some(t => isTerminal(t)) &&
+                allTiles.some(t => isHonorTile(t))) {
+                fans.push({ name: '混幺九', score: 32 });
+            }
+
             // 清一色
             const types = new Set(tiles.map(t => TILES[t]?.type));
             if (types.size === 1 && !tiles.some(t => isHonorTile(t))) {
@@ -405,9 +428,82 @@ class MahjongAnalyzer {
                 fans.push({ name: '全双刻', score: 24 });
             }
 
+            // 全大
+            if (allTiles.every(t => {
+                const tile = TILES[t];
+                return isNumberTile(t) && tile.value >= 7;
+            })) {
+                fans.push({ name: '全大', score: 24 });
+            }
+
+            // 全中
+            if (allTiles.every(t => {
+                const tile = TILES[t];
+                return isNumberTile(t) && tile.value >= 4 && tile.value <= 6;
+            })) {
+                fans.push({ name: '全中', score: 24 });
+            }
+
+            // 全小
+            if (allTiles.every(t => {
+                const tile = TILES[t];
+                return isNumberTile(t) && tile.value <= 3;
+            })) {
+                fans.push({ name: '全小', score: 24 });
+            }
+
+            // 大于五
+            if (allTiles.every(t => {
+                const tile = TILES[t];
+                return isNumberTile(t) && tile.value >= 6;
+            })) {
+                fans.push({ name: '大于五', score: 12 });
+            }
+
+            // 小于五
+            if (allTiles.every(t => {
+                const tile = TILES[t];
+                return isNumberTile(t) && tile.value <= 4;
+            })) {
+                fans.push({ name: '小于五', score: 12 });
+            }
+
+            // 推不倒
+            if (allTiles.every(t => REVERSIBLE_TILES.includes(t))) {
+                fans.push({ name: '推不倒', score: 8 });
+            }
+
+            // 五门齐
+            if (this.checkWuMenQi(allTiles)) {
+                fans.push({ name: '五门齐', score: 6 });
+            }
+
+            // 混一色
+            const numberTypes = new Set(allTiles.filter(t => isNumberTile(t)).map(t => TILES[t].type));
+            if (numberTypes.size === 1 && allTiles.some(t => isHonorTile(t))) {
+                fans.push({ name: '混一色', score: 6 });
+            }
+
             // 断幺
             if (tiles.every(t => !isTerminalOrHonor(t))) {
                 fans.push({ name: '断幺', score: 2 });
+            }
+
+            // 四归一 七对的四归一只需要判断有几个4张一样的
+            const siGuiYiCount = Object.values(tileCount).filter(c => c === 4).length;
+            for (let i = 0; i < siGuiYiCount; i++) {
+                fans.push({ name: "四归一", score: 2 });
+            }
+
+            // 缺一门
+            const suits = new Set(allTiles.filter(t => isNumberTile(t)).map(t => TILES[t].type));
+            if (suits.size === 2 && !allTiles.some(t => isHonorTile(t))) {
+                fans.push({ name: '缺一门', score: 1 });
+            }
+
+            // 无字
+            if (!allTiles.some(t => isHonorTile(t)) && allTiles.length > 0) {
+                fans.push({ name: '无字', score: 1 });
             }
         }
 
@@ -427,7 +523,7 @@ class MahjongAnalyzer {
             const pairs = Object.values(tileCount).filter(c => c === 2 || c === 4);
             const totalPairs = Object.values(tileCount).reduce((sum, c) => sum + Math.floor(c / 2), 0);
             if (totalPairs === 7 && Object.values(tileCount).every(c => c === 2 || c === 4)) {
-                const fan = this.detectQiduiFans(tileCount);
+                const fan = this.detectQiduiFans(tileCount, allTiles);
                 fans.push(...fan);
             }
         }

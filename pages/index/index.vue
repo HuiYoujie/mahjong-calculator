@@ -92,7 +92,7 @@
 
                         <!-- 圈风 -->
                         <view class="wind-group">
-                            <span class="wind-label">圈风</span>˙
+                            <span class="wind-label">圈风</span>
                             <view class="wind-btns">
                                 <button v-for="wind in ['east','south','west','north']" :key="wind" 
                                     @click="options.prevalentWind = wind"
@@ -120,45 +120,43 @@
                 </view>
 
 				<!-- 勾选项 -->
-				<view class="checkbox-row">
-					<checkbox-group @change="checkboxChange">
-						<!-- 自摸 -->
-						<label class="checkbox-label">
-							<checkbox :value="options.isSelfDrawn" :checked="options.isSelfDrawn" @change="evt => options.isSelfDrawn = evt.detail.value" class="checkbox-input" />
-							<span class="checkbox-text">自摸</span>
-						</label>
+				<checkbox-group @change="checkboxChange" class="checkbox-row">
+					<!-- 自摸 -->
+					<label class="checkbox-label">
+						<checkbox value="isSelfDrawn" :checked="options.isSelfDrawn" class="checkbox-input" />
+						<span class="checkbox-text">自摸</span>
+					</label>
 
-						<!-- 和绝张 -->
-						<label class="checkbox-label">
-							<checkbox :value="options.isJuezhang" :checked="options.isJuezhang" @change="evt => options.isJuezhang = evt.detail.value" class="checkbox-input" />
-							<span class="checkbox-text">和绝张</span>
-						</label>
+					<!-- 和绝张 -->
+					<label class="checkbox-label">
+						<checkbox value="isJuezhang" :checked="options.isJuezhang" class="checkbox-input" />
+						<span class="checkbox-text">和绝张</span>
+					</label>
 
-						<!-- 妙手回春 -->
-						<label v-if="options.isSelfDrawn" class="checkbox-label">
-							<checkbox :value="options.isMiaoshou" :checked="options.isMiaoshou" @change="evt => options.isMiaoshou = evt.detail.value" class="checkbox-input" />
-							<span class="checkbox-text">妙手回春</span>
-						</label>
+					<!-- 妙手回春 -->
+					<label v-if="options.isSelfDrawn" class="checkbox-label">
+						<checkbox value="isMiaoshou" :checked="options.isMiaoshou" class="checkbox-input" />
+						<span class="checkbox-text">妙手回春</span>
+					</label>
 
-						<!-- 杠上开花 -->
-						<label v-if="options.isSelfDrawn" class="checkbox-label">
-							<checkbox :value="options.isGangshang" :checked="options.isGangshang" @change="evt => options.isGangshang = evt.detail.value" class="checkbox-input" />
-							<span class="checkbox-text">杠上开花</span>
-						</label>
+					<!-- 杠上开花 -->
+					<label v-if="options.isSelfDrawn" class="checkbox-label">
+						<checkbox value="isGangshang" :checked="options.isGangshang" class="checkbox-input" />
+						<span class="checkbox-text">杠上开花</span>
+					</label>
 
-						<!-- 海底捞月 -->
-						<label v-if="!options.isSelfDrawn" class="checkbox-label">
-							<checkbox :value="options.isHaidilao" :checked="options.isHaidilao" @change="evt => options.isHaidilao = evt.detail.value" class="checkbox-input" />
-							<span class="checkbox-text">海底捞月</span>
-						</label>
+					<!-- 海底捞月 -->
+					<label v-if="!options.isSelfDrawn" class="checkbox-label">
+						<checkbox value="isHaidilao" :checked="options.isHaidilao" class="checkbox-input" />
+						<span class="checkbox-text">海底捞月</span>
+					</label>
 
-						<!-- 抢杠和 -->
-						<label v-if="!options.isSelfDrawn" class="checkbox-label">
-							<checkbox :value="options.isQianggang" :checked="options.isQianggang" @change="evt => options.isQianggang = evt.detail.value" class="checkbox-input" />
-							<span class="checkbox-text">抢杠和</span>
-						</label>
-					</checkbox-group>
-				</view>
+					<!-- 抢杠和 -->
+					<label v-if="!options.isSelfDrawn" class="checkbox-label">
+						<checkbox value="isQianggang" :checked="options.isQianggang" class="checkbox-input" />
+						<span class="checkbox-text">抢杠和</span>
+					</label>
+				</checkbox-group>
 			</section>
 
 			<!-- 选中的牌显示区域 -->
@@ -213,6 +211,12 @@
 					</view>
 				</view>
 			</section>
+            
+            <section v-if="waitingTiles.length === 0 && this.remainingTiles <= 0">
+                <view>
+                    未听牌
+                </view>
+            </section>
 
 			<!-- 和牌番数显示区域 -->
 			<section v-if="selectedWinTile" class="win-section" @click="winTile = null">
@@ -302,18 +306,18 @@
 					const dragonOrder = { 'zhong': 4, 'fa': 4, 'bai': 4 };
 					
 					const getTypeRank = (tileId) => {
-						if (typeOrder[tileId[0]] !== undefined) return typeOrder[tileId[0]];
 						if (windOrder[tileId] !== undefined) return windOrder[tileId];
 						if (dragonOrder[tileId] !== undefined) return dragonOrder[tileId];
+						if (typeOrder[tileId[0]] !== undefined) return typeOrder[tileId[0]];
 						return 5;
 					};
 					
 					const getValue = (tileId) => {
-						if (tileId[0] in typeOrder) return parseInt(tileId.slice(1)) || 0;
 						const windValue = { 'east': 0, 'south': 1, 'west': 2, 'north': 3 };
 						const dragonValue = { 'zhong': 0, 'fa': 1, 'bai': 2 };
 						if (windValue[tileId] !== undefined) return windValue[tileId];
 						if (dragonValue[tileId] !== undefined) return dragonValue[tileId];
+						if (tileId[0] in typeOrder) return parseInt(tileId.slice(1)) || 0;
 						return 0;
 					};
 					
@@ -328,20 +332,20 @@
 				const tileTypeOrder = { 'w': 0, 't': 1, 'b': 2 };
 				
 				const getTileTypeRank = (tileId) => {
-					if (tileTypeOrder[tileId[0]] !== undefined) return tileTypeOrder[tileId[0]];
 					const windOrder = { 'east': 3, 'south': 3, 'west': 3, 'north': 3 };
 					const dragonOrder = { 'zhong': 4, 'fa': 4, 'bai': 4 };
 					if (windOrder[tileId] !== undefined) return 3;
 					if (dragonOrder[tileId] !== undefined) return 4;
+					if (tileTypeOrder[tileId[0]] !== undefined) return tileTypeOrder[tileId[0]];
 					return 5;
 				};
 				
 				const getTileValue = (tileId) => {
-					if (tileId[0] in tileTypeOrder) return parseInt(tileId.slice(1)) || 0;
 					const windValue = { 'east': 0, 'south': 1, 'west': 2, 'north': 3 };
 					const dragonValue = { 'zhong': 0, 'fa': 1, 'bai': 2 };
 					if (windValue[tileId] !== undefined) return windValue[tileId];
 					if (dragonValue[tileId] !== undefined) return dragonValue[tileId];
+					if (tileId[0] in tileTypeOrder) return parseInt(tileId.slice(1)) || 0;
 					return 0;
 				};
 				
@@ -373,8 +377,12 @@
 					this.toast.show = false;
 				}, 2000);
 			},
-			checkboxChange(evt) {
-				console.log('checkboxChange :>> ', evt.detail.value);
+			checkboxChange(e) {
+				const values = e.detail.value;
+				const optionKeys = ['isSelfDrawn', 'isJuezhang', 'isMiaoshou', 'isGangshang', 'isHaidilao', 'isQianggang'];
+				for (const key of optionKeys) {
+					this.$set(this.options, key, values.includes(key));
+				}
 			},
 			getTileCount(tileId) {
 				const concealedCount = this.concealedTiles.filter(t => t === tileId).length;
@@ -474,6 +482,7 @@
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 		display: flex;
 		flex-direction: column;
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 
 	.toast {
@@ -499,10 +508,11 @@
 	}
 
 	.main {
+		box-sizing: border-box;
 		flex: 1;
-		max-width: 800rpx;
+		min-width: 750rpx;
 		margin: 0 auto;
-		padding: 32rpx;
+		padding: 12rpx 32rpx 20rpx;
 	}
 
 	.tile-section {
@@ -545,7 +555,7 @@
 
 	.options-section {
 		margin-bottom: 16rpx;
-		border-top: 2rpx solid #d1d5db;
+		border-top: 2rpx solid #eee;
 		padding-top: 16rpx;
 	}
 
@@ -602,13 +612,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8rpx;
-		margin-bottom: 8rpx;
+		margin-bottom: 12rpx;
 	}
 
 	.wind-group {
 		display: flex;
 		align-items: center;
-		gap: 8rpx;
+		gap: 16rpx;
 	}
 
 	.wind-label {
@@ -684,19 +694,19 @@
 	.checkbox-row {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 24rpx;
+		gap: 12rpx;
 	}
 
 	.checkbox-label {
 		display: flex;
 		align-items: center;
-		gap: 16rpx;
+		gap: 8rpx;
 		cursor: pointer;
 	}
 
 	.checkbox-input {
-		width: 32rpx;
-		height: 32rpx;
+		width: 48rpx;
+		height: 48rpx;
 		color: #2563eb;
 		border-radius: 8rpx;
 	}

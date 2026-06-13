@@ -1,0 +1,686 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1140" viewBox="0 0 1000 1140"><rect width="100%" height="100%" fill="#eee"/>
+<g transform="translate(10 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(60 66)">
+    <circle r="32" fill="none" stroke="#1c48a5" stroke-width="4"/>
+    <circle r="25" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <ellipse cx="24.0" cy="0.0" rx="5" ry="10" transform="rotate(0.0 24.0 0.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="22.2" cy="9.2" rx="5" ry="10" transform="rotate(22.5 22.2 9.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="17.0" cy="17.0" rx="5" ry="10" transform="rotate(45.0 17.0 17.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="9.2" cy="22.2" rx="5" ry="10" transform="rotate(67.5 9.2 22.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="0.0" cy="24.0" rx="5" ry="10" transform="rotate(90.0 0.0 24.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-9.2" cy="22.2" rx="5" ry="10" transform="rotate(112.5 -9.2 22.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-17.0" cy="17.0" rx="5" ry="10" transform="rotate(135.0 -17.0 17.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-22.2" cy="9.2" rx="5" ry="10" transform="rotate(157.5 -22.2 9.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-24.0" cy="0.0" rx="5" ry="10" transform="rotate(180.0 -24.0 0.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-22.2" cy="-9.2" rx="5" ry="10" transform="rotate(202.5 -22.2 -9.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-17.0" cy="-17.0" rx="5" ry="10" transform="rotate(225.0 -17.0 -17.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-9.2" cy="-22.2" rx="5" ry="10" transform="rotate(247.5 -9.2 -22.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="-0.0" cy="-24.0" rx="5" ry="10" transform="rotate(270.0 -0.0 -24.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="9.2" cy="-22.2" rx="5" ry="10" transform="rotate(292.5 9.2 -22.2)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="17.0" cy="-17.0" rx="5" ry="10" transform="rotate(315.0 17.0 -17.0)" fill="none" stroke="#169a42" stroke-width="3"/>
+<ellipse cx="22.2" cy="-9.2" rx="5" ry="10" transform="rotate(337.5 22.2 -9.2)" fill="none" stroke="#169a42" stroke-width="3"/><circle r="13" fill="none" stroke="#e0182d" stroke-width="4"/>
+    <path d="M-11 0H11M0-11V11" stroke="#e0182d" stroke-width="3"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_1</text></g>
+<g transform="translate(150 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(60 48)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(60 106)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_2</text></g>
+<g transform="translate(290 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(45 36)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(74 64)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(60 103)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_3</text></g>
+<g transform="translate(430 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(43 38)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(77 38)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(43 103)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(77 103)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_4</text></g>
+<g transform="translate(570 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(43 38)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(77 38)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(60 70)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(43 104)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(77 104)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_5</text></g>
+<g transform="translate(710 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(42 34)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(78 34)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(42 72)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(78 72)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(42 110)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(78 110)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_6</text></g>
+<g transform="translate(850 10)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(35 34)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(60 44)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(85 54)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(42 83)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(78 83)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(42 116)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(78 116)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_7</text></g>
+<g transform="translate(10 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(45 28)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(75 28)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(45 50)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(75 50)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(45 78)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(75 78)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(45 102)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(75 102)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_8</text></g>
+<g transform="translate(150 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(35 30)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(60 30)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(85 30)">
+    <circle r="9" fill="none" stroke="#1c48a5" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#1c48a5" stroke-width="3"/>
+    <circle r="2.2" fill="#1c48a5"/>
+  </g>
+<g transform="translate(35 68)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(60 68)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(85 68)">
+    <circle r="9" fill="none" stroke="#e0182d" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#e0182d" stroke-width="3"/>
+    <circle r="2.2" fill="#e0182d"/>
+  </g>
+<g transform="translate(35 106)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(60 106)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<g transform="translate(85 106)">
+    <circle r="9" fill="none" stroke="#179640" stroke-width="5"/>
+    <circle r="4.3" fill="none" stroke="#179640" stroke-width="3"/>
+    <circle r="2.2" fill="#179640"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dots/dot_9</text></g>
+<g transform="translate(290 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(60 82)">
+    <path d="M-9,-37 C-23,-20 -26,8 -13,24 C2,42 26,27 25,3 C24,-17 9,-31 -9,-37Z" fill="none" stroke="#1b42aa" stroke-width="4"/>
+    <path d="M-17,-32 C-30,-43 -25,-50 -8,-38" stroke="#d7192d" stroke-width="4" fill="none"/>
+    <path d="M1,-29 C17,-46 31,-42 21,-21" stroke="#159447" stroke-width="4" fill="none"/>
+    <path d="M-6,-4 C10,-4 21,4 27,16" stroke="#1b42aa" stroke-width="3" fill="none"/>
+    <path d="M-17,21 L-27,45 M4,24 L-2,48 M15,20 L32,42" stroke="#159447" stroke-width="4" fill="none"/>
+    <path d="M-2,-19 C-2,-8 -2,6 -6,16" stroke="#1b42aa" stroke-width="3"/>
+    <circle cx="-4" cy="-22" r="2.5" fill="#1b42aa"/>
+    <path d="M-14,-27 L-31,-31 L-16,-20" fill="none" stroke="#d7192d" stroke-width="3"/>
+    <path d="M16,-15 C31,0 34,19 41,35" stroke="#d7192d" stroke-width="4"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_1</text></g>
+<g transform="translate(430 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(45 55)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(75 55)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(45 105)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(75 105)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_2</text></g>
+<g transform="translate(570 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(35 35)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 35)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 35)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 78)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 78)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 78)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 120)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 120)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 120)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_3</text></g>
+<g transform="translate(710 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(43 48)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(77 48)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(43 100)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(77 100)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_4</text></g>
+<g transform="translate(850 195)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(38 48)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(82 48)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#d7192d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#d7192d" stroke-width="2"/>
+  </g>
+<g transform="translate(38 106)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(82 106)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_5</text></g>
+<g transform="translate(10 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(35 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#d7192d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#d7192d" stroke-width="2"/>
+  </g>
+<g transform="translate(85 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#d7192d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#d7192d" stroke-width="2"/>
+  </g>
+<g transform="translate(85 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#d7192d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#d7192d" stroke-width="2"/>
+  </g>
+<g transform="translate(85 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_6</text></g>
+<g transform="translate(150 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(38 42)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(82 42)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(38 78)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 78)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#d7192d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#d7192d" stroke-width="2"/>
+  </g>
+<g transform="translate(82 78)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(38 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(82 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_7</text></g>
+<g transform="translate(290 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(35 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 76)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 116)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_8</text></g>
+<g transform="translate(430 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <g transform="translate(48 36)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#d7192d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#d7192d" stroke-width="2"/>
+  </g>
+<g transform="translate(35 72)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 72)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 72)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(35 112)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(60 112)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<g transform="translate(85 112)">
+    <path d="M0 -16.0 C-5 -12.0 -5 -6.0 0 -2.0 C5 2.0 5 8.0 0 12.0 C-5 16.0 -5 22.0 0 16.0" fill="none" stroke="#159447" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-5 -5.0 H5 M-5 5.0 H5" stroke="#159447" stroke-width="2"/>
+  </g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">bamboos/bamboo_9</text></g>
+<g transform="translate(570 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="96" font-family="Noto Serif CJK SC, SimSun, serif" font-size="58" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.5" transform="rotate(-3 60 86)">中</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dragons/red</text></g>
+<g transform="translate(710 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="95" font-family="Noto Serif CJK SC, SimSun, serif" font-size="54" font-weight="700" text-anchor="middle" fill="#169a42" stroke="#169a42" stroke-width="1.5" transform="rotate(-5 60 85)">發</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dragons/green</text></g>
+<g transform="translate(850 380)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <rect x="40" y="42" width="40" height="70" rx="2" fill="none" stroke="#1976bf" stroke-width="4"/><rect x="46" y="48" width="28" height="58" rx="2" fill="none" stroke="#1976bf" stroke-width="2"/>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">dragons/white</text></g>
+<g transform="translate(10 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="96" font-family="Noto Serif CJK SC, SimSun, serif" font-size="58" font-weight="700" text-anchor="middle" fill="#2026a0" stroke="#2026a0" stroke-width="1.6" transform="rotate(-4 60 85)">東</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">winds/east</text></g>
+<g transform="translate(150 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="96" font-family="Noto Serif CJK SC, SimSun, serif" font-size="58" font-weight="700" text-anchor="middle" fill="#2026a0" stroke="#2026a0" stroke-width="1.6" transform="rotate(-4 60 85)">南</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">winds/south</text></g>
+<g transform="translate(290 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="96" font-family="Noto Serif CJK SC, SimSun, serif" font-size="58" font-weight="700" text-anchor="middle" fill="#2026a0" stroke="#2026a0" stroke-width="1.6" transform="rotate(-4 60 85)">西</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">winds/west</text></g>
+<g transform="translate(430 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="96" font-family="Noto Serif CJK SC, SimSun, serif" font-size="58" font-weight="700" text-anchor="middle" fill="#2026a0" stroke="#2026a0" stroke-width="1.6" transform="rotate(-4 60 85)">北</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">winds/north</text></g>
+<g transform="translate(570 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">一</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_1</text></g>
+<g transform="translate(710 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">二</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_2</text></g>
+<g transform="translate(850 565)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">三</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_3</text></g>
+<g transform="translate(10 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">四</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_4</text></g>
+<g transform="translate(150 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">五</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_5</text></g>
+<g transform="translate(290 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">六</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_6</text></g>
+<g transform="translate(430 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">七</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_7</text></g>
+<g transform="translate(570 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">八</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_8</text></g>
+<g transform="translate(710 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">九</text>
+  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">characters/character_9</text></g>
+<g transform="translate(850 750)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="24" y="43" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#2026a0" font-weight="700">一</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">flowers/plum</text></g>
+<g transform="translate(10 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="24" y="43" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#2026a0" font-weight="700">二</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">flowers/orchid</text></g>
+<g transform="translate(150 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="24" y="43" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#2026a0" font-weight="700">三</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g><path d="M72 122 C75 92 76 60 75 34 M86 124 C84 94 86 72 95 50" stroke="#1f2aa8" stroke-width="4" fill="none"/>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">flowers/bamboo</text></g>
+<g transform="translate(290 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="24" y="43" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#2026a0" font-weight="700">四</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">flowers/chrysanthemum</text></g>
+<g transform="translate(430 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="31" y="45" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#d7192d" font-weight="700">1</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">seasons/spring</text></g>
+<g transform="translate(570 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="31" y="45" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#d7192d" font-weight="700">2</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">seasons/summer</text></g>
+<g transform="translate(710 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="31" y="45" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#d7192d" font-weight="700">3</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">seasons/autumn</text></g>
+<g transform="translate(850 935)">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="31" y="45" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#d7192d" font-weight="700">4</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+<text x="60" y="178" text-anchor="middle" font-size="11" fill="#555">seasons/winter</text></g></svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160">
+  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
+  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
+  <text x="31" y="45" font-family="Noto Serif CJK SC, SimSun, serif" font-size="34" fill="#d7192d" font-weight="700">4</text><path d="M45 122 C55 96 55 72 48 42 M58 123 C61 92 68 66 83 42" stroke="#169a42" stroke-width="3" fill="none"/>
+<path d="M43 78 C28 67 30 54 48 68 M61 91 C79 78 88 86 70 100 M55 58 C69 46 77 54 63 66" stroke="#169a42" stroke-width="3" fill="none"/>
+<g stroke="#e0182d" stroke-width="2.5" fill="none"><circle cx="49" cy="101" r="10"/><path d="M40 101 C48 87 58 89 59 103 C56 116 43 114 40 101Z"/><path d="M49 91 C59 98 55 111 43 109"/></g>
+</svg>

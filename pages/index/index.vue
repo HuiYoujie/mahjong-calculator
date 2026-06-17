@@ -15,7 +15,7 @@
 						<button v-for="i in 9" :key="'w'+i" @click="toggleTile('w'+i)" 
 							class="tile-btn"
 							:class="getTileCount('w'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							{{getTileDisplay('w'+i)}}
+							<image :src="getTileSvgPath('w'+i)" class="tile-icon" mode="aspectFit" />
 						</button>
 					</view>
 				</view>
@@ -26,7 +26,7 @@
 						<button v-for="i in 9" :key="'t'+i" @click="toggleTile('t'+i)" 
 							class="tile-btn"
 							:class="getTileCount('t'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							{{getTileDisplay('t'+i)}}
+							<image :src="getTileSvgPath('t'+i)" class="tile-icon" mode="aspectFit" />
 						</button>
 					</view>
 				</view>
@@ -37,7 +37,7 @@
 						<button v-for="i in 9" :key="'b'+i" @click="toggleTile('b'+i)" 
 							class="tile-btn"
 							:class="getTileCount('b'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							{{getTileDisplay('b'+i)}}
+							<image :src="getTileSvgPath('b'+i)" class="tile-icon" mode="aspectFit" />
 						</button>
 					</view>
 				</view>
@@ -48,12 +48,12 @@
 						<button v-for="wind in ['east','south','west','north']" :key="wind" @click="toggleTile(wind)" 
 							class="tile-btn"
 							:class="getTileCount(wind) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							{{getTileDisplay(wind)}}
+							<image :src="getTileSvgPath(wind)" class="tile-icon" mode="aspectFit" />
 						</button>
 						<button v-for="dragon in ['zhong','fa','bai']" :key="dragon" @click="toggleTile(dragon)" 
 							class="tile-btn"
 							:class="getTileCount(dragon) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							{{getTileDisplay(dragon)}}
+							<image :src="getTileSvgPath(dragon)" class="tile-icon" mode="aspectFit" />
 						</button>
 					</view>
 				</view>
@@ -161,19 +161,13 @@
 
 			<!-- 选中的牌显示区域 -->
 			<section class="selected-section">
-				<h2 v-if="remainingTiles" class="remaining-title">可选择{{ remainingTiles }}张牌</h2>
-				
-                <h2 v-if="waitingTiles.length === 0 && this.remainingTiles <= 0" class="remaining-title">
-                    未听牌
-                </h2>
-				
 				<!-- 手牌 -->
 				<view class="concealed-row" v-if="concealedTiles.length">
 					<view class="concealed-inner">
 						<view v-for="(tile, index) in sortedConcealedTiles" :key="'c-' + index" 
 							@click="removeTile(tile, 'concealed')"
 							class="concealed-tile">
-							{{getTileDisplay(tile)}}
+							<image :src="getTileSvgPath(tile)" class="concealed-icon" mode="aspectFit" />
 						</view>
 					</view>
 				</view>
@@ -187,45 +181,41 @@
 						<view v-for="(tile, tileIndex) in group.tiles" :key="'mt-' + groupIndex + '-' + tileIndex"
 							class="meld-tile"
 							:class="group.type === 'angang' ? 'meld-tile-angang' : 'meld-tile-other'">
-							{{getTileDisplay(tile)}}
+							<image :src="getTileSvgPath(tile)" class="meld-icon" mode="aspectFit" />
 						</view>
 						<span class="meld-badge">
 							{{getMeldTypeText(group.type)}}
 						</span>
 					</view>
 				</view>
+				
+				<h2 v-if="remainingTiles" class="remaining-title">可选择{{ remainingTiles }}张牌</h2>
+				
+                <h2 v-if="waitingTiles.length === 0 && this.remainingTiles <= 0" class="remaining-title">
+                    未听牌
+                </h2>
 			</section>
 
 			<!-- 听牌显示区域 -->
 			<section v-if="waitingTiles.length && !winTile" class="waiting-section">
-				<h2 class="waiting-title">听牌</h2>
 				<view class="waiting-row">
 					<view v-for="wt in waitingTiles" :key="wt.tileId"
 						class="waiting-item"
 						@click="updateWinTile(wt)">
-						<view class="waiting-inner">
-							<view class="waiting-tile">
-								{{getTileDisplay(wt.tileId)}}
-							</view>
-							<view class="waiting-info">
-								<view class="waiting-name">{{wt.tile.name}}</view>
-								<view class="waiting-score">{{wt.totalScore}}番</view>
-							</view>
-						</view>
+						<view class="waiting-score">{{wt.totalScore}}番</view>
+						<image :src="getTileSvgPath(wt.tileId)" class="waiting-icon" mode="aspectFit" />
 					</view>
 				</view>
 			</section>
 
 			<!-- 和牌番数显示区域 -->
-			<section v-if="selectedWinTile" class="win-section" @click="winTile = null">
-				<h2 class="win-title">和牌（点击取消）</h2>
-				<view class="win-row">
-					<view class="win-tile">
-						{{getTileDisplay(selectedWinTile.tileId)}}
-					</view>
-					<view class="win-score">{{selectedWinTile.totalScore}}番</view>
+			<section v-if="selectedWinTile" class="win-section">
+				<view style="display: flex; align-items: center;justify-content: flex-start;margin-bottom: 24rpx;" @click="winTile = null">
+					<h2 class="win-title">和张:</h2>
+					<image :src="getTileSvgPath(selectedWinTile.tileId)" class="win-icon" mode="aspectFit" />
 				</view>
 				<view class="win-fans">
+					<view class="win-score">共 {{ selectedWinTile.totalScore }} 番</view>
 					<span v-for="fan in selectedWinTile.fans" :key="fan.name" class="win-fan-tag">
 						{{fan.name}} {{fan.score}}番
 					</span>
@@ -446,6 +436,9 @@
 				const tile = TILES[tileId];
 				return tile ? tile.name.replace(/[一二三四五六七八九]/g, m => '一二三四五六七八九'.indexOf(m) + 1) : tileId;
 			},
+			getTileSvgPath(tileId) {
+				return `/static/image/tile/${tileId}.svg`;
+			},
 			getMeldTypeText(type) {
 				return type === 'pong' ? '碰' : type === 'chi' ? '吃' : type === 'angang' ? '暗杠' : '明杠';
 			},
@@ -540,6 +533,7 @@
 		font-weight: bold;
 		white-space: nowrap;
 		transition: all 0.2s;
+		padding: 0;
 	}
 
 	.tile-btn-inactive {
@@ -549,6 +543,11 @@
 	.tile-btn-active {
 		border-color: #3b82f6;
 		background-color: #eff6ff;
+	}
+
+	.tile-icon {
+		width: 56rpx;
+		height: 76rpx;
 	}
 
 	.options-section {
@@ -699,7 +698,6 @@
 		display: flex;
 		align-items: center;
 		gap: 8rpx;
-		cursor: pointer;
 	}
 
 	.checkbox-input {
@@ -719,6 +717,7 @@
 	}
 
 	.remaining-title {
+		margin-top: 24rpx;
 		text-align: center;
 		font-weight: 600;
 		color: #374151;
@@ -726,29 +725,28 @@
 	}
 
 	.concealed-row {
-		margin-bottom: 16rpx;
+		
 	}
 
 	.concealed-inner {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8rpx;
+		// gap: 8rpx;
 		min-height: 96rpx;
 	}
 
 	.concealed-tile {
 		width: 64rpx;
 		height: 88rpx;
-		background-color: #dbeafe;
-		border: 2rpx solid #60a5fa;
-		border-radius: 8rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 36rpx;
-		font-weight: bold;
-		cursor: pointer;
 		transition: background-color 0.2s;
+	}
+
+	.concealed-icon {
+		width: 52rpx;
+		height: 72rpx;
 	}
 
 	.meld-row {
@@ -764,19 +762,16 @@
 		gap: 8rpx;
 		border-radius: 16rpx;
 		padding: 8rpx;
-		cursor: pointer;
 		transition: all 0.2s;
 		position: relative;
 	}
 
 	.meld-group-angang {
-		background-color: #dcfce7;
-		border: 4rpx solid #4ade80;
+		
 	}
 
 	.meld-group-other {
-		background-color: #fef9c3;
-		border: 4rpx solid #facc15;
+
 	}
 
 	.meld-tile {
@@ -786,8 +781,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 32rpx;
-		font-weight: bold;
+	}
+
+	.meld-icon {
+		width: 44rpx;
+		height: 68rpx;
 	}
 
 	.meld-tile-angang {
@@ -814,10 +812,10 @@
 	}
 
 	.waiting-section {
-		background-color: #ffffff;
-		border-radius: 16rpx;
-		box-shadow: 0 8rpx 12rpx -2rpx rgba(0, 0, 0, 0.1);
-		padding: 32rpx;
+		// background-color: #ffffff;
+		// border-radius: 16rpx;
+		// box-shadow: 0 8rpx 12rpx -2rpx rgba(0, 0, 0, 0.1);
+		// padding: 32rpx;
 		margin-bottom: 48rpx;
 	}
 
@@ -832,43 +830,20 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 16rpx;
+		justify-content: center;
 	}
 
 	.waiting-item {
-		background-color: #faf5ff;
-		border: 4rpx solid #c084fc;
-		border-radius: 16rpx;
-		padding: 16rpx;
-		cursor: pointer;
-		transition: background-color 0.2s;
-	}
-
-	.waiting-inner {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
+		justify-content: center;
 		gap: 16rpx;
 	}
 
-	.waiting-tile {
-		width: 80rpx;
-		height: 112rpx;
-		background-color: #f3e8ff;
-		border: 2rpx solid #e9d5ff;
-		border-radius: 8rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 40rpx;
-		font-weight: bold;
-	}
-
-	.waiting-info {
-		font-size: 28rpx;
-	}
-
-	.waiting-name {
-		font-weight: bold;
-		color: #7c3aed;
+	.waiting-icon {
+		width: 68rpx;
+		height: 96rpx;
 	}
 
 	.waiting-score {
@@ -876,20 +851,14 @@
 	}
 
 	.win-section {
-		background-color: #ffffff;
-		border-radius: 16rpx;
-		box-shadow: 0 8rpx 12rpx -2rpx rgba(0, 0, 0, 0.1);
-		padding: 32rpx;
 		margin-bottom: 48rpx;
-		cursor: pointer;
-		transition: background-color 0.2s;
 	}
 
 	.win-title {
 		font-size: 36rpx;
 		font-weight: bold;
 		color: #1f2937;
-		margin-bottom: 24rpx;
+		margin-right: 24rpx;
 	}
 
 	.win-row {
@@ -899,28 +868,22 @@
 		margin-bottom: 32rpx;
 	}
 
-	.win-tile {
-		width: 128rpx;
-		height: 160rpx;
-		background-color: #dcfce7;
-		border: 4rpx solid #22c55e;
-		border-radius: 16rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 48rpx;
-		font-weight: bold;
+	.win-icon {
+		width: 52rpx;
+		height: 72rpx;
 	}
 
 	.win-score {
-		font-size: 60rpx;
+		font-size: 32rpx;
 		font-weight: bold;
-		color: #ca8a04;
+		// color: #ca8a04;
 	}
 
 	.win-fans {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 		gap: 16rpx;
 	}
 

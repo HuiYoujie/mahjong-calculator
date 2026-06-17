@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="160" viewBox="0 0 120 160">
-  <rect x="5" y="3" width="110" height="154" rx="7" fill="#fbfbfb" stroke="#2b2b2b" stroke-width="2"/>
-  <rect x="8" y="7" width="104" height="146" rx="5" fill="none" stroke="#d8d8d8" stroke-width="0.8" opacity=".55"/>
-  <text x="60" y="58" font-family="Noto Serif CJK SC, SimSun, serif" font-size="44" font-weight="700" text-anchor="middle" fill="#1f2aa8" stroke="#1f2aa8" stroke-width="1.2" transform="rotate(-2 60 58)">七</text>
-  <text x="60" y="114" font-family="Noto Serif CJK SC, SimSun, serif" font-size="48" font-weight="700" text-anchor="middle" fill="#d7192d" stroke="#d7192d" stroke-width="1.1" transform="rotate(3 60 114)">萬</text>
-</svg>

@@ -693,9 +693,16 @@ class MahjongAnalyzer {
         }
 
         // 四暗刻
-        const anPongs = allSets.filter(s =>
-            (s.type === 'pong' && !this.melds.includes(s)) || s.type === 'angang'
-        );
+        const anPongs = allSets.filter(s => {
+            if (s.type === 'angang') return true;
+            if (s.type === 'pong' && !this.melds.includes(s)) {
+                if (!this.conditions.isSelfDrawn && this.winTile && s.tiles.includes(this.winTile)) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        });
         if (anPongs.length === 4) {
             fans.push({ name: '四暗刻', score: 64 });
         }
@@ -823,10 +830,17 @@ class MahjongAnalyzer {
         }
 
         // 三暗刻
-        const anPongs = allSets.filter(s =>
-            (s.type === 'pong' && !this.melds.includes(s)) || s.type === 'angang'
-        );
-        if (anPongs.length === 3) {
+        const anPongs3 = allSets.filter(s => {
+            if (s.type === 'angang') return true;
+            if (s.type === 'pong' && !this.melds.includes(s)) {
+                if (!this.conditions.isSelfDrawn && this.winTile && s.tiles.includes(this.winTile)) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        });
+        if (anPongs3.length === 3) {
             fans.push({ name: '三暗刻', score: 16 });
         }
 

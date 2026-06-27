@@ -1,9 +1,16 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/fanlist/fanlist",
+			"style": {
+				"navigationBarTitleText": "番表",
+                "backgroundColor": "#f5f5f5"
 			}
 		}
 	],
@@ -12,6 +19,26 @@
 		"navigationBarTitleText": "mahjong",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3b82f6",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/index.png",
+				"selectedIconPath": "static/index-active.png"
+			},
+			{
+				"pagePath": "pages/fanlist/fanlist",
+				"text": "番表",
+				"iconPath": "static/fanlist.png",
+				"selectedIconPath": "static/fanlist-active.png"
+			}
+		]
 	},
 	"uniIdRouter": {}
 }

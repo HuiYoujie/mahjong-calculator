@@ -830,7 +830,7 @@ class MahjongAnalyzer {
         }
 
         // 三暗刻
-        const anPongs3 = allSets.filter(s => {
+        const anPongs = allSets.filter(s => {
             if (s.type === 'angang') return true;
             if (s.type === 'pong' && !this.melds.includes(s)) {
                 if (!this.conditions.isSelfDrawn && this.winTile && s.tiles.includes(this.winTile)) {
@@ -840,7 +840,7 @@ class MahjongAnalyzer {
             }
             return false;
         });
-        if (anPongs3.length === 3) {
+        if (anPongs.length === 3) {
             fans.push({ name: '三暗刻', score: 16 });
         }
 

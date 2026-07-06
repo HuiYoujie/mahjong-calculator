@@ -64,7 +64,7 @@ const FANS_DATA = [
     { id: 'sansesanjiegao', name: '三色三节高', score: 8, desc: '3色递增刻子' },
     { id: 'wufanhe', name: '无番和', score: 8, desc: '和牌后无番种' },
 
-    // 6番 (种)
+    // 6番 (7种)
     { id: 'pengpenghe', name: '碰碰和', score: 6, desc: '4副刻子' },
     { id: 'hunyise', name: '混一色', score: 6, desc: '序数牌+字牌' },
     { id: 'sansesanbugao', name: '三色三步高', score: 6, desc: '3副递增顺子' },
@@ -80,7 +80,7 @@ const FANS_DATA = [
     { id: 'quandaiyao', name: '全带幺', score: 4, desc: '每副牌都有1、9或字牌' },
     { id: 'buqiuren', name: '不求人', score: 4, desc: '门清自摸' },
     { id: 'shuangminggang', name: '双明杠', score: 4, desc: '2副明杠' },
-    { id: 'hujuezhang', name: '和绝张', score: 4, desc: '和第4张牌' },
+    { id: 'hujuezhang', name: '和绝张', score: 4, desc: '和第4张牌，且手牌中没有' },
 
     // 2番 (10种)
     { id: 'jianke', name: '箭刻', score: 2, desc: '中/发/白刻子' },

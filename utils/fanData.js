@@ -6,7 +6,7 @@ export const FAN_DATA = [
     name: '大四喜',
     score: 88,
     description: '由东南西北四风刻组成的和牌',
-    exclusions: ['圈风刻', '门风刻', '三风刻', '碰碰和'],
+    exclusions: ['圈风刻', '门风刻', '三风刻', '碰碰和', '幺九刻'],
     exampleTiles: {
       concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'north', 'north', 'north', 'b1', 'b1'],
       melds: [],
@@ -39,7 +39,7 @@ export const FAN_DATA = [
     name: '九莲宝灯',
     score: 88,
     description: '同一种花色由1112345678999组成，再和一张该种花色的任意牌',
-    exclusions: ['清一色', '门前清'],
+    exclusions: ['清一色', '门前清', '幺九刻'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 'w9', 'w9', 'w1'],
       melds: [],
@@ -50,7 +50,7 @@ export const FAN_DATA = [
     name: '四杠',
     score: 88,
     description: '和牌中包含四个杠',
-    exclusions: ['碰碰和'],
+    exclusions: ['碰碰和', '三杠', '双明杠', '明暗杠', '暗杠', '明杠'],
     exampleTiles: {
       concealed: ['b1', 'b1'],
       melds: [
@@ -66,7 +66,7 @@ export const FAN_DATA = [
     name: '连七对',
     score: 88,
     description: '一种花色相连的七个对子',
-    exclusions: ['清一色', '单钓将', '不求人', '门前清', '七对', '平和', '一般高', '连六'],
+    exclusions: ['七对', '清一色', '单钓将', '不求人', '门前清', '平和', '一般高', '连六'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w2', 'w2', 'w3', 'w3', 'w4', 'w4', 'w5', 'w5', 'w6', 'w6', 'w7', 'w7'],
       melds: [],
@@ -89,7 +89,7 @@ export const FAN_DATA = [
     name: '清幺九',
     score: 64,
     description: '由序数牌一和九组成的和牌',
-    exclusions: ['碰碰和', '三同刻', '双同刻', '无字', '全带幺', '幺九刻'],
+    exclusions: ['混幺九', '碰碰和', '双同刻', '无字', '全带幺', '幺九刻'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w1', 'w9', 'w9', 'w9', 't1', 't1', 't1', 't9', 't9', 't9', 'b1', 'b1'],
       melds: [],
@@ -122,7 +122,7 @@ export const FAN_DATA = [
     name: '字一色',
     score: 64,
     description: '全部由字牌组成的和牌',
-    exclusions: ['碰碰和', '全带幺'],
+    exclusions: ['碰碰和', '全带幺', '幺九刻'],
     exampleTiles: {
       concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'zhong', 'zhong', 'zhong', 'fa', 'fa'],
       melds: [],
@@ -133,7 +133,7 @@ export const FAN_DATA = [
     name: '四暗刻',
     score: 64,
     description: '和牌中有四个暗刻',
-    exclusions: ['门前清', '碰碰和'],
+    exclusions: ['三暗刻', '双暗刻', '碰碰和', '门前清'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w1', 'w9', 'w9', 'w9', 't5', 't5', 't5', 'b3', 'b3', 'b3', 'b5', 'b5'],
       melds: [],
@@ -144,7 +144,7 @@ export const FAN_DATA = [
     name: '一色双龙会',
     score: 64,
     description: '同一种花色123789各两对，加一对5作将',
-    exclusions: ['平和', '七对', '清一色', '老少副', '一般高'],
+    exclusions: ['七对', '清一色', '平和', '老少副', '一般高', '无字'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w2', 'w2', 'w3', 'w3', 'w5', 'w5', 'w7', 'w7', 'w8', 'w8', 'w9', 'w9'],
       melds: [],
@@ -181,7 +181,7 @@ export const FAN_DATA = [
     name: '一色四步高',
     score: 32,
     description: '一种花色四副依次递增一或两的顺子',
-    exclusions: [],
+    exclusions: ['连六', '老少副'],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w3', 'w4', 'w5', 'w5', 'w6', 'w7', 'w7', 'w8', 'w9', 't1', 't1'],
       melds: [],
@@ -321,7 +321,7 @@ export const FAN_DATA = [
     name: '清龙',
     score: 16,
     description: '同一种花色的123、456、789三副顺子',
-    exclusions: ['老少副', '连六'],
+    exclusions: ['连六', '老少副'],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 't1', 't1', 't1', 't9', 't9'],
       melds: [],
@@ -487,59 +487,9 @@ export const FAN_DATA = [
     }
   },
   {
-    name: '妙手回春',
-    score: 8,
-    description: '自摸最后一张牌和牌',
-    exclusions: ['自摸'],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b5', 'b5'],
-      melds: [],
-      pair: ''
-    },
-    note: '仅限自摸时计此番'
-  },
-  {
-    name: '杠上开花',
-    score: 8,
-    description: '杠后摸牌和',
-    exclusions: ['自摸'],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b1'],
-      melds: [
-        { type: 'minggang', tiles: ['w2', 'w2', 'w2', 'w2'] },
-      ],
-      pair: ''
-    },
-    note: '杠后摸牌自摸和牌时计此番'
-  },
-  {
-    name: '海底捞月',
-    score: 8,
-    description: '摸最后一张牌点和',
-    exclusions: [],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b5', 'b5'],
-      melds: [],
-      pair: ''
-    },
-    note: '仅限点和时计此番'
-  },
-  {
-    name: '抢杠和',
-    score: 8,
-    description: '别人加杠时抢和',
-    exclusions: ['和绝张'],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b5', 'b5'],
-      melds: [],
-      pair: ''
-    },
-    note: '他人加杠时抢和'
-  },
-  {
     name: '无番和',
     score: 8,
-    description: '和牌后数不出任何番种',
+    description: '和牌后数没有番种',
     exclusions: [],
     exampleTiles: {
       concealed: ['east', 'east', 'w2', 'w3', 'w4', 't4', 't5', 't6', 'b7', 'b8', 'b9'],
@@ -549,7 +499,30 @@ export const FAN_DATA = [
       }],
       pair: ''
     },
-    note: '和牌后数不出任何番种时计此番'
+  },
+  {
+    name: '妙手回春',
+    score: 8,
+    description: '自摸最后一张牌和牌',
+    exclusions: ['自摸'],
+  },
+  {
+    name: '海底捞月',
+    score: 8,
+    description: '最后一张牌点和',
+    exclusions: [],
+  },
+  {
+    name: '杠上开花',
+    score: 8,
+    description: '杠后摸牌自摸和牌',
+    exclusions: ['自摸'],
+  },
+  {
+    name: '抢杠和',
+    score: 8,
+    description: '别人加杠时抢和',
+    exclusions: ['和绝张'],
   },
 
   // ==================== 6番 ====================
@@ -708,7 +681,6 @@ export const FAN_DATA = [
       melds: [],
       pair: ''
     },
-    note: '别人打出的最后一张牌'
   },
 
   // ==================== 2番 ====================
@@ -823,7 +795,6 @@ export const FAN_DATA = [
       melds: [],
       pair: ''
     },
-    note: '仅限点和时计此番'
   },
 
   // ==================== 1番 ====================
@@ -874,108 +845,65 @@ export const FAN_DATA = [
   {
     name: '幺九刻',
     score: 1,
-    description: '有一组幺九刻子',
+    description: '有一组幺九刻子或非圈风门风的字组成的刻或杠',
     exclusions: [],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b2', 'b3', 'b4', 'b5', 'b5'],
-      melds: [],
-      pair: ''
-    }
   },
   {
     name: '明杠',
     score: 1,
-    description: '有一个明杠',
+    description: '有一个明杠，补杠也是明杠',
     exclusions: [],
-    exampleTiles: {
-      concealed: ['w5', 'w5', 'w5', 't1', 't2', 't3', 'b2', 'b3', 'b4', 'b5', 'b5'],
-      melds: [
-        { type: 'minggang', tiles: ['w1', 'w1', 'w1', 'w1'] }
-      ],
-      pair: ''
-    }
   },
   {
     name: '缺一门',
     score: 1,
-    description: '和牌中缺少一种花色',
+    description: '和牌中缺少一种花色数字牌',
     exclusions: [],
-    exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 't1', 't2', 't3', 't3', 't3'],
-      melds: [],
-      pair: ''
-    }
   },
   {
     name: '无字',
     score: 1,
     description: '和牌中没有字牌',
     exclusions: [],
-    exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b3', 'b3'],
-      melds: [],
-      pair: ''
-    }
   },
   {
     name: '自摸',
     score: 1,
-    description: '自己摸牌和',
+    description: '自己摸牌和，门清状态下自摸计不求人',
     exclusions: [],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b3', 'b3'],
-      melds: [],
-      pair: ''
-    },
-    note: '门清状态下自摸不计此番'
   },
   {
     name: '边张',
     score: 1,
-    description: '和123或789的3、7',
+    description: '和123或789的3、7，与单钓将、坎张不同时计',
     exclusions: [],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b1', 'b8', 'b9', 'b7'],
       melds: [],
       pair: ''
     },
-    note: '与单钓将、坎张不同时计'
   },
   {
     name: '坎张',
     score: 1,
-    description: '和两张之间的牌',
+    description: '和两张之间的牌，与边张、单钓将不同时计',
     exclusions: [],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b1', 'b7', 'b9', 'b8'],
       melds: [],
       pair: ''
     },
-    note: '与边张、单钓将不同时计'
   },
   {
     name: '单钓将',
     score: 1,
-    description: '钓将和牌',
-    exclusions: ['门前清'],
-    exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b4', 'b5', 'b6', 'b1', 'b1'],
-      melds: [],
-      pair: ''
-    },
-    note: '与边张、坎张不同时计'
+    description: '单钓将和牌，和且和这一张牌，与边张、坎张不同时计',
+    exclusions: [],
   },
   {
     name: '花牌',
     score: 1,
     description: '每有一张花牌加一番',
-    exclusions: [],
-    exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b3', 'b3'],
-      melds: [],
-      pair: ''
-    },
-    note: '花牌数量根据实际和牌时的花牌数计算'
   },
 ];
 

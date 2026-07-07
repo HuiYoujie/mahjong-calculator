@@ -12,7 +12,7 @@
                 <text v-if="searchText" class="search-clear" @click="clearSearch">×</text>
             </view>
             <!-- 番数筛选 -->
-			<view class="filter-bar">
+            <view class="filter-bar">
                 <view 
                     v-for="score in scoreFilters" 
                     :key="score.value"
@@ -22,8 +22,9 @@
                 >
                     {{ score.label }}
                 </view>
-			</view>
+            </view>
         </view>
+
 
 		<!-- 番型列表 -->
 		<scroll-view scroll-y class="fan-list">
@@ -36,8 +37,10 @@
 				:key="fan.name"
 				class="fan-card"
 				:class="{ 'fan-card-expanded': expandedFan === fan.name }"
+				@click="toggleFan(fan.name)"
 			>
-				<view class="fan-header" @click="toggleFan(fan.name)">
+				<!-- 标题行 -->
+				<view class="fan-header">
                     <text class="fan-name">{{ fan.name }}</text>
                     <view class="fan-score-badge">
                         <text class="fan-score">{{ fan.score }}</text>
@@ -45,13 +48,16 @@
                     </view>
 				</view>
 
+				<!-- 展开内容 -->
 				<view v-if="expandedFan === fan.name" class="fan-content">
 					<!-- 描述 -->
 					<view class="fan-section">
 						<text class="fan-description">{{ fan.description }}</text>
 					</view>
-					<view v-if="fan.exclusions && fan.exclusions.length > 0" class="fan-section exclude">
-						<text class="section-label">不计：</text>
+
+					<!-- 不计规则 -->
+					<view v-if="fan.exclusions && fan.exclusions.length > 0" class="fan-section">
+						<text class="section-label">不计番型：</text>
 						<view class="exclusion-tags">
 							<text 
 								v-for="ex in fan.exclusions" 
@@ -63,22 +69,51 @@
 						</view>
 					</view>
 
-					<view class="fan-section" v-if="fan.displayGroups.length">
+					<!-- 备注 -->
+					<view v-if="fan.note" class="fan-section">
+						<text class="section-label">备注：</text>
+						<text class="fan-note">{{ fan.note }}</text>
+					</view>
+
+					<!-- 示例牌型 -->
+					<view class="fan-section">
 						<text class="section-label">示例牌型：</text>
 						<view class="example-tiles">
-							<view class="tile-groups">
+							<!-- 副露 -->
+							<view v-if="fan.exampleTiles.melds && fan.exampleTiles.melds.length > 0" class="meld-tiles">
 								<view 
-									v-for="(group, groupIdx) in fan.displayGroups" 
-									:key="'group-' + groupIdx"
-									class="tile-group"
-									:class="'tile-group-' + group.kind"
+									v-for="(meld, meldIdx) in fan.exampleTiles.melds" 
+									:key="'meld-' + meldIdx"
+									class="meld-group"
 								>
-									<view
-										v-for="(tile, tileIdx) in group.tiles" 
-										:key="'tile-' + groupIdx + '-' + tileIdx"
+									<view 
+										v-for="(tile, tileIdx) in meld.tiles" 
+										:key="'meld-tile-' + meldIdx + '-' + tileIdx"
+										class="example-tile meld-tile"
 									>
 										<image :src="getTileSvgPath(tile)" class="tile-icon" mode="aspectFit" />
 									</view>
+									<view class="meld-type-badge">
+										{{ getMeldTypeText(meld.type) }}
+									</view>
+								</view>
+							</view>
+							
+							<!-- 手牌 -->
+							<view class="concealed-tiles">
+								<view 
+									v-for="(tile, tileIdx) in fan.exampleTiles.concealed" 
+									:key="'concealed-' + tileIdx"
+									class="example-tile concealed-tile"
+								>
+									<image :src="getTileSvgPath(tile)" class="tile-icon" mode="aspectFit" />
+								</view>
+								<!-- 将牌 -->
+								<view 
+									v-if="fan.exampleTiles.pair"
+									class="example-tile pair-tile"
+								>
+									<image :src="getTileSvgPath(fan.exampleTiles.pair)" class="tile-icon" mode="aspectFit" />
 								</view>
 							</view>
 						</view>
@@ -114,118 +149,37 @@ export default {
 				{ label: '2番', value: 2 },
 				{ label: '1番', value: 1 }
 			],
-			allFans: []
+			allFans: FAN_DATA
 		};
-	},
-	created() {
-		this.allFans = this.prepareFans(FAN_DATA);
 	},
 	computed: {
 		filteredFans() {
-			let fans = [...this.allFans];
+			let fans = this.allFans;
 			
+			// 按番数筛选
 			if (this.selectedScore !== 'all') {
 				fans = fans.filter(f => f.score === this.selectedScore);
 			}
 			
-			const keyword = this.searchText.trim().toLowerCase();
-			if (keyword) {
-				fans = fans.filter(f => {
-					return f.name.toLowerCase().includes(keyword) ||
-						(f.description || '').toLowerCase().includes(keyword) ||
-						(f.note || '').toLowerCase().includes(keyword);
-				});
+			// 按名称搜索
+			if (this.searchText) {
+				const keyword = this.searchText.toLowerCase();
+				fans = fans.filter(f => f.name.toLowerCase().includes(keyword));
 			}
 			
-			return fans.sort((a, b) => {
-				if (b.score !== a.score) return b.score - a.score;
-				return a.originIndex - b.originIndex;
-			});
+			// 按番数降序排序
+			return fans.sort((a, b) => b.score - a.score);
 		}
 	},
 	methods: {
-		prepareFans(fans) {
-			const seen = new Set();
-			return fans.reduce((list, fan, index) => {
-				const key = `${fan.name}-${fan.score}`;
-				if (seen.has(key)) return list;
-				seen.add(key);
-
-				list.push({
-					...fan,
-					originIndex: index,
-					displayGroups: this.buildDisplayGroups(fan),
-				});
-				return list;
-			}, []);
-		},
-		buildDisplayGroups(fan) {
-			const example = fan.exampleTiles || {};
-			const meldGroups = (example.melds || []).map(meld => ({
-				kind: 'meld',
-				label: this.getMeldTypeText(meld.type),
-				tiles: meld.tiles || []
-			}));
-			const concealed = example.concealed || [];
-			const groups = [...meldGroups];
-
-			if (concealed.length > 0) {
-				groups.push({
-					kind: 'concealed',
-					tiles: concealed
-				});
-			}
-
-			const pairTiles = this.getPairTiles(fan);
-			if (pairTiles.length > 0) {
-				groups.push({
-					kind: 'pair',
-					label: pairTiles.length === 1 ? '和牌' : '将牌',
-					tiles: pairTiles
-				});
-			}
-
-			return groups;
-		},
-		getPairTiles(fan) {
-			const example = fan.exampleTiles || {};
-			const pair = example.pair;
-			if (pair) {
-				const baseCount = (example.concealed || []).length +
-					(example.melds || []).reduce((sum, meld) => sum + (meld.tiles || []).length, 0);
-				return baseCount >= 13 ? [pair] : [pair, pair];
-			}
-
-			return [];
-		},
-		getConcealedLabel(fan) {
-			if (!fan.exampleTiles || !fan.exampleTiles.pair) {
-				return '手牌';
-			}
-			return fan.exampleTiles.melds && fan.exampleTiles.melds.length > 0 ? '暗牌' : '面子';
-		},
-		buildExampleSummary(fan) {
-			const example = fan.exampleTiles || {};
-			const concealedCount = (example.concealed || []).length;
-			const meldCount = (example.melds || []).reduce((sum, meld) => sum + (meld.tiles || []).length, 0);
-			const pairCount = this.getPairTiles(fan).length;
-			const total = concealedCount + meldCount + pairCount;
-			const hasGang = (example.melds || []).some(meld => (meld.tiles || []).length === 4) ||
-				(example.concealed || []).some((tile, index, tiles) => tiles.filter(t => t === tile).length === 4);
-			const target = hasGang ? '含杠牌型可超过 14 张展示' :
-				(total === 14 ? '完整和牌展示' : '核心结构展示');
-
-			return `${total} 张，${target}`;
-		},
 		onSearch() {
-			this.expandedFan = null;
+			// 搜索时会自动触发 computed
 		},
 		clearSearch() {
 			this.searchText = '';
 		},
 		filterByScore(score) {
 			this.selectedScore = score;
-			this.expandedFan = null;
 		},
 		toggleFan(name) {
 			this.expandedFan = this.expandedFan === name ? null : name;
@@ -250,6 +204,7 @@ export default {
 .app {
 	min-height: 100vh;
 	background-color: #f5f5f5;
+	// padding-bottom: env(safe-area-inset-bottom);
 }
 
 .sticky {
@@ -353,6 +308,7 @@ export default {
 .fan-score-badge {
 	display: flex;
 	align-items: baseline;
+	// background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background-color: #667eea;
 	color: #fff;
 	padding: 6rpx 12rpx;
@@ -383,19 +339,11 @@ export default {
 	margin-top: 16rpx;
 }
 
-.exclude {
-	display: inline-flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: flex-start;
-}
-
 .section-label {
-	font-size: 22rpx;
+	font-size: 24rpx;
 	color: #666;
 	display: block;
-	// margin-bottom: 8rpx;
-	line-height: 44rpx;
+	margin-bottom: 8rpx;
 }
 
 .fan-description {
@@ -405,7 +353,7 @@ export default {
 }
 
 .exclusion-tags {
-	display: inline-flex;
+	display: flex;
 	flex-wrap: wrap;
 	gap: 8rpx;
 }
@@ -429,24 +377,43 @@ export default {
 	margin-top: 10rpx;
 }
 
-.tile-groups {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	gap: 18rpx;
-}
-
-.tile-group {
+.meld-tiles {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10rpx;
-	min-width: 0;
-	max-width: 100%;
+	margin-bottom: 10rpx;
+}
+
+.meld-group {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6rpx;
+}
+
+.meld-group .example-tile {
+	margin: 0;
+}
+
+.meld-type-badge {
+	font-size: 18rpx;
+	color: #666;
+	background-color: #f5f5f5;
+	padding: 3rpx 10rpx;
+	border-radius: 8rpx;
+}
+
+.concealed-tiles {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6rpx;
 }
 
 .example-tile {
 	width: 48rpx;
 	height: 66rpx;
+	// background-color: #dbeafe;
+	// border: 2rpx solid #60a5fa;
 	border-radius: 6rpx;
 	display: flex;
 	align-items: center;
@@ -454,8 +421,23 @@ export default {
 	overflow: hidden;
 }
 
+.concealed-tile {
+	// background-color: #fef3c7;
+	// border-color: #fbbf24;
+}
+
+.pair-tile {
+	// background-color: #dcfce7;
+	// border-color: #22c55e;
+}
+
+.meld-tile {
+	// background-color: #fef9c3;
+	// border-color: #facc15;
+}
+
 .tile-icon {
-	width: 48rpx;
-	height: 68rpx;
+	width: 40rpx;
+	height: 58rpx;
 }
 </style>

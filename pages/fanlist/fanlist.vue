@@ -397,7 +397,7 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 28rpx 32rpx;
+	padding: 20rpx 24rpx;
 	cursor: pointer;
     gap: 20rpx;
 }
@@ -451,6 +451,7 @@ export default {
 
 .fan-score-unit {
 	font-size: 20rpx;
+	font-size: 20rpx;
 	margin-left: 4rpx;
 }
 
@@ -477,9 +478,9 @@ export default {
 }
 
 .fan-description {
-	font-size: 28rpx;
+	font-size: 26rpx;
 	color: #333;
-	line-height: 1.6;
+	line-height: 1.45;
 }
 
 .exclusion-tags {
@@ -498,9 +499,9 @@ export default {
 }
 
 .fan-note {
-	font-size: 26rpx;
+	font-size: 24rpx;
 	color: #666;
-	line-height: 1.5;
+	line-height: 1.4;
 	font-style: italic;
 }
 

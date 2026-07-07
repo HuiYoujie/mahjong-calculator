@@ -100,7 +100,7 @@ export const FAN_DATA = [
     name: '小四喜',
     score: 64,
     description: '和牌中有三风刻加一对风牌',
-    exclusions: ['三风刻'],
+    exclusions: ['三风刻', '幺九刻'],
     exampleTiles: {
       concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'north', 'north', 'b2', 'b2', 'b2'],
       melds: [],
@@ -192,7 +192,7 @@ export const FAN_DATA = [
     name: '三杠',
     score: 32,
     description: '和牌中有三个杠',
-    exclusions: [],
+    exclusions: ['明暗杠'],
     exampleTiles: {
       concealed: ['t1', 't1', 't2', 't2', 't2'],
       melds: [
@@ -220,7 +220,7 @@ export const FAN_DATA = [
     name: '七对',
     score: 24,
     description: '和牌由七个对子组成',
-    exclusions: ['单钓将', '不求人', '门前清'],
+    exclusions: ['不求人', '门前清', '单钓将'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w3', 'w3', 'w5', 'w5', 't2', 't2', 't8', 't8', 'b4', 'b4', 'b6', 'b6'],
       melds: [],
@@ -231,7 +231,7 @@ export const FAN_DATA = [
     name: '七星不靠',
     score: 24,
     description: '三种花色的147、258、369和七种字牌中的14张',
-    exclusions: ['全不靠', '五门齐', '单钓将', '不求人', '门前清'],
+    exclusions: ['全不靠', '五门齐', '不求人', '门前清', '单钓将'],
     exampleTiles: {
       concealed: ['east', 'south', 'west', 'north', 'zhong', 'w1', 'w4', 'w7', 't2', 't5', 't8', 'b3', 'b6', 'b9'],
       melds: [],
@@ -286,7 +286,7 @@ export const FAN_DATA = [
     name: '全大',
     score: 24,
     description: '全部由789序数牌组成',
-    exclusions: ['无字', '大于五'],
+    exclusions: ['大于五', '无字'],
     exampleTiles: {
       concealed: ['w9', 'w9', 'w9', 'w7', 'w8', 'w9', 't7', 't8', 't9', 'b7', 'b8', 'b9', 'b9', 'b9'],
       melds: [],
@@ -297,7 +297,7 @@ export const FAN_DATA = [
     name: '全中',
     score: 24,
     description: '全部由456序数牌组成',
-    exclusions: ['无字', '断幺'],
+    exclusions: ['断幺', '无字'],
     exampleTiles: {
       concealed: ['w4', 'w4', 'w4', 'w4', 'w5', 'w6', 't4', 't5', 't6', 'b4', 'b5', 'b6', 'b6', 'b6'],
       melds: [],
@@ -308,7 +308,7 @@ export const FAN_DATA = [
     name: '全小',
     score: 24,
     description: '全部由123序数牌组成',
-    exclusions: ['无字'],
+    exclusions: ['小于五', '无字'],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w1', 'w2', 'w3', 't1', 't2', 't3', 'b1', 'b1', 'b1', 'b2', 'b2'],
       melds: [],
@@ -332,7 +332,7 @@ export const FAN_DATA = [
     name: '三色双龙会',
     score: 16,
     description: '万条饼各有123789顺子，加一对5作将',
-    exclusions: ['喜相逢', '老少副', '无字', '平和'],
+    exclusions: ['平和', '喜相逢', '老少副', '无字'],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w7', 'w8', 'w9', 't1', 't2', 't3', 't7', 't8', 't9', 'b5', 'b5'],
       melds: [],
@@ -354,7 +354,7 @@ export const FAN_DATA = [
     name: '三同刻',
     score: 16,
     description: '三种花色同一数字的刻子',
-    exclusions: [],
+    exclusions: ['双同刻'],
     exampleTiles: {
       concealed: ['w2', 'w2', 'w2', 't2', 't2', 't2', 'b2', 'b2', 'b2', 'b5', 'b5', 'b5', 'b9', 'b9'],
       melds: [],
@@ -365,7 +365,7 @@ export const FAN_DATA = [
     name: '三暗刻',
     score: 16,
     description: '和牌中有三个暗刻',
-    exclusions: [],
+    exclusions: ['双暗刻'],
     exampleTiles: {
       concealed: ['w2', 'w2', 'w2', 'w5', 'w5', 'w5', 't7', 't7', 't7', 'b1', 'b2', 'b3', 'b4', 'b4'],
       melds: [],
@@ -389,7 +389,7 @@ export const FAN_DATA = [
     name: '全不靠',
     score: 12,
     description: '三种花色的147、258、369和七种字牌中的14张，两边都不齐',
-    exclusions: ['五门齐', '单钓将', '不求人', '门前清'],
+    exclusions: ['五门齐', '不求人', '门前清', '单钓将'],
     exampleTiles: {
       concealed: ['east', 'south', 'west', 'north', 'zhong', 'fa', 'w4', 'w7', 't2', 't5', 't8', 'b3', 'b6', 'b9',],
       melds: [],
@@ -568,7 +568,7 @@ export const FAN_DATA = [
     name: '五门齐',
     score: 6,
     description: '万条饼风箭三种花色齐全',
-    exclusions: [],
+    exclusions: ['幺九刻'],
     exampleTiles: {
       concealed: ['w1', 'w1', 'w1', 't2', 't2', 't2', 'b3', 'b3', 'b3', 'east', 'east', 'east', 'zhong', 'zhong'],
       melds: [],
@@ -595,7 +595,7 @@ export const FAN_DATA = [
     name: '双箭刻',
     score: 6,
     description: '有两组箭刻',
-    exclusions: [],
+    exclusions: ['箭刻'],
     exampleTiles: {
       concealed: ['zhong', 'zhong', 'zhong', 'fa', 'fa', 'fa', 'w5', 'w5', 'w5', 't1', 't1', 't1', 'b5', 'b5'],
       melds: [],
@@ -606,7 +606,7 @@ export const FAN_DATA = [
     name: '双暗杠',
     score: 6,
     description: '有两个暗杠',
-    exclusions: [],
+    exclusions: ['暗杠', '双暗刻'],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't5'],
       melds: [
@@ -664,7 +664,7 @@ export const FAN_DATA = [
     name: '不求人',
     score: 4,
     description: '没有吃碰杠，自摸和',
-    exclusions: ['自摸', '门前清'],
+    exclusions: ['门前清', '自摸'],
     exampleTiles: {
       concealed: ['east', 'east', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't1', 't2', 't3', 'b1', 'b2', 'b3'],
       melds: [],
@@ -721,7 +721,7 @@ export const FAN_DATA = [
     name: '平和',
     score: 2,
     description: '全部由顺子组成，和牌有一对将',
-    exclusions: [],
+    exclusions: ['无字'],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't6', 't7', 'b2', 'b3', 'b4', 'b9', 'b9'],
       melds: [],
@@ -756,7 +756,7 @@ export const FAN_DATA = [
     name: '断幺',
     score: 2,
     description: '和牌中没有幺九牌',
-    exclusions: [],
+    exclusions: ['无字'],
     exampleTiles: {
       concealed: ['w2', 'w3', 'w4', 'w5', 'w6', 'w7', 't3', 't4', 't5', 'b4', 'b5', 'b6', 'b7', 'b7'],
       melds: [],
@@ -789,7 +789,7 @@ export const FAN_DATA = [
     name: '门前清',
     score: 2,
     description: '没有吃碰杠，门清点和',
-    exclusions: ['单钓将'],
+    exclusions: [],
     exampleTiles: {
       concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'east', 'east'],
       melds: [],

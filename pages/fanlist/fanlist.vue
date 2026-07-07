@@ -215,45 +215,45 @@ export default {
 }
 
 .search-bar {
-	padding: 24rpx 32rpx;
+	padding: 16rpx 24rpx;
 	display: flex;
 	align-items: center;
-	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
 }
 
 .search-input {
 	flex: 1;
-	height: 72rpx;
+	height: 60rpx;
 	background-color: #f5f5f5;
-	border-radius: 36rpx;
-	padding: 0 24rpx;
-	font-size: 28rpx;
+	border-radius: 30rpx;
+	padding: 0 20rpx;
+	font-size: 26rpx;
 }
 
 .search-clear {
-	width: 48rpx;
-	height: 48rpx;
+	width: 40rpx;
+	height: 40rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 40rpx;
+	font-size: 34rpx;
 	color: #999;
-	margin-left: 16rpx;
+	margin-left: 12rpx;
 }
 
 .filter-bar {
     display: flex;
     flex-wrap: wrap;
-    gap: 16rpx;
+    gap: 10rpx;
 	background-color: #fff;
-	padding: 0 24rpx 24rpx;
+	padding: 0 20rpx 16rpx;
 	white-space: nowrap;
 }
 
 .filter-btn {
-	padding: 8rpx 16rpx;
-	border-radius: 32rpx;
-	font-size: 24rpx;
+	padding: 6rpx 12rpx;
+	border-radius: 28rpx;
+	font-size: 22rpx;
 	background-color: #f0f0f0;
 	color: #666;
 	transition: all 0.2s;
@@ -267,40 +267,40 @@ export default {
 
 .fan-list {
     box-sizing: border-box;
-	padding: 24rpx;
+	padding: 16rpx;
 }
 
 .empty-state {
 	text-align: center;
-	padding: 120rpx 0;
+	padding: 96rpx 0;
 	color: #999;
-	font-size: 28rpx;
+	font-size: 26rpx;
 }
 
 .fan-card {
 	background-color: #fff;
-	border-radius: 16rpx;
-	margin-bottom: 24rpx;
+	border-radius: 12rpx;
+	margin-bottom: 16rpx;
 	overflow: hidden;
-	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 	transition: all 0.3s;
 }
 
 .fan-card-expanded {
-	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
+	box-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.1);
 }
 
 .fan-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 28rpx 32rpx;
+	padding: 20rpx 24rpx;
 	cursor: pointer;
-    gap: 20rpx;
+    gap: 12rpx;
 }
 
 .fan-name {
-	font-size: 32rpx;
+	font-size: 30rpx;
 	font-weight: bold;
 	color: #1f2937;
 }
@@ -311,17 +311,17 @@ export default {
 	// background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     background-color: #667eea;
 	color: #fff;
-	padding: 8rpx 16rpx;
-	border-radius: 40rpx;
+	padding: 6rpx 12rpx;
+	border-radius: 32rpx;
 }
 
 .fan-score {
-	font-size: 24rpx;
+	font-size: 23rpx;
 	font-weight: bold;
 }
 
 .fan-score-unit {
-	font-size: 22rpx;
+	font-size: 20rpx;
 	margin-left: 4rpx;
 }
 
@@ -331,64 +331,64 @@ export default {
 }
 
 .fan-content {
-	padding: 0 32rpx 32rpx;
+	padding: 0 24rpx 24rpx;
 	border-top: 1rpx solid #f0f0f0;
 }
 
 .fan-section {
-	margin-top: 24rpx;
+	margin-top: 16rpx;
 }
 
 .section-label {
-	font-size: 26rpx;
+	font-size: 24rpx;
 	color: #666;
 	display: block;
-	margin-bottom: 12rpx;
+	margin-bottom: 8rpx;
 }
 
 .fan-description {
-	font-size: 28rpx;
+	font-size: 26rpx;
 	color: #333;
-	line-height: 1.6;
+	line-height: 1.45;
 }
 
 .exclusion-tags {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12rpx;
+	gap: 8rpx;
 }
 
 .exclusion-tag {
-	padding: 8rpx 16rpx;
+	padding: 6rpx 12rpx;
 	background-color: #fef2f2;
 	color: #dc2626;
 	border-radius: 8rpx;
-	font-size: 24rpx;
+	font-size: 22rpx;
 }
 
 .fan-note {
-	font-size: 26rpx;
+	font-size: 24rpx;
 	color: #666;
-	line-height: 1.5;
+	line-height: 1.4;
 	font-style: italic;
 }
 
 .example-tiles {
-	margin-top: 16rpx;
+	margin-top: 10rpx;
 }
 
 .meld-tiles {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 16rpx;
-	margin-bottom: 16rpx;
+	gap: 10rpx;
+	margin-bottom: 10rpx;
 }
 
 .meld-group {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 8rpx;
+	gap: 6rpx;
 }
 
 .meld-group .example-tile {
@@ -396,25 +396,25 @@ export default {
 }
 
 .meld-type-badge {
-	font-size: 20rpx;
+	font-size: 18rpx;
 	color: #666;
 	background-color: #f5f5f5;
-	padding: 4rpx 12rpx;
+	padding: 3rpx 10rpx;
 	border-radius: 8rpx;
 }
 
 .concealed-tiles {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8rpx;
+	gap: 6rpx;
 }
 
 .example-tile {
-	width: 52rpx;
-	height: 72rpx;
+	width: 48rpx;
+	height: 66rpx;
 	// background-color: #dbeafe;
 	// border: 2rpx solid #60a5fa;
-	border-radius: 8rpx;
+	border-radius: 6rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -437,7 +437,7 @@ export default {
 }
 
 .tile-icon {
-	width: 44rpx;
-	height: 64rpx;
+	width: 40rpx;
+	height: 58rpx;
 }
 </style>

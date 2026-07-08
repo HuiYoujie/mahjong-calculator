@@ -28,22 +28,87 @@ function getMeldTypeText(type) {
   return ({ chi: '吃', pong: '碰', minggang: '明杠', angang: '暗杠' })[type] || type;
 }
 
+function getPairTiles(fan) {
+  const example = fan.exampleTiles || {};
+  const pair = example.pair;
+  if (pair) {
+    const baseCount = (example.concealed || []).length +
+      (example.melds || []).reduce((sum, meld) => sum + (meld.tiles || []).length, 0);
+    return baseCount >= 13 ? [pair] : [pair, pair];
+  }
+
+  return [];
+}
+
+function buildDisplayGroups(fan) {
+  const example = fan.exampleTiles || {};
+  const meldGroups = (example.melds || []).map(meld => ({
+    kind: 'meld',
+    label: getMeldTypeText(meld.type),
+    tiles: meld.tiles || []
+  }));
+  const concealed = example.concealed || [];
+  const groups = [...meldGroups];
+
+  if (concealed.length > 0) {
+    groups.push({
+      kind: 'concealed',
+      tiles: concealed
+    });
+  }
+
+  const pairTiles = getPairTiles(fan);
+  if (pairTiles.length > 0) {
+    groups.push({
+      kind: 'pair',
+      label: pairTiles.length === 1 ? '和牌' : '将牌',
+      tiles: pairTiles
+    });
+  }
+
+  return groups;
+}
+
+function prepareFans(fans) {
+  const seen = new Set();
+  return fans.reduce((list, fan, index) => {
+    const key = `${fan.name}-${fan.score}`;
+    if (seen.has(key)) return list;
+    seen.add(key);
+
+    list.push({
+      ...fan,
+      originIndex: index,
+      displayGroups: buildDisplayGroups(fan)
+    });
+    return list;
+  }, []);
+}
+
 export default function FanListPage() {
   const [searchText, setSearchText] = useState('');
   const [selectedScore, setSelectedScore] = useState('all');
   const [expandedFan, setExpandedFan] = useState(null);
+  const allFans = useMemo(() => prepareFans(FAN_DATA), []);
 
   const filteredFans = useMemo(() => {
-    let fans = [...FAN_DATA];
+    let fans = [...allFans];
     if (selectedScore !== 'all') {
       fans = fans.filter(fan => fan.score === selectedScore);
     }
-    if (searchText) {
-      const keyword = searchText.toLowerCase();
-      fans = fans.filter(fan => fan.name.toLowerCase().includes(keyword));
+    const keyword = searchText.trim().toLowerCase();
+    if (keyword) {
+      fans = fans.filter(fan => {
+        return fan.name.toLowerCase().includes(keyword) ||
+          (fan.description || '').toLowerCase().includes(keyword) ||
+          (fan.note || '').toLowerCase().includes(keyword);
+      });
     }
-    return fans.sort((a, b) => b.score - a.score);
-  }, [searchText, selectedScore]);
+    return fans.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return a.originIndex - b.originIndex;
+    });
+  }, [allFans, searchText, selectedScore]);
 
   return (
     <View className='app'>
@@ -81,9 +146,8 @@ export default function FanListPage() {
             <View
               key={fan.name}
               className={`fan-card ${expanded ? 'fan-card-expanded' : ''}`}
-              onClick={() => setExpandedFan(expanded ? null : fan.name)}
             >
-              <View className='fan-header'>
+              <View className='fan-header' onClick={() => setExpandedFan(expanded ? null : fan.name)}>
                 <Text className='fan-name'>{fan.name}</Text>
                 <View className='fan-score-badge'>
                   <Text className='fan-score'>{fan.score}</Text>
@@ -98,53 +162,32 @@ export default function FanListPage() {
                   </View>
 
                   {fan.exclusions?.length ? (
-                    <View className='fan-section'>
-                      <Text className='section-label'>不计番型：</Text>
+                    <View className='fan-section exclude'>
+                      <Text className='section-label'>不计：</Text>
                       <View className='exclusion-tags'>
                         {fan.exclusions.map(ex => <Text key={ex} className='exclusion-tag'>{ex}</Text>)}
                       </View>
                     </View>
                   ) : null}
 
-                  {fan.note ? (
-                    <View className='fan-section'>
-                      <Text className='section-label'>备注：</Text>
-                      <Text className='fan-note'>{fan.note}</Text>
-                    </View>
-                  ) : null}
-
+                  {fan.displayGroups.length ? (
                   <View className='fan-section'>
                     <Text className='section-label'>示例牌型：</Text>
                     <View className='example-tiles'>
-                      {fan.exampleTiles?.melds?.length ? (
-                        <View className='meld-tiles'>
-                          {fan.exampleTiles.melds.map((meld, meldIdx) => (
-                            <View className='meld-group' key={`meld-${meldIdx}`}> 
-                              {meld.tiles.map((tile, tileIdx) => (
-                                <View className='example-tile meld-tile' key={`meld-tile-${meldIdx}-${tileIdx}`}>
-                                  <Image src={getTileSvgPath(tile)} className='tile-icon' mode='aspectFit' />
-                                </View>
-                              ))}
-                              <View className='meld-type-badge'>{getMeldTypeText(meld.type)}</View>
-                            </View>
-                          ))}
-                        </View>
-                      ) : null}
-
-                      <View className='concealed-tiles'>
-                        {(fan.exampleTiles?.concealed || []).map((tile, tileIdx) => (
-                          <View className='example-tile concealed-tile' key={`concealed-${tileIdx}`}>
-                            <Image src={getTileSvgPath(tile)} className='tile-icon' mode='aspectFit' />
+                      <View className='tile-groups'>
+                        {fan.displayGroups.map((group, groupIdx) => (
+                          <View className={`tile-group tile-group-${group.kind}`} key={`group-${groupIdx}`}>
+                            {group.tiles.map((tile, tileIdx) => (
+                              <View key={`tile-${groupIdx}-${tileIdx}`}>
+                                <Image src={getTileSvgPath(tile)} className='tile-icon' mode='aspectFit' />
+                              </View>
+                            ))}
                           </View>
                         ))}
-                        {fan.exampleTiles?.pair ? (
-                          <View className='example-tile pair-tile'>
-                            <Image src={getTileSvgPath(fan.exampleTiles.pair)} className='tile-icon' mode='aspectFit' />
-                          </View>
-                        ) : null}
                       </View>
                     </View>
                   </View>
+                  ) : null}
                 </View>
               ) : null}
             </View>

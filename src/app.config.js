@@ -18,14 +18,14 @@ export default defineAppConfig({
       {
         pagePath: 'pages/index/index',
         text: '首页',
-        iconPath: 'static/index.png',
-        selectedIconPath: 'static/index-active.png'
+        iconPath: '../static/index.png',
+        selectedIconPath: '../static/index-active.png'
       },
       {
         pagePath: 'pages/fanlist/index',
         text: '番表',
-        iconPath: 'static/fanlist.png',
-        selectedIconPath: 'static/fanlist-active.png'
+        iconPath: '../static/fanlist.png',
+        selectedIconPath: '../static/fanlist-active.png'
       }
     ]
   }

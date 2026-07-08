@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Image, Text, View } from '@tarojs/components';
+import { Button, Checkbox, Image, Text, View } from '@tarojs/components';
 import { analyzeHand, buildHandPayload, getFallbackWaitingTiles, getWaitingTiles } from '../../utils/scoringAdapter';
 import './index.scss';
 
@@ -61,7 +61,7 @@ export default function IndexPage() {
   const remainingTiles = 14 - concealedTiles.length - meldGroups.length * 3 - gangCount - 1;
 
   const waitingTiles = useMemo(() => {
-    if (remainingTiles >= 0) return [];
+    if (remainingTiles > 0) return [];
     const payload = buildHandPayload({ concealedTiles, meldGroups, winTile: null, options });
     const fromPackage = getWaitingTiles(payload);
     return fromPackage.length ? fromPackage : getFallbackWaitingTiles({ concealedTiles, meldGroups, options });
@@ -71,7 +71,7 @@ export default function IndexPage() {
     if (!winTile) return null;
     const existing = waitingTiles.find(item => item.tileId === winTile);
     if (existing) return existing;
-    const payload = buildHandPayload({ concealedTiles: [...concealedTiles, winTile], meldGroups, winTile, options });
+    const payload = buildHandPayload({ concealedTiles, meldGroups, winTile, options });
     return { tileId: winTile, ...analyzeHand(payload) };
   }, [concealedTiles, meldGroups, options, waitingTiles, winTile]);
 
@@ -81,6 +81,7 @@ export default function IndexPage() {
 
   function toggleTile(tileId) {
     if (getTileTotalCount(tileId) >= 4) return;
+    if (currentMode === 'chi' && !['w', 't', 'b'].includes(tileId[0])) return;
 
     if (currentMode === 'concealed') {
       if (remainingTiles <= 0) return;
@@ -153,7 +154,7 @@ export default function IndexPage() {
             <Button className='reset-btn' onClick={resetAll}>重置</Button>
           </View>
 
-          <View className='setting-row'>
+          <View className='control-row'>
             <View className='wind-row'>
               <View className='wind-group'>
                 <Text className='wind-label'>门风</Text>
@@ -188,7 +189,10 @@ export default function IndexPage() {
               ['isJuezhang', '和绝张'],
               ...(options.isSelfDrawn ? [['isMiaoshou', '妙手回春'], ['isGangshang', '杠上开花']] : [['isHaidilao', '海底捞月'], ['isQianggang', '抢杠和']])
             ].map(([key, label]) => (
-              <Button key={key} className={`checkbox-label ${options[key] ? 'checkbox-active' : ''}`} onClick={() => toggleOption(key)}>{label}</Button>
+              <View key={key} className='checkbox-label' onClick={() => toggleOption(key)}>
+                <Checkbox value={key} checked={options[key]} className='checkbox-input' />
+                <Text className='checkbox-text'>{label}</Text>
+              </View>
             ))}
           </View>
         </View>
@@ -211,7 +215,10 @@ export default function IndexPage() {
               {meldGroups.map((group, groupIndex) => (
                 <View className={`meld-group ${group.type === 'angang' ? 'meld-group-angang' : 'meld-group-other'}`} key={`mg-${groupIndex}`} onClick={() => removeMeld(groupIndex)}>
                   {group.tiles.map((tile, tileIndex) => (
-                    <View className='meld-tile' key={`mt-${groupIndex}-${tileIndex}`}>
+                    <View
+                      className={`meld-tile ${group.type === 'angang' ? 'meld-tile-angang' : 'meld-tile-other'}`}
+                      key={`mt-${groupIndex}-${tileIndex}`}
+                    >
                       <Image src={getTileSvgPath(tile)} className='meld-icon' mode='aspectFit' />
                     </View>
                   ))}
@@ -240,7 +247,7 @@ export default function IndexPage() {
 
         {selectedWinTile ? (
           <View className='win-section'>
-            <View className='win-tile-row' onClick={() => setWinTile(null)}>
+            <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', marginBottom: '24rpx' }} onClick={() => setWinTile(null)}>
               <Text className='win-title'>和张:</Text>
               <Image src={getTileSvgPath(selectedWinTile.tileId)} className='win-icon' mode='aspectFit' />
             </View>

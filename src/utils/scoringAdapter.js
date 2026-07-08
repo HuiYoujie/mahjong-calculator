@@ -1,5 +1,3 @@
-import { Fan, Handtiles, Shanten } from 'gb-mahjong-js';
-
 const ALL_TILES = [
   'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9',
   't1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9',
@@ -17,9 +15,30 @@ const HONOR_TO_GB = {
   bai: 'P'
 };
 
-const GB_TO_HONOR = Object.fromEntries(Object.entries(HONOR_TO_GB).map(([key, value]) => [value, key]));
+const GB_TO_HONOR = Object.keys(HONOR_TO_GB).reduce((acc, key) => {
+  acc[HONOR_TO_GB[key]] = key;
+  return acc;
+}, {});
 const SUIT_TO_GB = { w: 'm', t: 's', b: 'p' };
 const GB_TO_SUIT = { m: 'w', s: 't', p: 'b' };
+
+let gbMahjongApi;
+let gbMahjongLoadError;
+
+function getGbMahjongApi() {
+  if (gbMahjongApi || gbMahjongLoadError) return gbMahjongApi;
+
+  try {
+    // gb-mahjong-js currently documents a Node/C++ bridge. Keep loading guarded so Taro builds can fall back when the bridge is unavailable.
+    const runtimeRequire = typeof require === 'function' ? require : null;
+    gbMahjongApi = runtimeRequire ? runtimeRequire('gb-mahjong-js') : null;
+  } catch (error) {
+    gbMahjongLoadError = error;
+    gbMahjongApi = null;
+  }
+
+  return gbMahjongApi;
+}
 
 function toGbHandString(tileIds) {
   const groups = { w: [], t: [], b: [] };
@@ -36,7 +55,10 @@ function toGbHandString(tileIds) {
   });
 
   const suitText = Object.entries(groups)
-    .map(([suit, values]) => values.sort().join('') ? `${values.sort().join('')}${SUIT_TO_GB[suit]}` : '')
+    .map(([suit, values]) => {
+      const sortedValues = [...values].sort().join('');
+      return sortedValues ? `${sortedValues}${SUIT_TO_GB[suit]}` : '';
+    })
     .join('');
 
   return `${suitText}${honors.join('')} `;
@@ -57,7 +79,12 @@ function fromGbTileId(tile) {
 }
 
 function createHandtiles(tileIds) {
-  const handtiles = new Handtiles();
+  const api = getGbMahjongApi();
+  if (!api?.Handtiles) {
+    throw new Error(gbMahjongLoadError?.message || 'gb-mahjong-js is unavailable in this runtime');
+  }
+
+  const handtiles = new api.Handtiles();
   const code = handtiles.StringToHandtiles(toGbHandString(tileIds));
   if (code !== 0) {
     throw new Error(`gb-mahjong-js parse failed with code ${code}`);
@@ -91,9 +118,12 @@ function normalizeFanTable(fan) {
 
 export function analyzeHand(payload) {
   try {
+    const api = getGbMahjongApi();
+    if (!api?.Fan) throw new Error(gbMahjongLoadError?.message || 'gb-mahjong-js Fan is unavailable');
+
     const tiles = [...payload.concealedTiles, ...(payload.winTile ? [payload.winTile] : [])];
     const handtiles = createHandtiles(tiles);
-    const fan = new Fan();
+    const fan = new api.Fan();
 
     if (typeof fan.JudgeHu === 'function' && !fan.JudgeHu(handtiles)) {
       return { valid: false, fans: [], totalScore: 0 };
@@ -108,8 +138,11 @@ export function analyzeHand(payload) {
 
 export function getWaitingTiles(payload) {
   try {
+    const api = getGbMahjongApi();
+    if (!api?.Fan) throw new Error(gbMahjongLoadError?.message || 'gb-mahjong-js Fan is unavailable');
+
     const handtiles = createHandtiles(payload.concealedTiles);
-    const fan = new Fan();
+    const fan = new api.Fan();
     const waitingTiles = fan.CalcTing(handtiles) || [];
 
     return waitingTiles.map(tile => {
@@ -129,8 +162,11 @@ export function getWaitingTiles(payload) {
 
 export function getShanten(payload, opt) {
   try {
+    const api = getGbMahjongApi();
+    if (!api?.Shanten) throw new Error(gbMahjongLoadError?.message || 'gb-mahjong-js Shanten is unavailable');
+
     const handtiles = createHandtiles(payload.concealedTiles);
-    return Shanten.calcAll(handtiles, opt);
+    return api.Shanten.calcAll(handtiles, opt);
   } catch (error) {
     return {
       normal: null,

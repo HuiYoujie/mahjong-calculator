@@ -1,0 +1,13 @@
+{
+  "appid": "wx9a7271642782b5aa",
+  "projectname": "mahjong-calculator",
+  "miniprogramRoot": "dist/",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  }
+}

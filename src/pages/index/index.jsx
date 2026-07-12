@@ -4,14 +4,14 @@ import { analyzeHand, buildHandPayload, getFallbackWaitingTiles, getWaitingTiles
 import './index.scss';
 
 const TILE_ROWS = [
-  ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9'],
-  ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9'],
-  ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8', 'b9'],
-  ['east', 'south', 'west', 'north', 'zhong', 'fa', 'bai']
+  ['1m', '2m', '3m', '4m', '5m', '6m', '7m', '8m', '9m'],
+  ['1s', '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s'],
+  ['1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p'],
+  ['E', 'S', 'W', 'N', 'C', 'F', 'P']
 ];
 
 const MODE_LABELS = { concealed: '立牌', pong: '碰', chi: '吃', minggang: '明杠', angang: '暗杠' };
-const WIND_LABELS = { east: '东', south: '南', west: '西', north: '北' };
+const WIND_LABELS = { E: '东', S: '南', W: '西', N: '北' };
 
 function getTileSvgPath(tileId) {
   return `/static/image/tile/${tileId}.svg`;
@@ -22,10 +22,10 @@ function tileCount(tiles, tileId) {
 }
 
 function nextTile(tileId, offset) {
-  const suit = tileId[0];
-  const value = Number(tileId.slice(1));
-  if (!['w', 't', 'b'].includes(suit) || value + offset > 9) return null;
-  return `${suit}${value + offset}`;
+  const suit = tileId[1];
+  const value = Number(tileId[0]);
+  if (!['m', 's', 'p'].includes(suit) || value + offset > 9) return null;
+  return `${value + offset}${suit}`;
 }
 
 function getMeldTiles(mode, tileId) {
@@ -45,8 +45,8 @@ export default function IndexPage() {
   const [meldGroups, setMeldGroups] = useState([]);
   const [winTile, setWinTile] = useState(null);
   const [options, setOptions] = useState({
-    seatWind: 'east',
-    prevalentWind: 'east',
+    seatWind: 'E',
+    prevalentWind: 'E',
     flowerCount: 0,
     isSelfDrawn: false,
     isJuezhang: false,
@@ -57,36 +57,61 @@ export default function IndexPage() {
   });
 
   const meldTiles = useMemo(() => meldGroups.flatMap(group => group.tiles), [meldGroups]);
-  const gangCount = meldGroups.filter(group => group.type === 'minggang' || group.type === 'angang').length;
-  const remainingTiles = 14 - concealedTiles.length - meldGroups.length * 3 - gangCount - 1;
+  // gb-mahjong-js expects the winning tile to be separate from the 13-tile hand.
+  // A kong still occupies one meld slot (three structural tiles), even though four
+  // physical tiles are displayed and counted for the four-copy limit.
+  const remainingTiles = 13 - concealedTiles.length - meldGroups.length * 3;
+
+  function createGbPayload(winningTile = null) {
+    return buildHandPayload({
+      tiles: concealedTiles,
+      packs: meldGroups,
+      winningTile,
+      flowers: options.flowerCount,
+      context: {
+        quanfeng: options.prevalentWind,
+        menfeng: options.seatWind,
+        zimo: options.isSelfDrawn || options.isMiaoshou || options.isGangshang,
+        juezhang: options.isJuezhang,
+        haidi: options.isHaidilao || options.isMiaoshou,
+        gang: options.isGangshang || options.isQianggang
+      }
+    });
+  }
 
   const waitingTiles = useMemo(() => {
     if (remainingTiles > 0) return [];
-    const payload = buildHandPayload({ concealedTiles, meldGroups, winTile: null, options });
+    const payload = createGbPayload();
     const fromPackage = getWaitingTiles(payload);
-    return fromPackage.length ? fromPackage : getFallbackWaitingTiles({ concealedTiles, meldGroups, options });
+    return fromPackage.length ? fromPackage : getFallbackWaitingTiles(payload);
   }, [concealedTiles, meldGroups, options, remainingTiles]);
 
   const selectedWinTile = useMemo(() => {
     if (!winTile) return null;
     const existing = waitingTiles.find(item => item.tileId === winTile);
     if (existing) return existing;
-    const payload = buildHandPayload({ concealedTiles, meldGroups, winTile, options });
+    const payload = createGbPayload(winTile);
     return { tileId: winTile, ...analyzeHand(payload) };
   }, [concealedTiles, meldGroups, options, waitingTiles, winTile]);
 
   function getTileTotalCount(tileId) {
-    return tileCount(concealedTiles, tileId) + tileCount(meldTiles, tileId);
+    return tileCount(concealedTiles, tileId) + tileCount(meldTiles, tileId) + (winTile === tileId ? 1 : 0);
   }
 
   function toggleTile(tileId) {
     if (getTileTotalCount(tileId) >= 4) return;
-    if (currentMode === 'chi' && !['w', 't', 'b'].includes(tileId[0])) return;
+    if (currentMode === 'chi' && !['m', 's', 'p'].includes(tileId[1])) return;
 
     if (currentMode === 'concealed') {
-      if (remainingTiles <= 0) return;
+      if (remainingTiles < 0) return;
+      if (remainingTiles === 0) {
+        // The fourteenth tile selected from the upper picker is the winning tile.
+        setWinTile(tileId);
+        return;
+      }
       setConcealedTiles([...concealedTiles, tileId]);
     } else {
+      if (remainingTiles < 3) return;
       const tiles = getMeldTiles(currentMode, tileId);
       if (!tiles || tiles.some(tile => getTileTotalCount(tile) >= 4)) return;
       setMeldGroups([...meldGroups, { type: currentMode, tiles }]);

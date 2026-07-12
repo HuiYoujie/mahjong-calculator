@@ -8,7 +8,7 @@ export const FAN_DATA = [
     description: '由东南西北四风刻组成的和牌',
     exclusions: ['圈风刻', '门风刻', '三风刻', '碰碰和', '幺九刻'],
     exampleTiles: {
-      concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'north', 'north', 'north', 'b1', 'b1'],
+      concealed: ['E', 'E', 'E', 'S', 'S', 'S', 'W', 'W', 'W', 'N', 'N', 'N', '1p', '1p'],
       melds: [],
       pair: ''
     }
@@ -19,7 +19,7 @@ export const FAN_DATA = [
     description: '和牌中有中发白三组箭刻',
     exclusions: ['箭刻', '双箭刻'],
     exampleTiles: {
-      concealed: ['zhong', 'zhong', 'zhong', 'fa', 'fa', 'fa', 'bai', 'bai', 'bai', 'b1', 'b2', 'b3', 'w1', 'w1'],
+      concealed: ['C', 'C', 'C', 'F', 'F', 'F', 'P', 'P', 'P', '1p', '2p', '3p', '1m', '1m'],
       melds: [],
       pair: ''
     }
@@ -30,7 +30,7 @@ export const FAN_DATA = [
     description: '由23468条和发财组成的和牌',
     exclusions: ['混一色'],
     exampleTiles: {
-      concealed: ['t2', 't2', 't2', 't3', 't3', 't3', 't4', 't4', 't6', 't6', 't6', 't8', 't8', 'fa',  'fa'],
+      concealed: ['2s', '2s', '2s', '3s', '3s', '3s', '4s', '4s', '6s', '6s', '6s', '8s', '8s', 'F',  'F'],
       melds: [],
       pair: ''
     }
@@ -41,7 +41,7 @@ export const FAN_DATA = [
     description: '同一种花色由1112345678999组成，再和一张该种花色的任意牌',
     exclusions: ['清一色', '门前清', '幺九刻'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 'w9', 'w9', 'w1'],
+      concealed: ['1m', '1m', '1m', '2m', '3m', '4m', '5m', '6m', '7m', '8m', '9m', '9m', '9m', '1m'],
       melds: [],
       pair: ''
     }
@@ -52,12 +52,12 @@ export const FAN_DATA = [
     description: '和牌中包含四个杠',
     exclusions: ['碰碰和', '三杠', '双明杠', '明暗杠', '暗杠', '明杠'],
     exampleTiles: {
-      concealed: ['b1', 'b1'],
+      concealed: ['1p', '1p'],
       melds: [
-        { type: 'minggang', tiles: ['w2', 'w2', 'w2', 'w2'] },
-        { type: 'minggang', tiles: ['w8', 'w8', 'w8', 'w8'] },
-        { type: 'angang', tiles: ['t3', 't3', 't3', 't3'] },
-        { type: 'angang', tiles: ['b3', 'b3', 'b3', 'b3'] }
+        { type: 'minggang', tiles: ['2m', '2m', '2m', '2m'] },
+        { type: 'minggang', tiles: ['8m', '8m', '8m', '8m'] },
+        { type: 'angang', tiles: ['3s', '3s', '3s', '3s'] },
+        { type: 'angang', tiles: ['3p', '3p', '3p', '3p'] }
       ],
       pair: ''
     }
@@ -68,7 +68,7 @@ export const FAN_DATA = [
     description: '一种花色相连的七个对子',
     exclusions: ['七对', '清一色', '单钓将', '不求人', '门前清', '平和', '一般高', '连六'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w2', 'w2', 'w3', 'w3', 'w4', 'w4', 'w5', 'w5', 'w6', 'w6', 'w7', 'w7'],
+      concealed: ['1m', '1m', '2m', '2m', '3m', '3m', '4m', '4m', '5m', '5m', '6m', '6m', '7m', '7m'],
       melds: [],
       pair: ''
     }
@@ -79,7 +79,7 @@ export const FAN_DATA = [
     description: '由十三种幺九牌各一张，再和其中任意一张',
     exclusions: ['五门齐', '单钓将', '不求人', '门前清'],
     exampleTiles: {
-      concealed: ['w1', 'w9', 't1', 't9', 'b1', 'b9', 'east', 'south', 'west', 'north', 'zhong', 'fa', 'bai', 'w1'],
+      concealed: ['1m', '9m', '1s', '9s', '1p', '9p', 'E', 'S', 'W', 'N', 'C', 'F', 'P', '1m'],
       melds: [],
     }
   },
@@ -91,7 +91,7 @@ export const FAN_DATA = [
     description: '由序数牌一和九组成的和牌',
     exclusions: ['混幺九', '碰碰和', '双同刻', '无字', '全带幺', '幺九刻'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w9', 'w9', 'w9', 't1', 't1', 't1', 't9', 't9', 't9', 'b1', 'b1'],
+      concealed: ['1m', '1m', '1m', '9m', '9m', '9m', '1s', '1s', '1s', '9s', '9s', '9s', '1p', '1p'],
       melds: [],
       pair: ''
     }
@@ -102,7 +102,7 @@ export const FAN_DATA = [
     description: '和牌中有三风刻加一对风牌',
     exclusions: ['三风刻', '幺九刻'],
     exampleTiles: {
-      concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'north', 'north', 'b2', 'b2', 'b2'],
+      concealed: ['E', 'E', 'E', 'S', 'S', 'S', 'W', 'W', 'W', 'N', 'N', '2p', '2p', '2p'],
       melds: [],
       pair: ''
     }
@@ -113,7 +113,7 @@ export const FAN_DATA = [
     description: '和牌中有两组箭刻加一对箭牌',
     exclusions: ['箭刻', '双箭刻'],
     exampleTiles: {
-      concealed: ['zhong', 'zhong', 'zhong', 'fa', 'fa', 'fa', 'bai', 'bai', 't1', 't1', 't1', 'b1', 'b2', 'b3'],
+      concealed: ['C', 'C', 'C', 'F', 'F', 'F', 'P', 'P', '1s', '1s', '1s', '1p', '2p', '3p'],
       melds: [],
       pair: ''
     }
@@ -124,7 +124,7 @@ export const FAN_DATA = [
     description: '全部由字牌组成的和牌',
     exclusions: ['碰碰和', '全带幺', '幺九刻'],
     exampleTiles: {
-      concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'zhong', 'zhong', 'zhong', 'fa', 'fa'],
+      concealed: ['E', 'E', 'E', 'S', 'S', 'S', 'W', 'W', 'W', 'C', 'C', 'C', 'F', 'F'],
       melds: [],
       pair: ''
     }
@@ -135,7 +135,7 @@ export const FAN_DATA = [
     description: '和牌中有四个暗刻',
     exclusions: ['三暗刻', '双暗刻', '碰碰和', '门前清'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w9', 'w9', 'w9', 't5', 't5', 't5', 'b3', 'b3', 'b3', 'b5', 'b5'],
+      concealed: ['1m', '1m', '1m', '9m', '9m', '9m', '5s', '5s', '5s', '3p', '3p', '3p', '5p', '5p'],
       melds: [],
       pair: ''
     }
@@ -146,7 +146,7 @@ export const FAN_DATA = [
     description: '同一种花色123789各两对，加一对5作将',
     exclusions: ['七对', '清一色', '平和', '老少副', '一般高', '无字'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w2', 'w2', 'w3', 'w3', 'w5', 'w5', 'w7', 'w7', 'w8', 'w8', 'w9', 'w9'],
+      concealed: ['1m', '1m', '2m', '2m', '3m', '3m', '5m', '5m', '7m', '7m', '8m', '8m', '9m', '9m'],
       melds: [],
       pair: ''
     }
@@ -159,7 +159,7 @@ export const FAN_DATA = [
     description: '一种花色四副同顺（可混）',
     exclusions: ['一色三节高', '一般高', '四归一', '一色三同顺'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w1', 'w2', 'w3', 'w1', 'w2', 'w3', 'w1', 'w2', 'w3', 't6', 't6'],
+      concealed: ['1m', '2m', '3m', '1m', '2m', '3m', '1m', '2m', '3m', '1m', '2m', '3m', '6s', '6s'],
       melds: [],
       pair: ''
     }
@@ -170,7 +170,7 @@ export const FAN_DATA = [
     description: '一种花色四副递增一节的碰碰和',
     exclusions: ['一色三同顺', '碰碰和', '一色三节高'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w2', 'w2', 'w2', 'w3', 'w3', 'w3', 'w4', 'w4', 'w4', 't6', 't6'],
+      concealed: ['1m', '1m', '1m', '2m', '2m', '2m', '3m', '3m', '3m', '4m', '4m', '4m', '6s', '6s'],
       melds: [],
       pair: ''
     }
@@ -183,7 +183,7 @@ export const FAN_DATA = [
     description: '一种花色四副依次递增一或两的顺子',
     exclusions: ['连六', '老少副'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w3', 'w4', 'w5', 'w5', 'w6', 'w7', 'w7', 'w8', 'w9', 't1', 't1'],
+      concealed: ['1m', '2m', '3m', '3m', '4m', '5m', '5m', '6m', '7m', '7m', '8m', '9m', '1s', '1s'],
       melds: [],
       pair: ''
     }
@@ -194,11 +194,11 @@ export const FAN_DATA = [
     description: '和牌中有三个杠',
     exclusions: ['明暗杠'],
     exampleTiles: {
-      concealed: ['t1', 't1', 't2', 't2', 't2'],
+      concealed: ['1s', '1s', '2s', '2s', '2s'],
       melds: [
-        { type: 'minggang', tiles: ['w2', 'w2', 'w2', 'w2'] },
-        { type: 'angang', tiles: ['w3', 'w3', 'w3', 'w3'] },
-        { type: 'minggang', tiles: ['w4', 'w4', 'w4', 'w4'] }
+        { type: 'minggang', tiles: ['2m', '2m', '2m', '2m'] },
+        { type: 'angang', tiles: ['3m', '3m', '3m', '3m'] },
+        { type: 'minggang', tiles: ['4m', '4m', '4m', '4m'] }
       ],
       pair: ''
     }
@@ -209,7 +209,7 @@ export const FAN_DATA = [
     description: '由幺九牌和字牌组成的和牌',
     exclusions: ['碰碰和', '全带幺', '幺九刻'],
     exampleTiles: {
-      concealed: ['east', 'east', 'w1', 'w1', 'w1', 'w9', 'w9', 'w9', 't1', 't1', 't1', 't9', 't9', 't9'],
+      concealed: ['E', 'E', '1m', '1m', '1m', '9m', '9m', '9m', '1s', '1s', '1s', '9s', '9s', '9s'],
       melds: [],
       pair: ''
     }
@@ -222,7 +222,7 @@ export const FAN_DATA = [
     description: '和牌由七个对子组成',
     exclusions: ['不求人', '门前清', '单钓将'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w3', 'w3', 'w5', 'w5', 't2', 't2', 't8', 't8', 'b4', 'b4', 'b6', 'b6'],
+      concealed: ['1m', '1m', '3m', '3m', '5m', '5m', '2s', '2s', '8s', '8s', '4p', '4p', '6p', '6p'],
       melds: [],
       pair: ''
     }
@@ -233,7 +233,7 @@ export const FAN_DATA = [
     description: '三种花色的147、258、369和七种字牌中的14张',
     exclusions: ['全不靠', '五门齐', '不求人', '门前清', '单钓将'],
     exampleTiles: {
-      concealed: ['east', 'south', 'west', 'north', 'zhong', 'w1', 'w4', 'w7', 't2', 't5', 't8', 'b3', 'b6', 'b9'],
+      concealed: ['E', 'S', 'W', 'N', 'C', '1m', '4m', '7m', '2s', '5s', '8s', '3p', '6p', '9p'],
       melds: [],
       pair: ''
     }
@@ -244,7 +244,7 @@ export const FAN_DATA = [
     description: '全部由双数序数牌组成的和牌',
     exclusions: ['碰碰和', '断幺'],
     exampleTiles: {
-      concealed: ['w2', 'w2', 'w2', 't4', 't4', 't4', 'b4', 'b4', 'b4', 'b6', 'b6', 'b6', 'b8', 'b8'],
+      concealed: ['2m', '2m', '2m', '4s', '4s', '4s', '4p', '4p', '4p', '6p', '6p', '6p', '8p', '8p'],
       melds: [],
       pair: ''
     }
@@ -255,7 +255,7 @@ export const FAN_DATA = [
     description: '全部由一种花色的序数牌组成',
     exclusions: ['无字'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w6', 'w7', 'w8', 'w9', 'w9', 'w9', 'w4', 'w4'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '6m', '7m', '8m', '9m', '9m', '9m', '4m', '4m'],
       melds: [],
       pair: ''
     }
@@ -266,7 +266,7 @@ export const FAN_DATA = [
     description: '一种花色三副相同的顺子',
     exclusions: ['一色三节高', '一般高'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w1', 'w2', 'w3', 'w1', 'w2', 'w3', 'w5', 'w6', 'w7', 't1', 't1'],
+      concealed: ['1m', '2m', '3m', '1m', '2m', '3m', '1m', '2m', '3m', '5m', '6m', '7m', '1s', '1s'],
       melds: [],
       pair: ''
     }
@@ -277,7 +277,7 @@ export const FAN_DATA = [
     description: '一种花色三副递增一节的碰碰和',
     exclusions: ['一色三同顺'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w2', 'w2', 'w2', 'w3', 'w3', 'w3', 't5', 't5', 't5', 'b1', 'b1'],
+      concealed: ['1m', '1m', '1m', '2m', '2m', '2m', '3m', '3m', '3m', '5s', '5s', '5s', '1p', '1p'],
       melds: [],
       pair: ''
     }
@@ -288,7 +288,7 @@ export const FAN_DATA = [
     description: '全部由789序数牌组成',
     exclusions: ['大于五', '无字'],
     exampleTiles: {
-      concealed: ['w9', 'w9', 'w9', 'w7', 'w8', 'w9', 't7', 't8', 't9', 'b7', 'b8', 'b9', 'b9', 'b9'],
+      concealed: ['9m', '9m', '9m', '7m', '8m', '9m', '7s', '8s', '9s', '7p', '8p', '9p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -299,7 +299,7 @@ export const FAN_DATA = [
     description: '全部由456序数牌组成',
     exclusions: ['断幺', '无字'],
     exampleTiles: {
-      concealed: ['w4', 'w4', 'w4', 'w4', 'w5', 'w6', 't4', 't5', 't6', 'b4', 'b5', 'b6', 'b6', 'b6'],
+      concealed: ['4m', '4m', '4m', '4m', '5m', '6m', '4s', '5s', '6s', '4p', '5p', '6p', '6p', '6p'],
       melds: [],
       pair: ''
     }
@@ -310,7 +310,7 @@ export const FAN_DATA = [
     description: '全部由123序数牌组成',
     exclusions: ['小于五', '无字'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w1', 'w2', 'w3', 't1', 't2', 't3', 'b1', 'b1', 'b1', 'b2', 'b2'],
+      concealed: ['1m', '2m', '3m', '1m', '2m', '3m', '1s', '2s', '3s', '1p', '1p', '1p', '2p', '2p'],
       melds: [],
       pair: ''
     }
@@ -323,7 +323,7 @@ export const FAN_DATA = [
     description: '同一种花色的123、456、789三副顺子',
     exclusions: ['连六', '老少副'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9', 't1', 't1', 't1', 't9', 't9'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '7m', '8m', '9m', '1s', '1s', '1s', '9s', '9s'],
       melds: [],
       pair: ''
     }
@@ -334,7 +334,7 @@ export const FAN_DATA = [
     description: '万条饼各有123789顺子，加一对5作将',
     exclusions: ['平和', '喜相逢', '老少副', '无字'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w7', 'w8', 'w9', 't1', 't2', 't3', 't7', 't8', 't9', 'b5', 'b5'],
+      concealed: ['1m', '2m', '3m', '7m', '8m', '9m', '1s', '2s', '3s', '7s', '8s', '9s', '5p', '5p'],
       melds: [],
       pair: ''
     }
@@ -345,7 +345,7 @@ export const FAN_DATA = [
     description: '一种花色三副依次递增的顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w3', 'w4', 'w5', 'w5', 'w6', 'w7', 't1', 't1', 't1', 'b1', 'b1'],
+      concealed: ['1m', '2m', '3m', '3m', '4m', '5m', '5m', '6m', '7m', '1s', '1s', '1s', '1p', '1p'],
       melds: [],
       pair: ''
     }
@@ -356,7 +356,7 @@ export const FAN_DATA = [
     description: '三种花色同一数字的刻子',
     exclusions: ['双同刻'],
     exampleTiles: {
-      concealed: ['w2', 'w2', 'w2', 't2', 't2', 't2', 'b2', 'b2', 'b2', 'b5', 'b5', 'b5', 'b9', 'b9'],
+      concealed: ['2m', '2m', '2m', '2s', '2s', '2s', '2p', '2p', '2p', '5p', '5p', '5p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -367,7 +367,7 @@ export const FAN_DATA = [
     description: '和牌中有三个暗刻',
     exclusions: ['双暗刻'],
     exampleTiles: {
-      concealed: ['w2', 'w2', 'w2', 'w5', 'w5', 'w5', 't7', 't7', 't7', 'b1', 'b2', 'b3', 'b4', 'b4'],
+      concealed: ['2m', '2m', '2m', '5m', '5m', '5m', '7s', '7s', '7s', '1p', '2p', '3p', '4p', '4p'],
       melds: [],
       pair: ''
     }
@@ -378,7 +378,7 @@ export const FAN_DATA = [
     description: '每个面子和将都带5',
     exclusions: ['断幺'],
     exampleTiles: {
-      concealed: ['w4', 'w5', 'w6', 'w5', 'w6', 'w7', 't4', 't5', 't6', 'b5', 'b5', 'b5', 't5', 't5'],
+      concealed: ['4m', '5m', '6m', '5m', '6m', '7m', '4s', '5s', '6s', '5p', '5p', '5p', '5s', '5s'],
       melds: [],
       pair: ''
     }
@@ -391,7 +391,7 @@ export const FAN_DATA = [
     description: '三种花色的147、258、369和七种字牌中的14张，两边都不齐',
     exclusions: ['五门齐', '不求人', '门前清', '单钓将'],
     exampleTiles: {
-      concealed: ['east', 'south', 'west', 'north', 'zhong', 'fa', 'w4', 'w7', 't2', 't5', 't8', 'b3', 'b6', 'b9',],
+      concealed: ['E', 'S', 'W', 'N', 'C', 'F', '4m', '7m', '2s', '5s', '8s', '3p', '6p', '9p',],
       melds: [],
       pair: ''
     }
@@ -402,7 +402,7 @@ export const FAN_DATA = [
     description: '万条饼各有147、258、369组成顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w4', 'w7', 't2', 't5', 't8', 'b3', 'b6', 'b9', 'w5', 'w5', 'w5', 't5', 't5'],
+      concealed: ['1m', '4m', '7m', '2s', '5s', '8s', '3p', '6p', '9p', '5m', '5m', '5m', '5s', '5s'],
       melds: [],
       pair: ''
     }
@@ -413,7 +413,7 @@ export const FAN_DATA = [
     description: '全部由6-9序数牌组成',
     exclusions: ['无字'],
     exampleTiles: {
-      concealed: ['w6', 'w7', 'w8', 'w6', 'w7', 'w8', 't6', 't7', 't8', 'b6', 'b7', 'b8', 'b9', 'b9'],
+      concealed: ['6m', '7m', '8m', '6m', '7m', '8m', '6s', '7s', '8s', '6p', '7p', '8p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -424,7 +424,7 @@ export const FAN_DATA = [
     description: '全部由1-4序数牌组成',
     exclusions: ['无字'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w1', 'w2', 'w3', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b4', 'b4'],
+      concealed: ['1m', '2m', '3m', '1m', '2m', '3m', '1s', '2s', '3s', '1p', '2p', '3p', '4p', '4p'],
       melds: [],
       pair: ''
     }
@@ -435,7 +435,7 @@ export const FAN_DATA = [
     description: '和牌中有三个风刻',
     exclusions: [],
     exampleTiles: {
-      concealed: ['east', 'east', 'east', 'south', 'south', 'south', 'west', 'west', 'west', 'w1', 'w1', 'w1', 't5', 't5'],
+      concealed: ['E', 'E', 'E', 'S', 'S', 'S', 'W', 'W', 'W', '1m', '1m', '1m', '5s', '5s'],
       melds: [],
       pair: ''
     }
@@ -448,7 +448,7 @@ export const FAN_DATA = [
     description: '万条饼各有一副花龙',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 't4', 't5', 't6', 'b7', 'b8', 'b9', 'w5', 'w5', 'w5', 't6', 't6'],
+      concealed: ['1m', '2m', '3m', '4s', '5s', '6s', '7p', '8p', '9p', '5m', '5m', '5m', '6s', '6s'],
       melds: [],
       pair: ''
     }
@@ -459,7 +459,7 @@ export const FAN_DATA = [
     description: '全部由推不倒的牌组成（1234589饼、245689条、白板）',
     exclusions: ['缺一门'],
     exampleTiles: {
-      concealed: ['b1', 'b1', 'b1', 'b2', 'b2', 'b2', 'b4', 'b4', 'b4', 't5', 't5', 't5', 'bai', 'bai'],
+      concealed: ['1p', '1p', '1p', '2p', '2p', '2p', '4p', '4p', '4p', '5s', '5s', '5s', 'P', 'P'],
       melds: [],
       pair: ''
     }
@@ -470,7 +470,7 @@ export const FAN_DATA = [
     description: '三种花色各有相同顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w2', 'w3', 'w4', 't2', 't3', 't4', 'b2', 'b3', 'b4', 'w5', 'w5', 'w5', 'b6', 'b6'],
+      concealed: ['2m', '3m', '4m', '2s', '3s', '4s', '2p', '3p', '4p', '5m', '5m', '5m', '6p', '6p'],
       melds: [],
       pair: ''
     }
@@ -481,7 +481,7 @@ export const FAN_DATA = [
     description: '三种花色各有三副递增一节的刻子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 't2', 't2', 't2', 'b3', 'b3', 'b3', 'w5', 'w5', 'w5', 'b6', 'b6'],
+      concealed: ['1m', '1m', '1m', '2s', '2s', '2s', '3p', '3p', '3p', '5m', '5m', '5m', '6p', '6p'],
       melds: [],
       pair: ''
     }
@@ -492,10 +492,10 @@ export const FAN_DATA = [
     description: '和牌后数没有番种',
     exclusions: [],
     exampleTiles: {
-      concealed: ['east', 'east', 'w2', 'w3', 'w4', 't4', 't5', 't6', 'b7', 'b8', 'b9'],
+      concealed: ['E', 'E', '2m', '3m', '4m', '4s', '5s', '6s', '7p', '8p', '9p'],
       melds: [{
         type: 'pong',
-        tiles: ['b2', 'b2', 'b2']
+        tiles: ['2p', '2p', '2p']
       }],
       pair: ''
     },
@@ -532,12 +532,12 @@ export const FAN_DATA = [
     description: '和牌由四个刻子（或杠）和一对将组成',
     exclusions: [],
     exampleTiles: {
-      concealed: ['bai', 'bai'],
+      concealed: ['P', 'P'],
       melds: [
-        { type: 'pong', tiles: ['w2', 'w2', 'w2'] },
-        { type: 'pong', tiles: ['t5', 't5', 't5'] },
-        { type: 'pong', tiles: ['t7', 't7', 't7'] },
-        { type: 'pong', tiles: ['b3', 'b3', 'b3'] }
+        { type: 'pong', tiles: ['2m', '2m', '2m'] },
+        { type: 'pong', tiles: ['5s', '5s', '5s'] },
+        { type: 'pong', tiles: ['7s', '7s', '7s'] },
+        { type: 'pong', tiles: ['3p', '3p', '3p'] }
       ],
       pair: ''
     }
@@ -548,7 +548,7 @@ export const FAN_DATA = [
     description: '一种花色序数牌加字牌组成的和牌',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w6', 'w7', 'w8', 'w9', 'w9', 'w9', 'east', 'east'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '6m', '7m', '8m', '9m', '9m', '9m', 'E', 'E'],
       melds: [],
       pair: ''
     }
@@ -559,7 +559,7 @@ export const FAN_DATA = [
     description: '三种花色各有三副依次递增的顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 't3', 't4', 't5', 'b5', 'b6', 'b7', 'w5', 'w5', 'w5', 'b7', 'b7'],
+      concealed: ['1m', '2m', '3m', '3s', '4s', '5s', '5p', '6p', '7p', '5m', '5m', '5m', '7p', '7p'],
       melds: [],
       pair: ''
     }
@@ -570,7 +570,7 @@ export const FAN_DATA = [
     description: '万条饼风箭三种花色齐全',
     exclusions: ['幺九刻'],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 't2', 't2', 't2', 'b3', 'b3', 'b3', 'east', 'east', 'east', 'zhong', 'zhong'],
+      concealed: ['1m', '1m', '1m', '2s', '2s', '2s', '3p', '3p', '3p', 'E', 'E', 'E', 'C', 'C'],
       melds: [],
       pair: ''
     }
@@ -581,12 +581,12 @@ export const FAN_DATA = [
     description: '全部是吃上家和牌',
     exclusions: ['单钓将'],
     exampleTiles: {
-      concealed: ['b5', 'b5'],
+      concealed: ['5p', '5p'],
       melds: [
-        { type: 'chi', tiles: ['w2', 'w3', 'w4'] },
-        { type: 'chi', tiles: ['t5', 't6', 't7'] },
-        { type: 'pong', tiles: ['b1', 'b1', 'b1'] },
-        { type: 'pong', tiles: ['b3', 'b3', 'b3'] }
+        { type: 'chi', tiles: ['2m', '3m', '4m'] },
+        { type: 'chi', tiles: ['5s', '6s', '7s'] },
+        { type: 'pong', tiles: ['1p', '1p', '1p'] },
+        { type: 'pong', tiles: ['3p', '3p', '3p'] }
       ],
       pair: ''
     }
@@ -597,7 +597,7 @@ export const FAN_DATA = [
     description: '有两组箭刻',
     exclusions: ['箭刻'],
     exampleTiles: {
-      concealed: ['zhong', 'zhong', 'zhong', 'fa', 'fa', 'fa', 'w5', 'w5', 'w5', 't1', 't1', 't1', 'b5', 'b5'],
+      concealed: ['C', 'C', 'C', 'F', 'F', 'F', '5m', '5m', '5m', '1s', '1s', '1s', '5p', '5p'],
       melds: [],
       pair: ''
     }
@@ -608,10 +608,10 @@ export const FAN_DATA = [
     description: '有两个暗杠',
     exclusions: ['暗杠', '双暗刻'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't5'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '5s', '5s'],
       melds: [
-        { type: 'angang', tiles: ['t1', 't1', 't1', 't1'] },
-        { type: 'angang', tiles: ['b2', 'b2', 'b2', 'b2'] },
+        { type: 'angang', tiles: ['1s', '1s', '1s', '1s'] },
+        { type: 'angang', tiles: ['2p', '2p', '2p', '2p'] },
     
       ],
       pair: ''
@@ -625,10 +625,10 @@ export const FAN_DATA = [
     description: '同时有明杠和暗杠',
     exclusions: ['明杠', '暗杠'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't5'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '5s', '5s'],
       melds: [
-        { type: 'minggang', tiles: ['t5', 't5', 't5', 't5'] },
-        { type: 'angang', tiles: ['b2', 'b2', 'b2', 'b2'] }
+        { type: 'minggang', tiles: ['5s', '5s', '5s', '5s'] },
+        { type: 'angang', tiles: ['2p', '2p', '2p', '2p'] }
       ],
       pair: ''
     }
@@ -641,7 +641,7 @@ export const FAN_DATA = [
     description: '每个面子和将都带幺九',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w7', 'w8', 'w9', 't1', 't1', 't1', 't9', 't9', 't9' , 'east', 'east'],
+      concealed: ['1m', '2m', '3m', '7m', '8m', '9m', '1s', '1s', '1s', '9s', '9s', '9s' , 'E', 'E'],
       melds: [],
       pair: ''
     }
@@ -652,10 +652,10 @@ export const FAN_DATA = [
     description: '有两个明杠',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w5', 'w5', 'w5', 't2', 't3', 't4', 'b5', 'b5'],
+      concealed: ['5m', '5m', '5m', '2s', '3s', '4s', '5p', '5p'],
       melds: [
-        { type: 'minggang', tiles: ['w1', 'w1', 'w1', 'w1'] },
-        { type: 'minggang', tiles: ['t5', 't5', 't5', 't5'] }
+        { type: 'minggang', tiles: ['1m', '1m', '1m', '1m'] },
+        { type: 'minggang', tiles: ['5s', '5s', '5s', '5s'] }
       ],
       pair: ''
     }
@@ -666,7 +666,7 @@ export const FAN_DATA = [
     description: '没有吃碰杠，自摸和',
     exclusions: ['门前清', '自摸'],
     exampleTiles: {
-      concealed: ['east', 'east', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't1', 't2', 't3', 'b1', 'b2', 'b3'],
+      concealed: ['E', 'E', '1m', '2m', '3m', '4m', '5m', '6m', '1s', '2s', '3s', '1p', '2p', '3p'],
       melds: [],
       pair: ''
     }
@@ -677,7 +677,7 @@ export const FAN_DATA = [
     description: '和牌池中最后一张牌',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'east', 'east'],
+      concealed: ['1m', '1m', '1m', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '2p', '3p', 'E', 'E'],
       melds: [],
       pair: ''
     },
@@ -690,7 +690,7 @@ export const FAN_DATA = [
     description: '有一组箭刻',
     exclusions: [],
     exampleTiles: {
-      concealed: ['zhong', 'zhong', 'zhong', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b9', 'b9'],
+      concealed: ['C', 'C', 'C', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '2p', '3p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -701,7 +701,7 @@ export const FAN_DATA = [
     description: '有一组圈风刻',
     exclusions: [],
     exampleTiles: {
-      concealed: ['east', 'east', 'east', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b9', 'b9'],
+      concealed: ['E', 'E', 'E', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '2p', '3p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -712,7 +712,7 @@ export const FAN_DATA = [
     description: '有一组门风刻',
     exclusions: [],
     exampleTiles: {
-      concealed: ['south', 'south', 'south', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'b9', 'b9'],
+      concealed: ['S', 'S', 'S', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '2p', '3p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -723,7 +723,7 @@ export const FAN_DATA = [
     description: '全部由顺子组成，和牌有一对将',
     exclusions: ['无字'],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't6', 't7', 'b2', 'b3', 'b4', 'b9', 'b9'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '5s', '6s', '7s', '2p', '3p', '4p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -734,7 +734,7 @@ export const FAN_DATA = [
     description: '有两个暗刻',
     exclusions: [],
     exampleTiles: {
-      concealed: ['zhong', 'zhong', 'zhong', 'fa', 'fa', 'fa', 'w2', 'w2', 'w2', 't5', 't5', 't5', 'b1', 'b1'],
+      concealed: ['C', 'C', 'C', 'F', 'F', 'F', '2m', '2m', '2m', '5s', '5s', '5s', '1p', '1p'],
       melds: [],
       pair: ''
     }
@@ -745,9 +745,9 @@ export const FAN_DATA = [
     description: '有一个暗杠',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b1'],
+      concealed: ['1m', '1m', '1m', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '1p'],
       melds: [
-        { type: 'angang', tiles: ['b2', 'b2', 'b2', 'b2'] }
+        { type: 'angang', tiles: ['2p', '2p', '2p', '2p'] }
       ],
       pair: ''
     }
@@ -758,7 +758,7 @@ export const FAN_DATA = [
     description: '和牌中没有幺九牌',
     exclusions: ['无字'],
     exampleTiles: {
-      concealed: ['w2', 'w3', 'w4', 'w5', 'w6', 'w7', 't3', 't4', 't5', 'b4', 'b5', 'b6', 'b7', 'b7'],
+      concealed: ['2m', '3m', '4m', '5m', '6m', '7m', '3s', '4s', '5s', '4p', '5p', '6p', '7p', '7p'],
       melds: [],
       pair: ''
     }
@@ -769,7 +769,7 @@ export const FAN_DATA = [
     description: '同一花色的牌集中在一处',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w1', 'w1', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't5', 't5', 'b5', 'b5'],
+      concealed: ['1m', '1m', '1m', '1m', '2m', '3m', '4m', '5m', '6m', '5s', '5s', '5s', '5p', '5p'],
       melds: [],
       pair: ''
     }
@@ -780,7 +780,7 @@ export const FAN_DATA = [
     description: '有两个同数刻子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w5', 'w5', 'w5', 't5', 't5', 't5', 'w1', 'w2', 'w3', 'b1', 'b2', 'b3', 'b9', 'b9'],
+      concealed: ['5m', '5m', '5m', '5s', '5s', '5s', '1m', '2m', '3m', '1p', '2p', '3p', '9p', '9p'],
       melds: [],
       pair: ''
     }
@@ -791,7 +791,7 @@ export const FAN_DATA = [
     description: '没有吃碰杠，门清点和',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't1', 't2', 't3', 'b1', 'b2', 'b3', 'east', 'east'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '1s', '2s', '3s', '1p', '2p', '3p', 'E', 'E'],
       melds: [],
       pair: ''
     },
@@ -804,7 +804,7 @@ export const FAN_DATA = [
     description: '一种花色有两副相同的顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w2', 'w3', 'w4', 'w2', 'w3', 'w4', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b5', 'b5'],
+      concealed: ['2m', '3m', '4m', '2m', '3m', '4m', '5m', '5m', '5m', '1s', '2s', '3s', '5p', '5p'],
       melds: [],
       pair: ''
     }
@@ -815,7 +815,7 @@ export const FAN_DATA = [
     description: '两种花色各有相同顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w2', 'w3', 'w4', 't2', 't3', 't4', 'w5', 'w5', 'w5', 'b1', 'b2', 't3', 'b5', 'b5'],
+      concealed: ['2m', '3m', '4m', '2s', '3s', '4s', '5m', '5m', '5m', '1p', '2p', '3s', '5p', '5p'],
       melds: [],
       pair: ''
     }
@@ -826,7 +826,7 @@ export const FAN_DATA = [
     description: '一种花色有两副相连的顺子',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 't5', 't5', 't5', 't7', 't8', 't9', 'b1', 'b1'],
+      concealed: ['1m', '2m', '3m', '4m', '5m', '6m', '5s', '5s', '5s', '7s', '8s', '9s', '1p', '1p'],
       melds: [],
       pair: ''
     }
@@ -837,7 +837,7 @@ export const FAN_DATA = [
     description: '一种花色有123和789顺子各一副',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w7', 'w8', 'w9', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b3', 'b3'],
+      concealed: ['1m', '2m', '3m', '7m', '8m', '9m', '5m', '5m', '5m', '1s', '2s', '3s', '3p', '3p'],
       melds: [],
       pair: ''
     }
@@ -878,7 +878,7 @@ export const FAN_DATA = [
     description: '和123或789的3、7，与单钓将、坎张不同时计',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b1', 'b8', 'b9', 'b7'],
+      concealed: ['1m', '2m', '3m', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '1p', '8p', '9p', '7p'],
       melds: [],
       pair: ''
     },
@@ -889,7 +889,7 @@ export const FAN_DATA = [
     description: '和两张之间的牌，与边张、单钓将不同时计',
     exclusions: [],
     exampleTiles: {
-      concealed: ['w1', 'w2', 'w3', 'w5', 'w5', 'w5', 't1', 't2', 't3', 'b1', 'b1', 'b7', 'b9', 'b8'],
+      concealed: ['1m', '2m', '3m', '5m', '5m', '5m', '1s', '2s', '3s', '1p', '1p', '7p', '9p', '8p'],
       melds: [],
       pair: ''
     },

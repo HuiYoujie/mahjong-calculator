@@ -1,0 +1,78 @@
+.custom-tabbar-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  padding: 0 54rpx calc(16rpx + env(safe-area-inset-bottom));
+  pointer-events: none;
+  // background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.66) 100%);
+}
+
+.custom-tabbar {
+  height: 94rpx;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
+  border-radius: 34rpx;
+  background: #999;
+  box-shadow: 0 14rpx 38rpx rgba(42, 50, 70, 0.2), inset 0 2rpx 1rpx rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(30rpx) saturate(145%);
+  -webkit-backdrop-filter: blur(30rpx) saturate(145%);
+  pointer-events: auto;
+}
+
+.tabbar-item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  color: rgba(242, 245, 250, 0.68);
+  transition: color 180ms ease, background 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabbar-item + .tabbar-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 24rpx;
+  bottom: 24rpx;
+  width: 1rpx;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.tabbar-icon-box {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.68;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.tabbar-icon { width: 36rpx; height: 36rpx; }
+.tabbar-text { font-size: 19rpx; font-weight: 600; letter-spacing: 1rpx; line-height: 1; }
+
+.tabbar-item-active {
+  color: #fff;
+  background: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.09), transparent 58%);
+}
+
+// .tabbar-item-active::after {
+//   content: '';
+//   position: absolute;
+//   bottom: 8rpx;
+//   width: 30rpx;
+//   height: 4rpx;
+//   border-radius: 999rpx;
+//   background: #fff;
+//   box-shadow: 0 0 14rpx rgba(255, 255, 255, 0.55);
+// }
+
+.tabbar-item-active .tabbar-icon-box { opacity: 1; transform: translateY(-2rpx); }

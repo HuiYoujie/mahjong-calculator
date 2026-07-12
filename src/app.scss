@@ -50,3 +50,10 @@ taro-button-core + taro-button-core {
 taro-checkbox_checked {
   top: 0;
 }
+
+/* H5 uses the project custom tab bar mounted in App. */
+.taro-tabbar__tabbar,
+.taro-tabbar__container > .weui-tabbar,
+.weui-tabbar.taro-tabbar__tabbar {
+  display: none !important;
+}

@@ -10,6 +10,7 @@ export default defineAppConfig({
     navigationBarTextStyle: 'black'
   },
   tabBar: {
+    custom: true,
     color: '#7A7E83',
     selectedColor: '#3b82f6',
     borderStyle: 'black',
@@ -17,13 +18,13 @@ export default defineAppConfig({
     list: [
       {
         pagePath: 'pages/index/index',
-        text: '首页',
+        text: '计算',
         iconPath: '../static/index.png',
         selectedIconPath: '../static/index-active.png'
       },
       {
         pagePath: 'pages/fanlist/index',
-        text: '番表',
+        text: '番种',
         iconPath: '../static/fanlist.png',
         selectedIconPath: '../static/fanlist-active.png'
       }

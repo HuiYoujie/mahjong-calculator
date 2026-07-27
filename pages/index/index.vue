@@ -254,6 +254,18 @@
 				}
 			}
 		},
+		onShareAppMessage() {
+			return {
+				title: '国标麻将算番器',
+				path: '/pages/index/index'
+			};
+		},
+		onShareTimeline() {
+			return {
+				title: '国标麻将算番器',
+				query: ''
+			};
+		},
 		computed: {
 			remainingTiles() {
 				return 14 - this.concealedTiles.length - this.meldGroups.length * 3 - 1
@@ -274,8 +286,10 @@
 					prevalentWind: this.options.prevalentWind,
 					seatWind: this.options.seatWind,
 					flowerCount: this.options.flowerCount,
-					isLastTile: this.options.isHaidilao || this.options.isMiaoshou,
-					isKongDraw: this.options.isGangshang || this.options.isQianggang,
+					isHaidilao: this.options.isHaidilao,
+					isMiaoshou: this.options.isMiaoshou,
+					isGangshang: this.options.isGangshang,
+					isQianggang: this.options.isQianggang,
 					isJuezhang: this.options.isJuezhang
 				});
 				const res = analyzer.getWaitingTiles();

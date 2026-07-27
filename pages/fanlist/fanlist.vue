@@ -117,6 +117,18 @@ export default {
 			allFans: []
 		};
 	},
+	onShareAppMessage() {
+		return {
+			title: '国标麻将番种表',
+			path: '/pages/fanlist/fanlist'
+		};
+	},
+	onShareTimeline() {
+		return {
+			title: '国标麻将番种表',
+			query: ''
+		};
+	},
 	created() {
 		this.allFans = this.prepareFans(FAN_DATA);
 	},

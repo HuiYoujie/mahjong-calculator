@@ -63,6 +63,8 @@ export default function IndexPage() {
   const remainingTiles = 13 - concealedTiles.length - meldGroups.length * 3;
 
   function createGbPayload(winningTile = null) {
+    const hasKong = meldGroups.some(group => group.type === 'minggang' || group.type === 'angang');
+
     return buildHandPayload({
       tiles: concealedTiles,
       packs: meldGroups,
@@ -74,7 +76,7 @@ export default function IndexPage() {
         zimo: options.isSelfDrawn || options.isMiaoshou || options.isGangshang,
         juezhang: options.isJuezhang,
         haidi: options.isHaidilao || options.isMiaoshou,
-        gang: options.isGangshang || options.isQianggang
+        gang: options.isQianggang || (options.isGangshang && hasKong)
       }
     });
   }
@@ -134,7 +136,21 @@ export default function IndexPage() {
   }
 
   function toggleOption(key) {
-    setOptions({ ...options, [key]: !options[key] });
+    setOptions(previousOptions => {
+      const nextValue = !previousOptions[key];
+      const nextOptions = { ...previousOptions, [key]: nextValue };
+
+      if (key === 'isSelfDrawn') {
+        const hiddenOptionKeys = nextValue
+          ? ['isHaidilao', 'isQianggang']
+          : ['isMiaoshou', 'isGangshang'];
+        hiddenOptionKeys.forEach(optionKey => {
+          nextOptions[optionKey] = false;
+        });
+      }
+
+      return nextOptions;
+    });
   }
 
   function resetAll() {
@@ -152,13 +168,9 @@ export default function IndexPage() {
             <View className='tile-row' key={`row-${rowIndex}`}>
               <View className='tile-row-inner'>
                 {row.map(tileId => (
-                  <Button
-                    key={tileId}
+                  <Image key={tileId}
                     className={`tile-btn ${getTileTotalCount(tileId) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'}`}
-                    onClick={() => toggleTile(tileId)}
-                  >
-                    <Image src={getTileSvgPath(tileId)} className='tile-icon' mode='aspectFit' />
-                  </Button>
+                    onClick={() => toggleTile(tileId)} src={getTileSvgPath(tileId)} className='tile-icon' mode='aspectFit' />
                 ))}
               </View>
             </View>

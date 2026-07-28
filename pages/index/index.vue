@@ -1,227 +1,147 @@
 <template>
 	<view class="app">
+		<view v-if="toast.show" class="toast" :class="toast.type === 'error' ? 'toast-error' : 'toast-success'">{{ toast.message }}</view>
 
-		<!-- Toast 通知 -->
-		<view v-if="toast.show" class="toast" :class="toast.type === 'error' ? 'toast-error' : 'toast-success'">
-			{{ toast.message }}
+		<view class="custom-header">
+			<view class="title-wrap" @click="editTitle">
+				<text class="page-title">{{ pageTitle }}</text>
+				<text class="edit-mark">✎</text>
+			</view>
+			<view class="header-actions">
+				<button class="icon-btn" @click="openCamera">📷</button>
+				<button class="scoreboard-btn" @click="openScoreboard">计分板</button>
+			</view>
 		</view>
 
 		<main class="main">
-			<!-- 牌种选择区域 -->
 			<section class="tile-section">
-				<!-- 万子 -->
-				<view class="tile-row">
+				<view class="tile-row" v-for="row in tileRows" :key="row.key">
 					<view class="tile-row-inner">
-						<button v-for="i in 9" :key="'w'+i" @click="toggleTile('w'+i)" 
-							class="tile-btn"
-							:class="getTileCount('w'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							<image :src="getTileSvgPath('w'+i)" class="tile-icon" mode="aspectFit" />
-						</button>
-					</view>
-				</view>
-
-				<!-- 条子 -->
-				<view class="tile-row">
-					<view class="tile-row-inner">
-						<button v-for="i in 9" :key="'t'+i" @click="toggleTile('t'+i)" 
-							class="tile-btn"
-							:class="getTileCount('t'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							<image :src="getTileSvgPath('t'+i)" class="tile-icon" mode="aspectFit" />
-						</button>
-					</view>
-				</view>
-
-				<!-- 饼子 -->
-				<view class="tile-row">
-					<view class="tile-row-inner">
-						<button v-for="i in 9" :key="'b'+i" @click="toggleTile('b'+i)" 
-							class="tile-btn"
-							:class="getTileCount('b'+i) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							<image :src="getTileSvgPath('b'+i)" class="tile-icon" mode="aspectFit" />
-						</button>
-					</view>
-				</view>
-
-				<!-- 字牌 -->
-				<view class="tile-row">
-					<view class="tile-row-inner">
-						<button v-for="wind in ['east','south','west','north']" :key="wind" @click="toggleTile(wind)" 
-							class="tile-btn"
-							:class="getTileCount(wind) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							<image :src="getTileSvgPath(wind)" class="tile-icon" mode="aspectFit" />
-						</button>
-						<button v-for="dragon in ['zhong','fa','bai']" :key="dragon" @click="toggleTile(dragon)" 
-							class="tile-btn"
-							:class="getTileCount(dragon) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
-							<image :src="getTileSvgPath(dragon)" class="tile-icon" mode="aspectFit" />
+						<button v-for="tile in row.tiles" :key="tile" @click="toggleTile(tile)" class="tile-btn"
+							:class="getTileCount(tile) < 4 ? 'tile-btn-active' : 'tile-btn-inactive'">
+							<image :src="getTileSvgPath(tile)" class="tile-icon" mode="aspectFit" />
 						</button>
 					</view>
 				</view>
 			</section>
 
-			<!-- 特殊选项区域 -->
-			<section class="options-section">          
-				<!-- 第一行：立牌、碰、吃、明杠、暗杠、重置 -->
+			<section class="options-section">
 				<view class="mode-row">
-					<button v-for="mode in ['concealed', 'pong', 'chi', 'minggang', 'angang']" :key="mode"
-						@click="currentMode = mode"
-						class="mode-btn"
-						:class="currentMode === mode ? 'mode-btn-active' : 'mode-btn-inactive'">
-						{{mode === 'concealed' ? '立牌' : mode === 'pong' ? '碰' : mode === 'chi' ? '吃' : mode === 'minggang' ? '明杠' : '暗杠'}}
+					<button v-for="mode in modes" :key="mode.value" @click="currentMode = mode.value" class="mode-btn"
+						:class="currentMode === mode.value ? `mode-${mode.value}-active` : 'mode-inactive'">
+						{{ mode.label }}
 					</button>
-					<button @click="resetAll" class="reset-btn">
-						重置
-					</button>
+					<button @click="resetAll" class="reset-btn">重置</button>
 				</view>
 
-                <view style="display: flex;justify-content: space-between;">
-                    <!-- 门风圈风 -->
-                    <view class="wind-row">
-                        <!-- 门风 -->
-                        <view class="wind-group">
-                            <span class="wind-label">门风</span>
-                            <view class="wind-btns">
-                                <button v-for="wind in ['east','south','west','north']" :key="wind" 
-                                    @click="options.seatWind = wind"
-                                    class="mode-btn"
-                                    :class="options.seatWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
-                                    {{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
-                                </button>
-                            </view>
-                        </view>
+				<view class="settings-row">
+					<view class="wind-row">
+						<view class="wind-group" v-for="item in windSettings" :key="item.key">
+							<text class="wind-label">{{ item.label }}</text>
+							<view class="wind-btns">
+								<button v-for="wind in winds" :key="wind.value" @click="options[item.key] = wind.value" class="wind-btn"
+									:class="options[item.key] === wind.value ? 'wind-btn-active' : 'wind-btn-inactive'">{{ wind.label }}</button>
+							</view>
+						</view>
+					</view>
+					<view class="flower-row">
+						<text class="flower-label">花牌</text>
+						<view class="flower-controls">
+							<button @click="options.flowerCount = Math.max(0, options.flowerCount - 1)" class="flower-btn">-</button>
+							<text class="flower-count">{{ options.flowerCount }}</text>
+							<button @click="options.flowerCount = Math.min(8, options.flowerCount + 1)" class="flower-btn">+</button>
+						</view>
+					</view>
+				</view>
 
-                        <!-- 圈风 -->
-                        <view class="wind-group">
-                            <span class="wind-label">圈风</span>
-                            <view class="wind-btns">
-                                <button v-for="wind in ['east','south','west','north']" :key="wind" 
-                                    @click="options.prevalentWind = wind"
-                                    class="mode-btn"
-                                    :class="options.prevalentWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
-                                    {{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
-                                </button>
-                            </view>
-                        </view>
-                    </view>
-
-                    <!-- 花牌数量 -->
-                    <view class="flower-row">
-                        <span class="flower-label">花牌数量</span>
-                        <view style="display: flex;align-items: center;">
-                            <button @click="options.flowerCount = Math.max(0, options.flowerCount - 1)" class="flower-btn">
-                                -
-                            </button>
-                            <span class="flower-count">{{options.flowerCount}}</span>
-                            <button @click="options.flowerCount = Math.min(8, options.flowerCount + 1)" class="flower-btn">
-                                +
-                            </button>
-                        </view>
-                    </view>
-                </view>
-
-				<!-- 勾选项 -->
 				<checkbox-group @change="checkboxChange" class="checkbox-row">
-					<!-- 自摸 -->
-					<label class="checkbox-label">
-						<checkbox value="isSelfDrawn" :checked="options.isSelfDrawn" class="checkbox-input" />
-						<span class="checkbox-text">自摸</span>
-					</label>
-
-					<!-- 和绝张 -->
-					<label class="checkbox-label">
-						<checkbox value="isJuezhang" :checked="options.isJuezhang" class="checkbox-input" />
-						<span class="checkbox-text">和绝张</span>
-					</label>
-
-					<!-- 妙手回春 -->
-					<label v-if="options.isSelfDrawn" class="checkbox-label">
-						<checkbox value="isMiaoshou" :checked="options.isMiaoshou" class="checkbox-input" />
-						<span class="checkbox-text">妙手回春</span>
-					</label>
-
-					<!-- 杠上开花 -->
-					<label v-if="options.isSelfDrawn" class="checkbox-label">
-						<checkbox value="isGangshang" :checked="options.isGangshang" class="checkbox-input" />
-						<span class="checkbox-text">杠上开花</span>
-					</label>
-
-					<!-- 海底捞月 -->
-					<label v-if="!options.isSelfDrawn" class="checkbox-label">
-						<checkbox value="isHaidilao" :checked="options.isHaidilao" class="checkbox-input" />
-						<span class="checkbox-text">海底捞月</span>
-					</label>
-
-					<!-- 抢杠和 -->
-					<label v-if="!options.isSelfDrawn" class="checkbox-label">
-						<checkbox value="isQianggang" :checked="options.isQianggang" class="checkbox-input" />
-						<span class="checkbox-text">抢杠和</span>
+					<label class="checkbox-label" v-for="option in visibleCheckboxOptions" :key="option.key">
+						<checkbox :value="option.key" :checked="options[option.key]" class="checkbox-input" />
+						<text class="checkbox-text">{{ option.label }}</text>
 					</label>
 				</checkbox-group>
 			</section>
 
-			<!-- 选中的牌显示区域 -->
 			<section class="selected-section">
-				<!-- 手牌 -->
-				<view class="concealed-row" v-if="concealedTiles.length">
-					<view class="concealed-inner">
-						<view v-for="(tile, index) in sortedConcealedTiles" :key="'c-' + index" 
-							@click="removeTile(tile, 'concealed')"
-							class="concealed-tile">
-							<image :src="getTileSvgPath(tile)" class="concealed-icon" mode="aspectFit" />
-						</view>
+				<view v-if="concealedTiles.length" class="concealed-inner">
+					<view v-for="(tile, index) in sortedConcealedTiles" :key="`c-${index}`" @click="removeTile(tile, 'concealed')" class="concealed-tile">
+						<image :src="getTileSvgPath(tile)" class="concealed-icon" mode="aspectFit" />
 					</view>
 				</view>
 
-				<!-- 副露 -->
-				<view class="meld-row" v-if="meldGroups.length">
-					<view v-for="(group, groupIndex) in sortedMeldGroups" :key="'mg-' + groupIndex" 
-						@click="removeTile(group.tiles[0], 'meld')"
-						class="meld-group"
-						:class="group.type === 'angang' ? 'meld-group-angang' : 'meld-group-other'">
-						<view v-for="(tile, tileIndex) in group.tiles" :key="'mt-' + groupIndex + '-' + tileIndex"
-							class="meld-tile"
-							:class="group.type === 'angang' ? 'meld-tile-angang' : 'meld-tile-other'">
-							<image :src="getTileSvgPath(tile)" class="meld-icon" mode="aspectFit" />
+				<view v-if="meldGroups.length" class="meld-row">
+					<view v-for="(group, groupIndex) in sortedMeldGroups" :key="`mg-${groupIndex}`" @click="removeMeld(groupIndex)"
+						class="meld-group" :class="`meld-${group.type}`">
+						<view class="meld-tiles">
+							<view v-for="(tile, tileIndex) in group.tiles" :key="`mt-${groupIndex}-${tileIndex}`" class="meld-tile">
+								<image :src="getTileSvgPath(tile)" class="meld-icon" mode="aspectFit" />
+							</view>
 						</view>
-						<span class="meld-badge">
-							{{getMeldTypeText(group.type)}}
-						</span>
+						<text class="meld-label">{{ getMeldTypeText(group.type) }}</text>
 					</view>
 				</view>
-				
-				<h2 v-if="remainingTiles" class="remaining-title">可选择{{ remainingTiles }}张牌</h2>
-				
-                <h2 v-if="waitingTiles.length === 0 && this.remainingTiles <= 0" class="remaining-title">
-                    未听牌
-                </h2>
+
+				<text v-if="remainingTiles > 0" class="remaining-title">还可选择 {{ remainingTiles }} 张牌</text>
+				<text v-else-if="waitingTiles.length === 0" class="remaining-title">未听牌</text>
 			</section>
 
-			<!-- 听牌显示区域 -->
 			<section v-if="waitingTiles.length && !winTile" class="waiting-section">
 				<view class="waiting-row">
-					<view v-for="wt in waitingTiles" :key="wt.tileId"
-						class="waiting-item"
-						@click="updateWinTile(wt)">
-						<view class="waiting-score">{{wt.totalScore}}番</view>
+					<view v-for="wt in waitingTiles" :key="wt.tileId" class="waiting-item" @click="updateWinTile(wt)">
+						<text class="waiting-score">{{ wt.totalScore }}番</text>
 						<image :src="getTileSvgPath(wt.tileId)" class="waiting-icon" mode="aspectFit" />
 					</view>
 				</view>
 			</section>
 
-			<!-- 和牌番数显示区域 -->
 			<section v-if="selectedWinTile" class="win-section">
-				<view style="display: flex; align-items: center;justify-content: flex-start;margin-bottom: 24rpx;" @click="winTile = null">
-					<h2 class="win-title">和张:</h2>
+				<view class="win-head" @click="winTile = null">
+					<text class="win-score">{{ selectedWinTile.totalScore }} 番</text>
 					<image :src="getTileSvgPath(selectedWinTile.tileId)" class="win-icon" mode="aspectFit" />
 				</view>
-				<view class="win-fans">
-					<view class="win-score">共 {{ selectedWinTile.totalScore }} 番</view>
-					<span v-for="fan in selectedWinTile.fans" :key="fan.name" class="win-fan-tag">
-						{{fan.name}} {{fan.score}}番
-					</span>
+				<view class="share-preview">
+					<view class="share-tiles">
+						<image v-for="(tile, index) in sortedConcealedTiles" :key="`share-c-${index}`" :src="getTileSvgPath(tile)" class="share-tile" mode="aspectFit" />
+					</view>
+					<view class="share-melds">
+						<view v-for="(group, index) in sortedMeldGroups" :key="`share-m-${index}`" class="share-meld">
+							<image v-for="(tile, tileIndex) in group.tiles" :key="tileIndex" :src="getTileSvgPath(tile)" class="share-tile" mode="aspectFit" />
+							<text>{{ getMeldTypeText(group.type) }}</text>
+						</view>
+					</view>
 				</view>
 			</section>
 		</main>
+
+		<view v-if="cameraEditorVisible" class="modal-mask" @click.self="closeCameraEditor">
+			<view class="camera-modal">
+				<view class="modal-header">
+					<text class="modal-title">拍照录入</text>
+					<text class="modal-close" @click="closeCameraEditor">×</text>
+				</view>
+				<image v-if="capturedImage" :src="capturedImage" class="captured-image" mode="aspectFit" />
+				<text class="camera-tip">当前为纯前端辅助录入：请根据照片点击下方牌面修正。后续可在 recognizePhoto 中接入本地模型。</text>
+				<view class="editor-summary">
+					<text>手牌 {{ draftConcealedTiles.length }} 张</text>
+					<text>副露 {{ draftMeldGroups.length }} 组</text>
+				</view>
+				<view class="draft-tiles">
+					<image v-for="(tile, index) in draftConcealedTiles" :key="index" :src="getTileSvgPath(tile)" class="draft-tile" mode="aspectFit" @click="draftConcealedTiles.splice(index, 1)" />
+				</view>
+				<view class="editor-modes">
+					<button v-for="mode in modes" :key="mode.value" class="editor-mode-btn" :class="draftMode === mode.value ? 'editor-mode-active' : ''" @click="draftMode = mode.value">{{ mode.label }}</button>
+				</view>
+				<scroll-view scroll-y class="editor-palette">
+					<view class="palette-row" v-for="row in tileRows" :key="row.key">
+						<image v-for="tile in row.tiles" :key="tile" :src="getTileSvgPath(tile)" class="palette-tile" mode="aspectFit" @click="addDraftTile(tile)" />
+					</view>
+				</scroll-view>
+				<view class="modal-actions">
+					<button class="secondary-btn" @click="openCamera">重新拍照</button>
+					<button class="primary-btn" @click="applyCameraResult">使用这些牌</button>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -229,46 +149,69 @@
 	import { TILES } from '@/utils/tiles.js';
 	import { MahjongAnalyzer } from '@/utils/analyzer.js';
 
+	const DEFAULT_TITLE = '国标麻将计番器';
+
 	export default {
 		data() {
 			return {
+				pageTitle: DEFAULT_TITLE,
 				currentMode: 'concealed',
 				concealedTiles: [],
 				meldGroups: [],
 				winTile: null,
-				toast: {
-					show: false,
-					message: '',
-					type: 'error'
-				},
+				capturedImage: '',
+				cameraEditorVisible: false,
+				draftMode: 'concealed',
+				draftConcealedTiles: [],
+				draftMeldGroups: [],
+				toast: { show: false, message: '', type: 'error' },
 				options: {
-					seatWind: 'east',
-					prevalentWind: 'east',
-					flowerCount: 0,
-					isSelfDrawn: false,
-					isHaidilao: false,
-					isMiaoshou: false,
-					isJuezhang: false,
-					isGangshang: false,
-					isQianggang: false
+					seatWind: 'east', prevalentWind: 'east', flowerCount: 0,
+					isSelfDrawn: false, isHaidilao: false, isMiaoshou: false,
+					isJuezhang: false, isGangshang: false, isQianggang: false
 				}
-			}
+			};
+		},
+		onLoad() {
+			this.pageTitle = uni.getStorageSync('mahjong.pageTitle') || DEFAULT_TITLE;
 		},
 		onShareAppMessage() {
-			return {
-				title: '国标麻将算番器',
-				path: '/pages/index/index'
-			};
+			const score = this.selectedWinTile ? ` · ${this.selectedWinTile.totalScore}番` : '';
+			return { title: `${this.pageTitle}${score}`, path: '/pages/index/index' };
 		},
 		onShareTimeline() {
-			return {
-				title: '国标麻将算番器',
-				query: ''
-			};
+			return { title: this.pageTitle, query: '' };
 		},
 		computed: {
+			tileRows() {
+				return [
+					{ key: 'w', tiles: Array.from({ length: 9 }, (_, i) => `w${i + 1}`) },
+					{ key: 't', tiles: Array.from({ length: 9 }, (_, i) => `t${i + 1}`) },
+					{ key: 'b', tiles: Array.from({ length: 9 }, (_, i) => `b${i + 1}`) },
+					{ key: 'z', tiles: ['east', 'south', 'west', 'north', 'zhong', 'fa', 'bai'] }
+				];
+			},
+			modes() {
+				return [
+					{ value: 'concealed', label: '手牌' }, { value: 'chi', label: '吃' },
+					{ value: 'pong', label: '碰' }, { value: 'minggang', label: '明杠' },
+					{ value: 'angang', label: '暗杠' }
+				];
+			},
+			winds() {
+				return [{ value: 'east', label: '东' }, { value: 'south', label: '南' }, { value: 'west', label: '西' }, { value: 'north', label: '北' }];
+			},
+			windSettings() {
+				return [{ key: 'seatWind', label: '门风' }, { key: 'prevalentWind', label: '圈风' }];
+			},
+			visibleCheckboxOptions() {
+				const items = [{ key: 'isSelfDrawn', label: '自摸' }, { key: 'isJuezhang', label: '和绝张' }];
+				if (this.options.isSelfDrawn) items.push({ key: 'isMiaoshou', label: '妙手回春' }, { key: 'isGangshang', label: '杠上开花' });
+				else items.push({ key: 'isHaidilao', label: '海底捞月' }, { key: 'isQianggang', label: '抢杠和' });
+				return items;
+			},
 			remainingTiles() {
-				return 14 - this.concealedTiles.length - this.meldGroups.length * 3 - 1
+				return 13 - this.concealedTiles.length - this.meldGroups.length * 3;
 			},
 			meldTiles() {
 				return this.meldGroups.flatMap(group => group.tiles);
@@ -276,185 +219,128 @@
 			waitingTiles() {
 				const allTiles = [...this.concealedTiles, ...this.meldTiles];
 				const gangCount = this.meldGroups.filter(g => g.type === 'minggang' || g.type === 'angang').length;
-				const maxConcealed = 14 - this.meldGroups.length * 3 - gangCount;
-				if (allTiles.length !== 14 + gangCount - 1) {
-					return [];
-				}
+				if (allTiles.length !== 13 + gangCount) return [];
 				const analyzer = new MahjongAnalyzer();
-				analyzer.setHand(this.concealedTiles, this.meldGroups, this.winTile?.tileId, {
-					isSelfDrawn: this.options.isSelfDrawn,
-					prevalentWind: this.options.prevalentWind,
-					seatWind: this.options.seatWind,
-					flowerCount: this.options.flowerCount,
-					isHaidilao: this.options.isHaidilao,
-					isMiaoshou: this.options.isMiaoshou,
-					isGangshang: this.options.isGangshang,
-					isQianggang: this.options.isQianggang,
-					isJuezhang: this.options.isJuezhang
-				});
-				const res = analyzer.getWaitingTiles();
-				console.log('听牌选项番数 :>> ', res);
-				return res;
+				analyzer.setHand(this.concealedTiles, this.meldGroups, this.winTile?.tileId, this.options);
+				return analyzer.getWaitingTiles();
 			},
 			selectedWinTile() {
 				if (!this.winTile) return null;
-				const wt = this.waitingTiles.find(w => w.tileId === this.winTile.tileId);
-				return wt || this.winTile;
+				return this.waitingTiles.find(item => item.tileId === this.winTile.tileId) || this.winTile;
 			},
 			sortedConcealedTiles() {
-				return [...this.concealedTiles].sort((a, b) => {
-					const typeOrder = { 'w': 0, 't': 1, 'b': 2 };
-					const windOrder = { 'east': 3, 'south': 3, 'west': 3, 'north': 3 };
-					const dragonOrder = { 'zhong': 4, 'fa': 4, 'bai': 4 };
-					
-					const getTypeRank = (tileId) => {
-						if (windOrder[tileId] !== undefined) return windOrder[tileId];
-						if (dragonOrder[tileId] !== undefined) return dragonOrder[tileId];
-						if (typeOrder[tileId[0]] !== undefined) return typeOrder[tileId[0]];
-						return 5;
-					};
-					
-					const getValue = (tileId) => {
-						const windValue = { 'east': 0, 'south': 1, 'west': 2, 'north': 3 };
-						const dragonValue = { 'zhong': 0, 'fa': 1, 'bai': 2 };
-						if (windValue[tileId] !== undefined) return windValue[tileId];
-						if (dragonValue[tileId] !== undefined) return dragonValue[tileId];
-						if (tileId[0] in typeOrder) return parseInt(tileId.slice(1)) || 0;
-						return 0;
-					};
-					
-					const typeA = getTypeRank(a);
-					const typeB = getTypeRank(b);
-					if (typeA !== typeB) return typeA - typeB;
-					return getValue(a) - getValue(b);
-				});
+				return [...this.concealedTiles].sort(this.compareTiles);
 			},
 			sortedMeldGroups() {
-				const typeOrder = { 'pong': 0, 'chi': 1, 'minggang': 2, 'angang': 3 };
-				const tileTypeOrder = { 'w': 0, 't': 1, 'b': 2 };
-				
-				const getTileTypeRank = (tileId) => {
-					const windOrder = { 'east': 3, 'south': 3, 'west': 3, 'north': 3 };
-					const dragonOrder = { 'zhong': 4, 'fa': 4, 'bai': 4 };
-					if (windOrder[tileId] !== undefined) return 3;
-					if (dragonOrder[tileId] !== undefined) return 4;
-					if (tileTypeOrder[tileId[0]] !== undefined) return tileTypeOrder[tileId[0]];
-					return 5;
-				};
-				
-				const getTileValue = (tileId) => {
-					const windValue = { 'east': 0, 'south': 1, 'west': 2, 'north': 3 };
-					const dragonValue = { 'zhong': 0, 'fa': 1, 'bai': 2 };
-					if (windValue[tileId] !== undefined) return windValue[tileId];
-					if (dragonValue[tileId] !== undefined) return dragonValue[tileId];
-					if (tileId[0] in tileTypeOrder) return parseInt(tileId.slice(1)) || 0;
-					return 0;
-				};
-				
-				return [...this.meldGroups].sort((a, b) => {
-					const typeA = typeOrder[a.type];
-					const typeB = typeOrder[b.type];
-					if (typeA !== typeB) return typeA - typeB;
-					
-					const tileA = a.tiles[0];
-					const tileB = b.tiles[0];
-					const tileTypeA = getTileTypeRank(tileA);
-					const tileTypeB = getTileTypeRank(tileB);
-					if (tileTypeA !== tileTypeB) return tileTypeA - tileTypeB;
-					return getTileValue(tileA) - getTileValue(tileB);
-				});
+				const order = { chi: 0, pong: 1, minggang: 2, angang: 3 };
+				return [...this.meldGroups].sort((a, b) => order[a.type] - order[b.type] || this.compareTiles(a.tiles[0], b.tiles[0]));
 			}
 		},
 		watch: {
-			remainingTiles(newVal) {
-				if (newVal > 0) {
-					this.winTile = null;
-				}
+			remainingTiles(value) {
+				if (value > 0) this.winTile = null;
 			}
 		},
 		methods: {
+			compareTiles(a, b) {
+				const order = ['w1','w2','w3','w4','w5','w6','w7','w8','w9','t1','t2','t3','t4','t5','t6','t7','t8','t9','b1','b2','b3','b4','b5','b6','b7','b8','b9','east','south','west','north','zhong','fa','bai'];
+				return order.indexOf(a) - order.indexOf(b);
+			},
 			showToast(message, type = 'error') {
 				this.toast = { show: true, message, type };
-				setTimeout(() => {
-					this.toast.show = false;
-				}, 2000);
+				setTimeout(() => { this.toast.show = false; }, 1800);
 			},
-			checkboxChange(e) {
-				const values = e.detail.value;
-				const optionKeys = ['isSelfDrawn', 'isJuezhang', 'isMiaoshou', 'isGangshang', 'isHaidilao', 'isQianggang'];
-				for (const key of optionKeys) {
-					this.$set(this.options, key, values.includes(key));
+			editTitle() {
+				uni.showModal({
+					title: '修改标题', editable: true, placeholderText: this.pageTitle,
+					success: ({ confirm, content }) => {
+						if (!confirm) return;
+						this.pageTitle = (content || '').trim() || DEFAULT_TITLE;
+						uni.setStorageSync('mahjong.pageTitle', this.pageTitle);
+					}
+				});
+			},
+			openScoreboard() {
+				uni.navigateTo({ url: '/pages/scoreboard/scoreboard' });
+			},
+			openCamera() {
+				uni.chooseImage({
+					count: 1, sourceType: ['camera', 'album'], sizeType: ['compressed'],
+					success: ({ tempFilePaths }) => {
+						this.capturedImage = tempFilePaths[0];
+						this.draftConcealedTiles = [...this.concealedTiles];
+						this.draftMeldGroups = this.meldGroups.map(group => ({ type: group.type, tiles: [...group.tiles] }));
+						this.recognizePhoto(this.capturedImage);
+						this.cameraEditorVisible = true;
+					}
+				});
+			},
+			recognizePhoto() {
+				// 本地模型接入点：返回 { handTiles, melds } 后覆盖 draft 数据即可。
+			},
+			closeCameraEditor() {
+				this.cameraEditorVisible = false;
+			},
+			addDraftTile(tileId) {
+				if (this.draftMode === 'concealed') {
+					if (this.draftConcealedTiles.length >= 14) return this.showToast('手牌最多 14 张');
+					this.draftConcealedTiles.push(tileId);
+					return;
 				}
+				const group = this.buildMeld(tileId, this.draftMode, true);
+				if (group) this.draftMeldGroups.push(group);
+			},
+			applyCameraResult() {
+				this.concealedTiles = [...this.draftConcealedTiles];
+				this.meldGroups = this.draftMeldGroups.map(group => ({ type: group.type, tiles: [...group.tiles] }));
+				this.winTile = null;
+				this.cameraEditorVisible = false;
+				this.showToast('牌面已更新', 'success');
+			},
+			checkboxChange(event) {
+				const values = event.detail.value;
+				['isSelfDrawn','isJuezhang','isMiaoshou','isGangshang','isHaidilao','isQianggang'].forEach(key => { this.options[key] = values.includes(key); });
 			},
 			getTileCount(tileId) {
-				const concealedCount = this.concealedTiles.filter(t => t === tileId).length;
-				const meldCount = this.meldTiles.filter(t => t === tileId).length;
-				return concealedCount + meldCount;
+				return this.concealedTiles.filter(tile => tile === tileId).length + this.meldTiles.filter(tile => tile === tileId).length;
+			},
+			buildMeld(tileId, type, draft = false) {
+				if (type === 'chi') {
+					const tile = TILES[tileId];
+					if (!tile || tile.type === 'wind' || tile.type === 'dragon') return null;
+					const base = Math.min(tile.value, 7);
+					return { type, tiles: [`${tileId[0]}${base}`, `${tileId[0]}${base + 1}`, `${tileId[0]}${base + 2}`] };
+				}
+				const count = type === 'pong' ? 3 : 4;
+				if (!draft && this.getTileCount(tileId) + count > 4) return null;
+				return { type, tiles: Array(count).fill(tileId) };
 			},
 			toggleTile(tileId) {
 				if (this.currentMode === 'concealed') {
-					if (this.remainingTiles <= 0) return;
-					if (this.getTileCount(tileId) > 3) return;
+					if (this.remainingTiles <= 0 || this.getTileCount(tileId) >= 4) return;
 					this.concealedTiles.push(tileId);
-				} else if (this.remainingTiles < 3) {
-					const modeText = this.currentMode === 'pong' ? '碰' : this.currentMode === 'chi' ? '吃' : this.currentMode === 'minggang' ? '明杠' : '暗杠';
-					this.showToast(`剩余牌数不足，无法${modeText}`);
 					return;
-				} else if (this.currentMode === 'angang') {
-					if (this.getTileCount(tileId) > 0) return;
-					const newTiles = [tileId, tileId, tileId, tileId];
-					this.meldGroups.push({ tiles: newTiles, type: 'angang' });
-				} else if (this.currentMode === 'pong') {
-					if (this.getTileCount(tileId) > 1) return;
-					const newTiles = [tileId, tileId, tileId];
-					this.meldGroups.push({ tiles: newTiles, type: 'pong' });
-				} else if (this.currentMode === 'chi') {
-					const tile = TILES[tileId];
-					if (!tile || tile.type === 'wind' || tile.type === 'dragon') return;
-					
-					let baseValue = tile.value;
-					if (baseValue > 7) baseValue = 7;
-					
-					const typePrefix = tileId.charAt(0);
-					const newTiles = [
-						typePrefix + baseValue,
-						typePrefix + (baseValue + 1),
-						typePrefix + (baseValue + 2)
-					];
-					
-					for (const t of newTiles) {
-						if (this.getTileCount(t) > 1) return;
-					}
-					
-					this.meldGroups.push({ tiles: newTiles, type: 'chi' });
-				} else if (this.currentMode === 'minggang') {
-					if (this.getTileCount(tileId) > 0) return;
-					const newTiles = [tileId, tileId, tileId, tileId];
-					this.meldGroups.push({ tiles: newTiles, type: 'minggang' });
 				}
+				if (this.remainingTiles < 3) return this.showToast('剩余牌数不足');
+				const group = this.buildMeld(tileId, this.currentMode);
+				if (!group) return this.showToast('该组合无法添加');
+				this.meldGroups.push(group);
 			},
 			removeTile(tileId, area) {
-				if (area === 'concealed') {
-					const index = this.concealedTiles.indexOf(tileId);
-					if (index > -1) {
-						this.concealedTiles.splice(index, 1);
-					}
-				} else if (area === 'meld') {
-					const groupIndex = this.meldGroups.findIndex(g => g.tiles.includes(tileId));
-					if (groupIndex > -1) {
-						this.meldGroups.splice(groupIndex, 1);
-					}
-				}
+				if (area !== 'concealed') return;
+				const index = this.concealedTiles.indexOf(tileId);
+				if (index >= 0) this.concealedTiles.splice(index, 1);
 			},
-			getTileDisplay(tileId) {
-				const tile = TILES[tileId];
-				return tile ? tile.name.replace(/[一二三四五六七八九]/g, m => '一二三四五六七八九'.indexOf(m) + 1) : tileId;
+			removeMeld(sortedIndex) {
+				const group = this.sortedMeldGroups[sortedIndex];
+				const index = this.meldGroups.indexOf(group);
+				if (index >= 0) this.meldGroups.splice(index, 1);
 			},
 			getTileSvgPath(tileId) {
 				return `/static/image/tile/${tileId}.svg`;
 			},
 			getMeldTypeText(type) {
-				return type === 'pong' ? '碰' : type === 'chi' ? '吃' : type === 'angang' ? '暗杠' : '明杠';
+				return ({ chi: '吃', pong: '碰', minggang: '明杠', angang: '暗杠' })[type] || '';
 			},
 			updateWinTile(tile) {
 				this.winTile = tile;
@@ -464,448 +350,100 @@
 				this.concealedTiles = [];
 				this.meldGroups = [];
 				this.winTile = null;
-				this.options = {
-					seatWind: 'east',
-					prevalentWind: 'east',
-					flowerCount: 0,
-					isSelfDrawn: false,
-					isHaidilao: false,
-					isMiaoshou: false,
-					isJuezhang: false,
-					isGangshang: false,
-					isQianggang: false
-				};
 			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss">
-	.app {
-		min-height: 100vh;
-		background-color: #f9fafb;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-		display: flex;
-		flex-direction: column;
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-
-	.toast {
-		position: fixed;
-		top: 160rpx;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 50;
-		padding: 24rpx 32rpx;
-		border-radius: 16rpx;
-		box-shadow: 0 20rpx 30rpx -6rpx rgba(0, 0, 0, 0.1);
-		transition: all 0.3s;
-	}
-
-	.toast-error {
-		background-color: #ef4444;
-		color: #ffffff;
-	}
-
-	.toast-success {
-		background-color: #22c55e;
-		color: #ffffff;
-	}
-
-	.main {
-		box-sizing: border-box;
-		flex: 1;
-		min-width: 750rpx;
-		margin: 0 auto;
-		padding: 12rpx 32rpx 20rpx;
-	}
-
-	.tile-section {
-		margin-bottom: 16rpx;
-	}
-
-	.tile-row {
-		margin-bottom: 8rpx;
-	}
-
-	.tile-row-inner {
-		display: flex;
-		justify-content: center;
-		gap: 8rpx;
-	}
-
-	.tile-btn {
-		width: 60rpx;
-		height: 80rpx;
-		background-color: #ffffff;
-		border-width: 4rpx;
-		border-radius: 16rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 24rpx;
-		font-weight: bold;
-		white-space: nowrap;
-		transition: all 0.2s;
-		padding: 0;
-	}
-
-	.tile-btn-inactive {
-		border-color: #d1d5db;
-	}
-
-	.tile-btn-active {
-		border-color: #3b82f6;
-		background-color: #eff6ff;
-	}
-
-	.tile-icon {
-		width: 56rpx;
-		height: 76rpx;
-	}
-
-	.options-section {
-		margin-bottom: 16rpx;
-		border-top: 2rpx solid #eee;
-		padding-top: 16rpx;
-	}
-
-	.mode-row {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 16rpx;
-		margin-bottom: 8rpx;
-	}
-
-	.mode-btn {
-		padding: 16rpx 24rpx;
-		border-width: 4rpx;
-		border-radius: 16rpx;
-		font-size: 28rpx;
-		font-weight: 500;
-		transition: all 0.2s;
-        border: none;
-	}
-    
-    button {
-        line-height: 1;
-        
-        &::after {
-            border: none;
-        }
-    }
-
-	.mode-btn-inactive {
-		border-color: #d1d5db;
-		background-color: #ffffff;
-		color: #374151;
-	}
-
-	.mode-btn-active {
-		border-color: #3b82f6;
-		background-color: #eff6ff;
-		color: #1d4ed8;
-	}
-
-	.reset-btn {
-		margin-left: auto;
-		padding: 16rpx 24rpx;
-		background-color: #ef4444;
-		color: #ffffff;
-		border-radius: 16rpx;
-		font-size: 28rpx;
-		font-weight: 500;
-		transition: background-color 0.2s;
-	}
-
-	.wind-row {
-		display: flex;
-		flex-direction: column;
-		gap: 8rpx;
-		margin-bottom: 12rpx;
-	}
-
-	.wind-group {
-		display: flex;
-		align-items: center;
-		gap: 16rpx;
-	}
-
-	.wind-label {
-		font-size: 28rpx;
-		color: #4b5563;
-		display: block;
-	}
-
-	.wind-btns {
-		display: flex;
-		flex: 1;
-		gap: 8rpx;
-	}
-
-	.wind-btn {
-		flex: 1;
-		padding: 16rpx 0;
-		border-width: 4rpx;
-		border-radius: 16rpx;
-		font-size: 28rpx;
-		font-weight: 500;
-		transition: all 0.2s;
-	}
-
-	.wind-btn-inactive {
-		border-color: #d1d5db;
-		background-color: #ffffff;
-		color: #374151;
-	}
-
-	.wind-btn-active {
-		border-color: #3b82f6;
-		background-color: #eff6ff;
-		color: #1d4ed8;
-	}
-
-	.flower-row {
-		display: flex;
-        flex-direction: column;
-		align-items: center;
-		justify-content: flex-start;
-		gap: 8rpx;
-		margin-bottom: 8rpx;
-	}
-
-	.flower-label {
-        height: 60rpx;
-        line-height: 60rpx;
-		font-size: 28rpx;
-		color: #4b5563;
-	}
-
-	.flower-btn {
-		width: 60rpx;
-		height: 60rpx;
-		background-color: #f3f4f6;
-		border: 2rpx solid #d1d5db;
-		border-radius: 16rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 28rpx;
-		transition: background-color 0.2s;
-	}
-
-	.flower-count {
-		width: 80rpx;
-		text-align: center;
-		font-size: 32rpx;
-		color: #666;
-	}
-
-	.checkbox-row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 12rpx;
-	}
-
-	.checkbox-label {
-		display: flex;
-		align-items: center;
-		gap: 8rpx;
-	}
-
-	.checkbox-input {
-		width: 48rpx;
-		height: 48rpx;
-		color: #2563eb;
-		border-radius: 8rpx;
-	}
-
-	.checkbox-text {
-		font-size: 28rpx;
-		color: #4b5563;
-	}
-
-	.selected-section {
-		margin: 32rpx 0;
-	}
-
-	.remaining-title {
-		margin-top: 24rpx;
-		text-align: center;
-		font-weight: 600;
-		color: #374151;
-		margin-bottom: 16rpx;
-	}
-
-	.concealed-row {
-		
-	}
-
-	.concealed-inner {
-		display: flex;
-		flex-wrap: wrap;
-		// gap: 8rpx;
-		min-height: 96rpx;
-	}
-
-	.concealed-tile {
-		width: 64rpx;
-		height: 88rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: background-color 0.2s;
-	}
-
-	.concealed-icon {
-		width: 52rpx;
-		height: 72rpx;
-	}
-
-	.meld-row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 16rpx;
-		min-height: 96rpx;
-	}
-
-	.meld-group {
-		display: flex;
-		align-items: center;
-		gap: 8rpx;
-		border-radius: 16rpx;
-		padding: 8rpx;
-		transition: all 0.2s;
-		position: relative;
-	}
-
-	.meld-group-angang {
-		
-	}
-
-	.meld-group-other {
-
-	}
-
-	.meld-tile {
-		width: 56rpx;
-		height: 80rpx;
-		border-radius: 8rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.meld-icon {
-		width: 44rpx;
-		height: 68rpx;
-	}
-
-	.meld-tile-angang {
-		background-color: #f0fdf4;
-		border: 2rpx solid #86efac;
-	}
-
-	.meld-tile-other {
-		background-color: #fefce8;
-		border: 2rpx solid #fde047;
-	}
-
-	.meld-badge {
-		position: absolute;
-		bottom: -8rpx;
-		right: -8rpx;
-		background-color: #ef4444;
-		color: #ffffff;
-		font-size: 24rpx;
-		padding: 4rpx 12rpx;
-		border-radius: 20rpx;
-		text-align: center;
-		min-width: 40rpx;
-	}
-
-	.waiting-section {
-		// background-color: #ffffff;
-		// border-radius: 16rpx;
-		// box-shadow: 0 8rpx 12rpx -2rpx rgba(0, 0, 0, 0.1);
-		// padding: 32rpx;
-		margin-bottom: 48rpx;
-	}
-
-	.waiting-title {
-		font-size: 36rpx;
-		font-weight: bold;
-		color: #1f2937;
-		margin-bottom: 24rpx;
-	}
-
-	.waiting-row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 16rpx;
-		justify-content: center;
-	}
-
-	.waiting-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 16rpx;
-	}
-
-	.waiting-icon {
-		width: 68rpx;
-		height: 96rpx;
-	}
-
-	.waiting-score {
-		color: #4b5563;
-	}
-
-	.win-section {
-		margin-bottom: 48rpx;
-	}
-
-	.win-title {
-		font-size: 36rpx;
-		font-weight: bold;
-		color: #1f2937;
-		margin-right: 24rpx;
-	}
-
-	.win-row {
-		display: flex;
-		align-items: center;
-		gap: 32rpx;
-		margin-bottom: 32rpx;
-	}
-
-	.win-icon {
-		width: 52rpx;
-		height: 72rpx;
-	}
-
-	.win-score {
-		font-size: 32rpx;
-		font-weight: bold;
-		// color: #ca8a04;
-	}
-
-	.win-fans {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 16rpx;
-	}
-
-	.win-fan-tag {
-		padding: 8rpx 24rpx;
-		background-color: #dbeafe;
-		color: #1d4ed8;
-		border-radius: 20rpx;
-		font-size: 28rpx;
-	}
+	.app { min-height: 100vh; background: #f7f8fa; color: #1f2937; padding-bottom: env(safe-area-inset-bottom); }
+	.custom-header { display: flex; align-items: center; justify-content: space-between; padding: 22rpx 28rpx; background: #fff; border-bottom: 2rpx solid #eef0f3; }
+	.title-wrap, .header-actions, .mode-row, .settings-row, .wind-group, .wind-btns, .flower-controls, .checkbox-row, .concealed-inner, .meld-row, .meld-tiles, .waiting-row, .win-head, .share-tiles, .share-melds, .share-meld, .editor-summary, .editor-modes, .modal-actions { display: flex; align-items: center; }
+	.page-title { font-size: 36rpx; font-weight: 700; }
+	.edit-mark { margin-left: 10rpx; color: #9ca3af; }
+	.header-actions { gap: 12rpx; }
+	.icon-btn, .scoreboard-btn { margin: 0; padding: 0 20rpx; height: 64rpx; line-height: 64rpx; border-radius: 14rpx; font-size: 28rpx; background: #fff; border: 2rpx solid #dbe1e8; }
+	.icon-btn { width: 64rpx; padding: 0; }
+	.main { box-sizing: border-box; padding: 18rpx 24rpx 40rpx; }
+	.tile-section, .options-section, .selected-section, .waiting-section, .win-section { background: #fff; border-radius: 20rpx; padding: 18rpx; margin-bottom: 18rpx; }
+	.tile-row { margin-bottom: 8rpx; }
+	.tile-row:last-child { margin-bottom: 0; }
+	.tile-row-inner { display: flex; justify-content: center; gap: 6rpx; }
+	.tile-btn { width: 64rpx; height: 84rpx; padding: 0; margin: 0; border-radius: 12rpx; background: #fff; border: 2rpx solid #e5e7eb; }
+	.tile-btn-active { opacity: 1; }
+	.tile-btn-inactive { opacity: .35; }
+	.tile-icon { width: 58rpx; height: 78rpx; }
+	.mode-row { gap: 10rpx; flex-wrap: wrap; }
+	.mode-btn, .reset-btn { margin: 0; padding: 0 18rpx; height: 60rpx; line-height: 60rpx; border-radius: 14rpx; background: #fff; font-size: 26rpx; }
+	.mode-inactive { border: 2rpx solid #d1d5db; color: #4b5563; }
+	.mode-concealed-active { border: 2rpx solid #64748b; color: #334155; }
+	.mode-chi-active { border: 2rpx solid #3b82f6; color: #2563eb; }
+	.mode-pong-active { border: 2rpx solid #22c55e; color: #16a34a; }
+	.mode-minggang-active { border: 2rpx solid #f59e0b; color: #d97706; }
+	.mode-angang-active { border: 2rpx solid #8b5cf6; color: #7c3aed; }
+	.reset-btn { margin-left: auto; border: 2rpx solid #ef4444; color: #dc2626; }
+	.settings-row { justify-content: space-between; align-items: flex-start; margin-top: 18rpx; }
+	.wind-row { flex: 1; }
+	.wind-group { margin-bottom: 10rpx; }
+	.wind-label { width: 70rpx; font-size: 26rpx; color: #6b7280; }
+	.wind-btns { gap: 6rpx; }
+	.wind-btn { width: 64rpx; height: 52rpx; line-height: 52rpx; margin: 0; padding: 0; font-size: 24rpx; border-radius: 12rpx; }
+	.wind-btn-inactive { background: #fff; border: 2rpx solid #e5e7eb; }
+	.wind-btn-active { background: #eff6ff; border: 2rpx solid #3b82f6; color: #2563eb; }
+	.flower-row { min-width: 190rpx; text-align: center; }
+	.flower-label { display: block; margin-bottom: 8rpx; color: #6b7280; font-size: 26rpx; }
+	.flower-controls { justify-content: center; }
+	.flower-btn { width: 54rpx; height: 54rpx; line-height: 54rpx; margin: 0; padding: 0; border-radius: 12rpx; font-size: 30rpx; }
+	.flower-count { width: 60rpx; text-align: center; }
+	.checkbox-row { flex-wrap: wrap; gap: 14rpx 22rpx; margin-top: 14rpx; }
+	.checkbox-label { display: flex; align-items: center; }
+	.checkbox-text { margin-left: 6rpx; font-size: 26rpx; }
+	.concealed-inner { flex-wrap: wrap; }
+	.concealed-tile { width: 54rpx; height: 76rpx; }
+	.concealed-icon { width: 52rpx; height: 72rpx; }
+	.meld-row { flex-wrap: wrap; gap: 14rpx; margin-top: 14rpx; }
+	.meld-group { display: flex; align-items: center; padding: 8rpx 12rpx; border-radius: 14rpx; background: #fff; }
+	.meld-chi { border: 2rpx solid #3b82f6; }
+	.meld-pong { border: 2rpx solid #22c55e; }
+	.meld-minggang { border: 2rpx solid #f59e0b; }
+	.meld-angang { border: 2rpx solid #8b5cf6; }
+	.meld-tile { width: 48rpx; height: 68rpx; }
+	.meld-icon { width: 46rpx; height: 64rpx; }
+	.meld-label { margin-left: 10rpx; font-size: 25rpx; font-weight: 600; }
+	.remaining-title { display: block; text-align: center; margin-top: 18rpx; color: #6b7280; }
+	.waiting-row { justify-content: center; flex-wrap: wrap; gap: 18rpx; }
+	.waiting-item { text-align: center; }
+	.waiting-score { display: block; font-size: 24rpx; color: #6b7280; }
+	.waiting-icon { width: 64rpx; height: 88rpx; }
+	.win-head { justify-content: center; gap: 14rpx; }
+	.win-score { font-size: 44rpx; font-weight: 800; }
+	.win-icon { width: 58rpx; height: 82rpx; }
+	.share-preview { margin-top: 18rpx; padding-top: 18rpx; border-top: 2rpx dashed #e5e7eb; }
+	.share-tiles, .share-melds { flex-wrap: wrap; }
+	.share-tile { width: 48rpx; height: 68rpx; }
+	.share-melds { gap: 12rpx; margin-top: 10rpx; }
+	.share-meld { border: 2rpx solid #e5e7eb; border-radius: 12rpx; padding: 6rpx; }
+	.toast { position: fixed; top: 120rpx; left: 50%; transform: translateX(-50%); z-index: 100; padding: 18rpx 28rpx; border-radius: 14rpx; color: #fff; }
+	.toast-error { background: #ef4444; }
+	.toast-success { background: #16a34a; }
+	.modal-mask { position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; }
+	.camera-modal { width: 100%; max-height: 92vh; box-sizing: border-box; background: #fff; border-radius: 28rpx 28rpx 0 0; padding: 24rpx; }
+	.modal-header { display: flex; align-items: center; justify-content: space-between; }
+	.modal-title { font-size: 34rpx; font-weight: 700; }
+	.modal-close { font-size: 48rpx; color: #6b7280; }
+	.captured-image { width: 100%; height: 260rpx; margin-top: 12rpx; background: #f3f4f6; border-radius: 16rpx; }
+	.camera-tip { display: block; margin: 12rpx 0; font-size: 24rpx; line-height: 1.5; color: #6b7280; }
+	.editor-summary { justify-content: space-between; font-size: 26rpx; }
+	.draft-tiles { display: flex; flex-wrap: wrap; min-height: 76rpx; margin: 12rpx 0; padding: 10rpx; background: #f9fafb; border-radius: 12rpx; }
+	.draft-tile, .palette-tile { width: 50rpx; height: 70rpx; }
+	.editor-modes { gap: 8rpx; margin-bottom: 10rpx; }
+	.editor-mode-btn { flex: 1; height: 54rpx; line-height: 54rpx; margin: 0; padding: 0; font-size: 24rpx; border: 2rpx solid #e5e7eb; background: #fff; }
+	.editor-mode-active { border-color: #3b82f6; color: #2563eb; }
+	.editor-palette { height: 300rpx; }
+	.palette-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 6rpx; margin-bottom: 8rpx; }
+	.modal-actions { gap: 14rpx; margin-top: 14rpx; }
+	.secondary-btn, .primary-btn { flex: 1; margin: 0; }
+	.secondary-btn { background: #fff; border: 2rpx solid #d1d5db; }
+	.primary-btn { background: #2563eb; color: #fff; }
+	button::after { border: none; }
 </style>

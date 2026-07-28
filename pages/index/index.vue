@@ -101,17 +101,23 @@
 				</view>
 				<view class="share-preview">
 					<view class="share-tiles">
-						<image v-for="(tile, index) in sortedConcealedTiles" :key="`share-c-${index}`" :src="getTileSvgPath(tile)" class="share-tile" mode="aspectFit" />
+						<image v-for="(tile, index) in shareConcealedTiles" :key="`share-c-${index}`" :src="getTileSvgPath(tile)" class="share-tile" mode="aspectFit" />
 					</view>
 					<view class="share-melds">
-						<view v-for="(group, index) in sortedMeldGroups" :key="`share-m-${index}`" class="share-meld">
+						<view v-for="(group, index) in sortedMeldGroups" :key="`share-m-${index}`" class="share-meld" :class="`meld-${group.type}`">
 							<image v-for="(tile, tileIndex) in group.tiles" :key="tileIndex" :src="getTileSvgPath(tile)" class="share-tile" mode="aspectFit" />
 							<text>{{ getMeldTypeText(group.type) }}</text>
 						</view>
 					</view>
+					<view class="share-actions">
+						<button class="share-image-btn" :loading="shareImageGenerating" @click="generateShareImage(true)">生成分享图</button>
+						<button v-if="shareImagePath" class="save-image-btn" @click="saveShareImage">保存图片</button>
+					</view>
 				</view>
 			</section>
 		</main>
+
+		<canvas canvas-id="shareCanvas" id="shareCanvas" class="share-canvas" :style="`width:${shareCanvasWidth}px;height:${shareCanvasHeight}px;`" />
 
 		<view v-if="cameraEditorVisible" class="modal-mask" @click.self="closeCameraEditor">
 			<view class="camera-modal">
@@ -164,6 +170,10 @@
 				draftMode: 'concealed',
 				draftConcealedTiles: [],
 				draftMeldGroups: [],
+				shareImagePath: '',
+				shareImageGenerating: false,
+				shareCanvasWidth: 690,
+				shareCanvasHeight: 420,
 				toast: { show: false, message: '', type: 'error' },
 				options: {
 					seatWind: 'east', prevalentWind: 'east', flowerCount: 0,
@@ -177,10 +187,14 @@
 		},
 		onShareAppMessage() {
 			const score = this.selectedWinTile ? ` · ${this.selectedWinTile.totalScore}番` : '';
-			return { title: `${this.pageTitle}${score}`, path: '/pages/index/index' };
+			const payload = { title: `${this.pageTitle}${score}`, path: '/pages/index/index' };
+			if (this.shareImagePath) payload.imageUrl = this.shareImagePath;
+			return payload;
 		},
 		onShareTimeline() {
-			return { title: this.pageTitle, query: '' };
+			const payload = { title: this.pageTitle, query: '' };
+			if (this.shareImagePath) payload.imageUrl = this.shareImagePath;
+			return payload;
 		},
 		computed: {
 			tileRows() {
@@ -228,6 +242,10 @@
 				if (!this.winTile) return null;
 				return this.waitingTiles.find(item => item.tileId === this.winTile.tileId) || this.winTile;
 			},
+			shareConcealedTiles() {
+				if (!this.selectedWinTile) return this.sortedConcealedTiles;
+				return [...this.sortedConcealedTiles, this.selectedWinTile.tileId].sort(this.compareTiles);
+			},
 			sortedConcealedTiles() {
 				return [...this.concealedTiles].sort(this.compareTiles);
 			},
@@ -239,6 +257,9 @@
 		watch: {
 			remainingTiles(value) {
 				if (value > 0) this.winTile = null;
+			},
+			selectedWinTile() {
+				this.shareImagePath = '';
 			}
 		},
 		methods: {
@@ -294,6 +315,7 @@
 				this.concealedTiles = [...this.draftConcealedTiles];
 				this.meldGroups = this.draftMeldGroups.map(group => ({ type: group.type, tiles: [...group.tiles] }));
 				this.winTile = null;
+				this.shareImagePath = '';
 				this.cameraEditorVisible = false;
 				this.showToast('牌面已更新', 'success');
 			},
@@ -319,22 +341,26 @@
 				if (this.currentMode === 'concealed') {
 					if (this.remainingTiles <= 0 || this.getTileCount(tileId) >= 4) return;
 					this.concealedTiles.push(tileId);
+					this.shareImagePath = '';
 					return;
 				}
 				if (this.remainingTiles < 3) return this.showToast('剩余牌数不足');
 				const group = this.buildMeld(tileId, this.currentMode);
 				if (!group) return this.showToast('该组合无法添加');
 				this.meldGroups.push(group);
+				this.shareImagePath = '';
 			},
 			removeTile(tileId, area) {
 				if (area !== 'concealed') return;
 				const index = this.concealedTiles.indexOf(tileId);
 				if (index >= 0) this.concealedTiles.splice(index, 1);
+				this.shareImagePath = '';
 			},
 			removeMeld(sortedIndex) {
 				const group = this.sortedMeldGroups[sortedIndex];
 				const index = this.meldGroups.indexOf(group);
 				if (index >= 0) this.meldGroups.splice(index, 1);
+				this.shareImagePath = '';
 			},
 			getTileSvgPath(tileId) {
 				return `/static/image/tile/${tileId}.svg`;
@@ -342,14 +368,117 @@
 			getMeldTypeText(type) {
 				return ({ chi: '吃', pong: '碰', minggang: '明杠', angang: '暗杠' })[type] || '';
 			},
+			getMeldColor(type) {
+				return ({ chi: '#3b82f6', pong: '#22c55e', minggang: '#f59e0b', angang: '#8b5cf6' })[type] || '#d1d5db';
+			},
 			updateWinTile(tile) {
 				this.winTile = tile;
+				this.shareImagePath = '';
+			},
+			async generateShareImage(preview = false) {
+				if (!this.selectedWinTile || this.shareImageGenerating) return;
+				this.shareImageGenerating = true;
+				try {
+					const width = this.shareCanvasWidth;
+					const height = this.shareCanvasHeight;
+					const ctx = uni.createCanvasContext('shareCanvas', this);
+					ctx.setFillStyle('#ffffff');
+					ctx.fillRect(0, 0, width, height);
+
+					ctx.setFillStyle('#111827');
+					ctx.setFontSize(38);
+					ctx.setTextAlign('center');
+					ctx.fillText(`${this.selectedWinTile.totalScore} 番`, width / 2, 58);
+
+					const tileWidth = 42;
+					const tileHeight = 58;
+					const tileGap = 3;
+					const hand = this.shareConcealedTiles;
+					const handWidth = hand.length * tileWidth + Math.max(0, hand.length - 1) * tileGap;
+					let x = Math.max(20, (width - handWidth) / 2);
+					const handY = 90;
+					hand.forEach(tile => {
+						ctx.drawImage(this.getTileSvgPath(tile), x, handY, tileWidth, tileHeight);
+						x += tileWidth + tileGap;
+					});
+
+					let meldY = 180;
+					this.sortedMeldGroups.forEach(group => {
+						const groupTileWidth = 38;
+						const labelWidth = 54;
+						const contentWidth = group.tiles.length * groupTileWidth + labelWidth + 26;
+						const groupX = (width - contentWidth) / 2;
+						ctx.setStrokeStyle(this.getMeldColor(group.type));
+						ctx.setLineWidth(2);
+						ctx.strokeRect(groupX, meldY, contentWidth, 60);
+						let tileX = groupX + 10;
+						group.tiles.forEach(tile => {
+							ctx.drawImage(this.getTileSvgPath(tile), tileX, meldY + 4, groupTileWidth, 52);
+							tileX += groupTileWidth;
+						});
+						ctx.setFillStyle('#374151');
+						ctx.setFontSize(20);
+						ctx.setTextAlign('left');
+						ctx.fillText(this.getMeldTypeText(group.type), tileX + 8, meldY + 37);
+						meldY += 72;
+					});
+
+					await new Promise((resolve, reject) => {
+						ctx.draw(false, () => {
+							setTimeout(() => {
+								uni.canvasToTempFilePath({
+									canvasId: 'shareCanvas',
+									width,
+									height,
+									destWidth: width * 2,
+									destHeight: height * 2,
+									fileType: 'png',
+									quality: 1,
+									success: ({ tempFilePath }) => {
+										this.shareImagePath = tempFilePath;
+										resolve();
+									},
+									fail: reject
+								}, this);
+							}, 80);
+						});
+					});
+
+					if (preview && this.shareImagePath) {
+						uni.previewImage({ urls: [this.shareImagePath], current: this.shareImagePath });
+					}
+				} catch (error) {
+					console.error('generate share image failed', error);
+					this.showToast('分享图生成失败，请重试');
+				} finally {
+					this.shareImageGenerating = false;
+				}
+			},
+			saveShareImage() {
+				if (!this.shareImagePath) return;
+				uni.saveImageToPhotosAlbum({
+					filePath: this.shareImagePath,
+					success: () => this.showToast('已保存到相册', 'success'),
+					fail: error => {
+						if (String(error?.errMsg || '').includes('auth deny')) {
+							uni.showModal({
+								title: '需要相册权限',
+								content: '请在设置中允许保存图片到相册。',
+								confirmText: '去设置',
+								success: ({ confirm }) => { if (confirm) uni.openSetting(); }
+							});
+							return;
+						}
+						this.showToast('保存失败，请重试');
+					}
+				});
 			},
 			resetAll() {
 				this.currentMode = 'concealed';
 				this.concealedTiles = [];
 				this.meldGroups = [];
 				this.winTile = null;
+				this.shareImagePath = '';
 			}
 		}
 	};
@@ -358,7 +487,7 @@
 <style lang="scss">
 	.app { min-height: 100vh; background: #f7f8fa; color: #1f2937; padding-bottom: env(safe-area-inset-bottom); }
 	.custom-header { display: flex; align-items: center; justify-content: space-between; padding: 22rpx 28rpx; background: #fff; border-bottom: 2rpx solid #eef0f3; }
-	.title-wrap, .header-actions, .mode-row, .settings-row, .wind-group, .wind-btns, .flower-controls, .checkbox-row, .concealed-inner, .meld-row, .meld-tiles, .waiting-row, .win-head, .share-tiles, .share-melds, .share-meld, .editor-summary, .editor-modes, .modal-actions { display: flex; align-items: center; }
+	.title-wrap, .header-actions, .mode-row, .settings-row, .wind-group, .wind-btns, .flower-controls, .checkbox-row, .concealed-inner, .meld-row, .meld-tiles, .waiting-row, .win-head, .share-tiles, .share-melds, .share-meld, .share-actions, .editor-summary, .editor-modes, .modal-actions { display: flex; align-items: center; }
 	.page-title { font-size: 36rpx; font-weight: 700; }
 	.edit-mark { margin-left: 10rpx; color: #9ca3af; }
 	.header-actions { gap: 12rpx; }
@@ -419,10 +548,15 @@
 	.win-score { font-size: 44rpx; font-weight: 800; }
 	.win-icon { width: 58rpx; height: 82rpx; }
 	.share-preview { margin-top: 18rpx; padding-top: 18rpx; border-top: 2rpx dashed #e5e7eb; }
-	.share-tiles, .share-melds { flex-wrap: wrap; }
+	.share-tiles, .share-melds { flex-wrap: wrap; justify-content: center; }
 	.share-tile { width: 48rpx; height: 68rpx; }
 	.share-melds { gap: 12rpx; margin-top: 10rpx; }
-	.share-meld { border: 2rpx solid #e5e7eb; border-radius: 12rpx; padding: 6rpx; }
+	.share-meld { border-radius: 12rpx; padding: 6rpx; }
+	.share-actions { gap: 12rpx; margin-top: 18rpx; }
+	.share-image-btn, .save-image-btn { flex: 1; margin: 0; border-radius: 14rpx; font-size: 26rpx; }
+	.share-image-btn { background: #2563eb; color: #fff; }
+	.save-image-btn { background: #fff; border: 2rpx solid #2563eb; color: #2563eb; }
+	.share-canvas { position: fixed; left: -9999px; top: -9999px; pointer-events: none; }
 	.toast { position: fixed; top: 120rpx; left: 50%; transform: translateX(-50%); z-index: 100; padding: 18rpx 28rpx; border-radius: 14rpx; color: #fff; }
 	.toast-error { background: #ef4444; }
 	.toast-success { background: #16a34a; }

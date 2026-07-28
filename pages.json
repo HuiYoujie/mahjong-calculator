@@ -16,6 +16,13 @@
 				"enableShareAppMessage": true,
 				"enableShareTimeline": true
 			}
+		},
+		{
+			"path": "pages/scoreboard/scoreboard",
+			"style": {
+				"navigationBarTitleText": "计分板",
+				"backgroundColor": "#f5f7fa"
+			}
 		}
 	],
 	"globalStyle": {

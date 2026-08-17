@@ -156,6 +156,14 @@ export default {
 		}
 	},
 	methods: {
+		vibrateFeedback(type = 'light') {
+			if (typeof uni === 'undefined' || typeof uni.vibrateShort !== 'function') return;
+			try {
+				uni.vibrateShort({ type });
+			} catch (error) {
+				uni.vibrateShort();
+			}
+		},
 		prepareFans(fans) {
 			const seen = new Set();
 			return fans.reduce((list, fan, index) => {
@@ -236,6 +244,7 @@ export default {
 			this.searchText = '';
 		},
 		filterByScore(score) {
+			this.vibrateFeedback('light');
 			this.selectedScore = score;
 			this.expandedFan = null;
 		},

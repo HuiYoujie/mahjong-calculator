@@ -64,7 +64,7 @@
 				<!-- 第一行：立牌、碰、吃、明杠、暗杠、重置 -->
 				<view class="mode-row">
 					<button v-for="mode in ['concealed', 'pong', 'chi', 'minggang', 'angang']" :key="mode"
-						@click="currentMode = mode"
+						@click="setCurrentMode(mode)"
 						class="mode-btn"
 						:class="currentMode === mode ? 'mode-btn-active' : 'mode-btn-inactive'">
 						{{mode === 'concealed' ? '立牌' : mode === 'pong' ? '碰' : mode === 'chi' ? '吃' : mode === 'minggang' ? '明杠' : '暗杠'}}
@@ -82,7 +82,7 @@
                             <span class="wind-label">门风</span>
                             <view class="wind-btns">
                                 <button v-for="wind in ['east','south','west','north']" :key="wind" 
-                                    @click="options.seatWind = wind"
+                                    @click="setSeatWind(wind)"
                                     class="mode-btn"
                                     :class="options.seatWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
                                     {{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
@@ -95,7 +95,7 @@
                             <span class="wind-label">圈风</span>
                             <view class="wind-btns">
                                 <button v-for="wind in ['east','south','west','north']" :key="wind" 
-                                    @click="options.prevalentWind = wind"
+                                    @click="setPrevalentWind(wind)"
                                     class="mode-btn"
                                     :class="options.prevalentWind === wind ? 'wind-btn-active' : 'wind-btn-inactive'">
                                     {{wind === 'east' ? '东' : wind === 'south' ? '南' : wind === 'west' ? '西' : '北'}}
@@ -210,7 +210,7 @@
 
 			<!-- 和牌番数显示区域 -->
 			<section v-if="selectedWinTile" class="win-section">
-				<view style="display: flex; align-items: center;justify-content: flex-start;margin-bottom: 24rpx;" @click="winTile = null">
+				<view style="display: flex; align-items: center;justify-content: flex-start;margin-bottom: 24rpx;" @click="clearWinTile">
 					<h2 class="win-title">和张:</h2>
 					<image :src="getTileSvgPath(selectedWinTile.tileId)" class="win-icon" mode="aspectFit" />
 				</view>
@@ -373,13 +373,34 @@
 			}
 		},
 		methods: {
+			vibrateFeedback(type = 'light') {
+				if (typeof uni === 'undefined' || typeof uni.vibrateShort !== 'function') return;
+				try {
+					uni.vibrateShort({ type });
+				} catch (error) {
+					uni.vibrateShort();
+				}
+			},
 			showToast(message, type = 'error') {
 				this.toast = { show: true, message, type };
 				setTimeout(() => {
 					this.toast.show = false;
 				}, 2000);
 			},
+			setCurrentMode(mode) {
+				this.vibrateFeedback('light');
+				this.currentMode = mode;
+			},
+			setSeatWind(wind) {
+				this.vibrateFeedback('light');
+				this.options.seatWind = wind;
+			},
+			setPrevalentWind(wind) {
+				this.vibrateFeedback('light');
+				this.options.prevalentWind = wind;
+			},
 			checkboxChange(e) {
+				this.vibrateFeedback('medium');
 				const values = e.detail.value;
 				const optionKeys = ['isSelfDrawn', 'isJuezhang', 'isMiaoshou', 'isGangshang', 'isHaidilao', 'isQianggang'];
 				for (const key of optionKeys) {
@@ -392,6 +413,7 @@
 				return concealedCount + meldCount;
 			},
 			toggleTile(tileId) {
+				this.vibrateFeedback('light');
 				if (this.currentMode === 'concealed') {
 					if (this.remainingTiles <= 0) return;
 					if (this.getTileCount(tileId) > 3) return;
@@ -434,6 +456,7 @@
 				}
 			},
 			removeTile(tileId, area) {
+				this.vibrateFeedback('light');
 				if (area === 'concealed') {
 					const index = this.concealedTiles.indexOf(tileId);
 					if (index > -1) {
@@ -457,9 +480,15 @@
 				return type === 'pong' ? '碰' : type === 'chi' ? '吃' : type === 'angang' ? '暗杠' : '明杠';
 			},
 			updateWinTile(tile) {
+				this.vibrateFeedback('heavy');
 				this.winTile = tile;
 			},
+			clearWinTile() {
+				this.vibrateFeedback('heavy');
+				this.winTile = null;
+			},
 			resetAll() {
+				this.vibrateFeedback('heavy');
 				this.currentMode = 'concealed';
 				this.concealedTiles = [];
 				this.meldGroups = [];

@@ -16,6 +16,44 @@
 				"enableShareAppMessage": true,
 				"enableShareTimeline": true
 			}
+		},
+		{
+			"path": "pages/rooms/rooms",
+			"style": {
+				"navigationBarTitleText": "房间",
+				"backgroundColor": "#f5f7fb",
+				"enableShareAppMessage": true
+			}
+		},
+		{
+			"path": "pages/rooms/detail",
+			"style": {
+				"navigationBarTitleText": "房间详情",
+				"backgroundColor": "#f5f7fb",
+				"enableShareAppMessage": true
+			}
+		},
+		{
+			"path": "pages/rooms/records",
+			"style": {
+				"navigationBarTitleText": "给分记录",
+				"backgroundColor": "#f5f7fb"
+			}
+		},
+		{
+			"path": "pages/rooms/fan-records",
+			"style": {
+				"navigationBarTitleText": "算番记录",
+				"backgroundColor": "#f5f7fb",
+				"enableShareAppMessage": true
+			}
+		},
+		{
+			"path": "pages/rooms/history",
+			"style": {
+				"navigationBarTitleText": "历史记录",
+				"backgroundColor": "#f5f7fb"
+			}
 		}
 	],
 	"globalStyle": {
@@ -41,6 +79,12 @@
 				"text": "番表",
 				"iconPath": "static/tabbar/fans.png",
 				"selectedIconPath": "static/tabbar/fans-active.png"
+			},
+			{
+				"pagePath": "pages/rooms/rooms",
+				"text": "房间",
+				"iconPath": "static/tabbar/rooms.png",
+				"selectedIconPath": "static/tabbar/rooms-active.png"
 			}
 		]
 	},

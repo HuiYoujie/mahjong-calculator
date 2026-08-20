@@ -7,6 +7,14 @@
 		</view>
 
 		<main class="main">
+			<view v-if="roomId" class="room-calc-banner">
+				<view>
+					<view class="room-calc-title">房间算番记录</view>
+					<view class="room-calc-desc">{{ roomName || '当前房间' }} · 保存后会进入房间算番统计</view>
+				</view>
+				<button class="room-calc-close" @click="clearRoomContext">退出</button>
+			</view>
+
 			<!-- 牌种选择区域 -->
 			<section class="tile-section">
 				<!-- 万子 -->
@@ -219,6 +227,9 @@
 					<span v-for="fan in selectedWinTile.fans" :key="fan.name" class="win-fan-tag">
 						{{fan.name}} {{fan.score}}番
 					</span>
+					<button v-if="roomId" class="save-fan-btn" :disabled="savingFanRecord" @click="saveFanRecord">
+						{{ savingFanRecord ? '保存中' : '保存到房间记录' }}
+					</button>
 				</view>
 			</section>
 		</main>
@@ -228,11 +239,15 @@
 <script>
 	import { TILES } from '@/utils/tiles.js';
 	import { MahjongAnalyzer } from '@/utils/analyzer.js';
+	import { roomService } from '@/utils/roomService.js';
 
 	export default {
 		data() {
 			return {
 				currentMode: 'concealed',
+				roomId: '',
+				roomName: '',
+				savingFanRecord: false,
 				concealedTiles: [],
 				meldGroups: [],
 				winTile: null,
@@ -252,6 +267,18 @@
 					isGangshang: false,
 					isQianggang: false
 				}
+			}
+		},
+		onLoad(query) {
+			if (query && query.roomId) {
+				this.setRoomContext(query.roomId);
+			}
+		},
+		onShow() {
+			const pending = uni.getStorageSync('mahjong_pending_room_calc');
+			if (pending && pending.roomId) {
+				uni.removeStorageSync('mahjong_pending_room_calc');
+				this.setRoomContext(pending.roomId);
 			}
 		},
 		onShareAppMessage() {
@@ -387,6 +414,21 @@
 					this.toast.show = false;
 				}, 2000);
 			},
+			async setRoomContext(roomId) {
+				this.roomId = roomId;
+				const res = await roomService.getRoom(roomId);
+				if (!res.ok) {
+					this.showToast(res.message);
+					this.clearRoomContext();
+					return;
+				}
+				this.roomName = res.room.name;
+			},
+			clearRoomContext() {
+				this.vibrateFeedback('light');
+				this.roomId = '';
+				this.roomName = '';
+			},
 			setCurrentMode(mode) {
 				this.vibrateFeedback('light');
 				this.currentMode = mode;
@@ -483,6 +525,33 @@
 				this.vibrateFeedback('heavy');
 				this.winTile = tile;
 			},
+			async saveFanRecord() {
+				this.vibrateFeedback('medium');
+				if (!this.roomId || !this.selectedWinTile) return;
+				this.savingFanRecord = true;
+				const res = await roomService.saveFanRecord(this.roomId, {
+					totalScore: this.selectedWinTile.totalScore,
+					winTile: this.selectedWinTile.tileId,
+					fans: this.selectedWinTile.fans || [],
+					isSelfDrawn: this.options.isSelfDrawn
+				});
+				this.savingFanRecord = false;
+				if (!res.ok) {
+					this.showToast(res.message);
+					return;
+				}
+				uni.showModal({
+					title: '已保存',
+					content: '算番结果已保存到房间记录，是否查看统计？',
+					confirmText: '查看',
+					cancelText: '继续算番',
+					success: result => {
+						if (result.confirm) {
+							uni.navigateTo({ url: `/pages/rooms/fan-records?roomId=${this.roomId}` });
+						}
+					}
+				});
+			},
 			clearWinTile() {
 				this.vibrateFeedback('heavy');
 				this.winTile = null;
@@ -551,6 +620,39 @@
 
 	.tile-section {
 		margin-bottom: 16rpx;
+	}
+
+	.room-calc-banner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16rpx;
+		background-color: #eff6ff;
+		border: 2rpx solid #bfdbfe;
+		border-radius: 16rpx;
+		padding: 18rpx 20rpx;
+		margin-bottom: 16rpx;
+	}
+
+	.room-calc-title {
+		color: #1d4ed8;
+		font-size: 28rpx;
+		font-weight: 700;
+	}
+
+	.room-calc-desc {
+		color: #3b82f6;
+		font-size: 22rpx;
+		margin-top: 6rpx;
+	}
+
+	.room-calc-close {
+		height: 56rpx;
+		padding: 0 18rpx;
+		border-radius: 12rpx;
+		background-color: #ffffff;
+		color: #2563eb;
+		font-size: 24rpx;
 	}
 
 	.tile-row {
@@ -936,5 +1038,21 @@
 		color: #1d4ed8;
 		border-radius: 20rpx;
 		font-size: 28rpx;
+	}
+
+	.save-fan-btn {
+		width: 100%;
+		height: 72rpx;
+		margin-top: 8rpx;
+		border-radius: 16rpx;
+		background-color: #2563eb;
+		color: #ffffff;
+		font-size: 28rpx;
+		font-weight: 600;
+	}
+
+	.save-fan-btn[disabled] {
+		background-color: #cbd5e1;
+		color: #ffffff;
 	}
 </style>

@@ -6,11 +6,6 @@ Chinese Official Mahjong Scoring Calculator
 
 [English README](./README.en.md)
 
-## 🎮 在线体验
-
-- 在线体验: [https://kkkkkkkkatie.github.io/mahjong-calculator/](https://kkkkkkkkatie.github.io/mahjong-calculator/)
-
-
 ## ✨ 功能特点
 
 - 📱 响应式设计，支持桌面和移动设备
@@ -37,46 +32,6 @@ Chinese Official Mahjong Scoring Calculator
 | 4番 | 4种 |
 | 2番 | 10种 |
 | 1番 | 13种 |
-
-## 🚀 部署到 GitHub Pages
-
-### 方法一：直接上传
-
-1. 在 GitHub 创建新仓库 `mahjong-calculator`
-2. 上传所有文件到仓库
-3. 进入仓库 Settings → Pages
-4. Source 选择 `main` 分支，文件夹选择 `/ (root)`
-5. 点击 Save，等待部署完成
-
-### 方法二：使用 Git 命令
-
-```bash
-# 在 mahjong-calculator 目录下
-git init
-git add .
-git commit -m "Initial commit: 国标麻将算番器"
-git branch -M main
-git remote add origin https://github.com/KKKKKKKKatie/mahjong-calculator.git
-git push -u origin main
-```
-
-然后在 GitHub 仓库设置中启用 Pages。
-
-## 📁 项目结构
-
-```
-mahjong-calculator/
-├── index.html      # 主页面
-├── style.css       # 样式文件
-├── fans.js         # 番种数据
-├── app.js          # 应用逻辑
-├── README.md       # 中文说明文档
-└── README.en.md    # English README
-```
-
-## 📜 许可证
-
-MIT License
 
 ## 🙏 参考
 
